@@ -111,3 +111,12 @@ This repair changed the test execution location, not inference or evaluation.
 - [WSL systemd behavior](https://learn.microsoft.com/en-us/windows/wsl/systemd).
 - [Pinned official Shop source](https://github.com/open-telemetry/opentelemetry-demo/tree/dedc0178918e260823323b8d95005a8cb924b007).
 - Local protocol: `program.md`; study parameters: `experiment_plan.json`.
+
+## Public release verification
+
+Implementation commit `ec09fb3` was published to the public AutoTriager-Shop
+repository and cloned into a fresh checkout. All 27 example JSON files, PDF
+bytes and frozen schema/scorer file hashes matched. Fresh seeding and verification
+passed for nine actual records without Docker or new API calls. Later report
+status polish does not change the frozen analysis. The older CoDesign repository
+was not deleted; no new GitHub scope was requested.

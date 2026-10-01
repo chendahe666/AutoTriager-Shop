@@ -4,8 +4,10 @@ This checkpoint records installation, source deployment, a memory-limit repair,
 and live collection on the local Windows host. The development cohort has three
 accepted phase windows from five completed attempts, including a fresh recovery
 interval after a preserved failure. Development and amended confirmation are
-complete under the frozen method; final regression and source release remain
-pending. This is not a demonstration of RCA superiority or user benefit.
+complete under the frozen method. Final public-source regression and the first
+source release are verified; final documentation/PDF metadata polish remains.
+This is not a demonstration of RCA superiority or
+user benefit.
 
 ## Completed and verified
 
@@ -298,17 +300,37 @@ The saved
 **129 passing tests** before recorded replay; the 119-test and 126-test
 checkpoints also remain historical engineering checks.
 
-The English black-and-white workshop report builder has generated draft output
-for Dahe Chen. Final PDF preview and final-result updates are pending before
-delivery. Draft generation does not establish assignment readiness or a grade.
+The English black-and-white workshop report for Dahe Chen has nine pages: five
+body pages and four appendix pages. The final PDF was rebuilt and inspected at
+**20:11 UTC**; text extraction found no CJK characters and every rendered page
+passed author and independent simulated reviewer inspection. The first released
+PDF was byte-verified in the fresh Git clone. Final documentation/PDF metadata
+updates will follow in a separate commit. These checks do not establish a grade
+or user benefit.
+
+A final read-only Shop preflight passed at **20:11:49 UTC** in the observed
+session: `paymentFailure` was off, its flag fingerprint matched the baseline-off
+state, and Jaeger listed all 18 services. The app at port 8510 still displayed
+the actual recorded `003-b` checkout suggestion with the no-new-call banner.
+This endpoint/service-list check does not establish global service health or
+diagnostic correctness; it is separate from the saved earlier preflight files.
 
 ## Repository and public example checkpoint
 
-The current session verified valid GitHub repository authorization and created
+The current session verified valid GitHub repository authorization, created
 the public [AutoTriager-Shop repository](https://github.com/chendahe666/AutoTriager-Shop)
-after checking its absence at **18:38 UTC**. Creation has been verified; code has
-not yet been pushed at this checkpoint, so this is not a published source
-release. The older `CoDesign` repository has not been deleted. Its removal
+after checking its absence at **18:38 UTC**, and verified the first non-force
+push to `main` at
+[ec09fb3a5b4f835bbab99781a28ce580a3046f77](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
+A fresh Git clone under `evaluation/private/github-release-verification-20261001`
+matched that commit. All **27 public example JSON files**, the released PDF bytes,
+and the frozen schema/scorer SHA values matched the source. No original private
+API runs were present. Seeding nine examples followed by `--check-only` passed
+in **7.71 seconds**, without Docker or new API calls, using the existing Python
+environment. A new dependency installation was not tested. Final documentation/PDF
+metadata polish follows this verified first release.
+
+The older `CoDesign` repository has not been deleted. Its removal
 remains a separate action with no `delete_repo` scope;
 this does not block local runtime work or report preparation.
 
@@ -354,8 +376,9 @@ global `wsl --shutdown` during a capture.
    flags or assume a retry reset the runtime flag state.
 4. Inspect official captures and recorded analyses in the app at
    `127.0.0.1:8510`; the official storefront is on `127.0.0.1:8080`. Complete
-   final regression, PDF preview and public-example audits, and update the
-   report only from observed artifacts.
+   documentation/PDF publication polish and verify the follow-up push. Preserve
+   the completed regression, clone and public-example audit receipts; update
+   the report only from observed artifacts.
 
 The latest full October 1 engineering regression passed **186 tests in 34.27
 seconds**. The earlier six-example public-only checks passed 48 with one optional

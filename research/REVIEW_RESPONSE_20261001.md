@@ -4,6 +4,9 @@ Author: Dahe Chen. October 1, 2026. Read with
 [`RESEARCH_REVIEW_20261001.md`](../docs/RESEARCH_REVIEW_20261001.md).
 An AI reviewer provides scrutiny, not an instructor grade or expert certification.
 
+The response table records the first-confirmation checkpoint before replacement 005
+completed. Final research, replay and public release verification follow below.
+
 | Objection | Response and inspectable change | Remaining verification |
 | --- | --- | --- |
 | M1: AI and user benefit are not established | The amended task asks for first inspection priority. Native negative results and the official003 non-match are retained. No claim of zero-cost SRE training, production benefit, or necessity of an LLM is made. | Optimal-action annotations, a matched same-task comparison and an observed user task remain separate requirements. |
@@ -36,3 +39,12 @@ The initial sandbox run's 20 setup errors are recorded separately from model
 or assertion failures. The report incorporates the reviewer's exact selector,
 validator and human-priority corrections. PDF visual review and GitHub commit
 verification are delivery checks, not new scientific results.
+
+## Public release verification
+
+Implementation commit `ec09fb3` was published to the public AutoTriager-Shop
+repository and cloned into a fresh checkout. All 27 example JSON files, PDF
+bytes and frozen schema/scorer file hashes matched. Fresh seeding and verification
+passed for nine actual records without Docker or new API calls. Later report
+status polish does not change the frozen analysis. The older CoDesign repository
+was not deleted; no new GitHub scope was requested.

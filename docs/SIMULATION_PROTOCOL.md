@@ -41,8 +41,8 @@ has five completed attempts, three accepted and two rejected, including that
 replacement interval. Development analysis completed 16 of 18 scheduled model
 calls with two retained HTTP 503 failures. The frozen method then completed the
 amended confirmation schedule; the final round recorded 30 calls with 28
-completed and two development failures. Final regression and source release
-remain pending.
+completed and two development failures. Final public-source regression and the
+first source publication are verified.
 See [RUNTIME_SETUP_STATUS.md](RUNTIME_SETUP_STATUS.md) for the private evidence
 locations and exact checkpoint times. Mocked HTTP tests check capture logic only.
 
@@ -420,6 +420,16 @@ no assertion failed. A fresh workspace temporary directory and authorized
 execution passed the unchanged suite. No original cases or private API attempts
 were copied into that snapshot. These receipts concern software execution,
 not diagnosis or user benefit.
+
+The first public source release is
+[ec09fb3a5b4f835bbab99781a28ce580a3046f77](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
+A fresh Git clone matched that commit, all 27 public example JSON files,
+the released PDF bytes, and the frozen schema/scorer hashes. Seeding and checking
+the nine bundles passed in 7.71 seconds without Docker or new API calls, using
+the existing Python environment; a new dependency installation was not tested.
+Original private API runs were absent. This verifies offline replay packaging and source
+integrity, not new model execution or scientific benefit. Final documentation
+and PDF publication metadata are polished separately.
 The [official confirmation screenshot](../results/screenshots/official_confirmation_counterexample_20261001.jpg)
 shows actual recorded replay of the `003-b` checkout suggestion. It preserves
 the negative result and is not a correctness or user-benefit measurement.

@@ -11,9 +11,16 @@ not read.
 
 ## Quick start: replay official Shop captures offline
 
-The checkout includes [nine public official-Shop examples](examples/official_shop)
+The public repository includes [nine official-Shop examples](examples/official_shop)
 with real captured observations and sanitized, previously recorded Gemini
-responses. Use Python 3.13 from the repository root:
+responses. For a fresh checkout:
+
+```powershell
+git clone https://github.com/chendahe666/AutoTriager-Shop.git
+Set-Location AutoTriager-Shop
+```
+
+Use Python 3.13 from the repository root:
 
 ```powershell
 py -3.13 -m pip install -r requirements.txt
@@ -115,14 +122,21 @@ fixture setup errors caused by a Windows temporary-directory `PermissionError`,
 with no assertion failures. A fresh workspace temporary directory and authorized
 execution completed the suite. The earlier local **186-test / 34.27-second**
 checkpoint used the six-example corpus and available private provenance source;
-it remains a separate receipt. These are software checks, not research outcomes.
-These are software checks, not research results. See the
+it remains a separate receipt. These are software checks, not research outcomes. See the
 [runtime checkpoint](docs/RUNTIME_SETUP_STATUS.md) for evidence locations and
 capture status.
 
 The public [AutoTriager-Shop repository](https://github.com/chendahe666/AutoTriager-Shop)
-has been created and verified. Code has not yet been pushed at this checkpoint;
-repository creation alone is not a published source release.
+has a verified first source release at
+[commit ec09fb3](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
+A fresh Git clone matched that commit, all 27 example JSON files, the published
+PDF bytes, and the frozen schema/scorer hashes. Seeding and checking nine examples
+passed in **7.71 seconds**, without Docker or new API calls, using the existing
+Python environment; a new dependency installation was not tested. The final
+English black-and-white coursework PDF has nine pages: five body pages and four
+appendix pages. Text and every rendered page were checked. Final documentation
+and PDF publication metadata will follow in a separate commit. The older CoDesign
+repository has not been deleted.
 
 ## Deploy or resume the official Shop on Windows
 

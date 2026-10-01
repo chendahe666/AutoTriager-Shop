@@ -75,11 +75,18 @@ tests cannot replace observed task outcomes.
    accepted. Three confirmation groups were attempted and two completed/modeled;
    004 remains incomplete. This is an amended protocol rather than
    untouched preregistration. Confirmation will not drive method tuning.
-7. **Course and release artifacts:** an English black-and-white workshop report
-   builder has been created for Dahe Chen. Final PDF preview and result updates
-   remain pending. The public
+7. **Course and release artifacts:** the English black-and-white workshop report
+   for Dahe Chen has nine pages, with five body pages and four appendix pages.
+   Text extraction and every rendered page passed inspection at 20:11 UTC.
+   The public
    [AutoTriager-Shop repository](https://github.com/chendahe666/AutoTriager-Shop)
-   has been created and verified, but code has not yet been pushed. Nine audited
+   has a verified first release at
+   [ec09fb3](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
+   A fresh Git clone matched the commit, all 27 example JSON files, PDF bytes,
+   and frozen schema/scorer hashes; nine-example seeding/checking passed in
+   7.71 seconds without Docker or new API calls, using the existing Python
+   environment; a new dependency installation was not tested. Final documentation/PDF
+   publication metadata polish remains separate. Nine audited
    public observation/recording bundles are packaged for offline replay; the full
    local case cohort remains ignored by Git.
 
@@ -146,8 +153,8 @@ diagnosis correctness. Full `cases/` and private labels
 are ignored by Git. Nine audited bundles under `examples/official_shop` can be
 seeded into absent case directories without overwriting existing data. They
 contain captured observations and real recorded responses, with no expected
-diagnosis or human judgment supplied. Source push must be verified before
-repository creation is described as a published code release.
+diagnosis or human judgment supplied. The first source push and fresh-clone
+replay packaging are verified; the older CoDesign repository has not been deleted.
 The complete-suite checks above preceded packaging examples 07–09. A final
 public-source snapshot seeded all nine bundles and passed 185 tests with one
 optional original-private-source provenance comparison skipped in 39.17 seconds,
