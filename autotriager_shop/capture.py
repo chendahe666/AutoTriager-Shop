@@ -21,6 +21,10 @@ from urllib.request import Request, urlopen
 
 SHOP_REPOSITORY = "https://github.com/open-telemetry/opentelemetry-demo"
 SHOP_VERSION = "3.1.0"
+# Two minutes for PromQL lookback, plus a conservative export margin. This
+# avoids intentional phase overlap; delayed telemetry is still a limitation.
+MIN_WARMUP_SECONDS = 180
+FLAG_POLL_SECONDS = 30
 SHOP_COMMIT = "dedc0178918e260823323b8d95005a8cb924b007"
 ERROR_RATE_QUERY = (
     'sum by (service_name) (rate(traces_span_metrics_calls_total'
@@ -238,6 +242,72 @@ def _parent_span_id(span: dict[str, Any]) -> str | None:
     return None
 
 
+def _require_checkout_path(spans: list[dict[str, Any]], phase: str) -> dict[str, int]:
+    """Require evidence that this intervention's request path was exercised.
+
+    Shared service names or timestamps alone do not establish a call path.
+    Follow observed parent links within each trace; incomplete traces cannot
+    satisfy this gate. These are capture-validity checks, not diagnostic rules.
+    """
+    by_key = {(span["trace_id"], span["span_id"]): span for span in spans}
+    linked_payment: list[dict[str, Any]] = []
+    for payment in spans:
+        if payment["service"] != "payment":
+            continue
+        trace_id = payment["trace_id"]
+        parent_id = payment["raw"].get("parent_span_id")
+        visited = {payment["span_id"]}
+        while parent_id and parent_id not in visited:
+            visited.add(parent_id)
+            parent = by_key.get((trace_id, parent_id))
+            if parent is None:
+                break
+            if parent["service"] == "checkout":
+                linked_payment.append(payment)
+                break
+            parent_id = parent["raw"].get("parent_span_id")
+    if not linked_payment:
+        raise CaptureError("No observed checkout-to-payment parent path; generate checkout traffic before capture")
+    trace_ids = {span["trace_id"] for span in linked_payment}
+    payment_errors = [span for span in linked_payment if span["raw"]["status"] == "ERROR"]
+    path_errors = [
+        span for span in spans
+        if span["trace_id"] in trace_ids and span["service"] in {"checkout", "payment"}
+        and span["raw"]["status"] == "ERROR"
+    ]
+    if phase == "fault" and not payment_errors:
+        raise CaptureError("Fault window has no payment ERROR span on an observed checkout path")
+    if phase != "fault" and path_errors:
+        raise CaptureError(f"{phase} window contains checkout/payment ERROR spans; do not label it a clean control")
+    return {
+        "checkout_payment_traces": len(trace_ids),
+        "linked_payment_spans": len(linked_payment),
+        "linked_payment_error_spans": len(payment_errors),
+    }
+
+
+def _wait_with_stable_flags(
+    seconds: int,
+    flag_url: str,
+    expected_variant: str,
+    fingerprint: str,
+    *,
+    get_json: Callable[[str], dict[str, Any]],
+    sleep: Callable[[float], None],
+) -> dict[str, Any]:
+    """Bound waits and detect observed flag drift during the experiment."""
+    remaining = seconds
+    while remaining > 0:
+        interval = min(remaining, FLAG_POLL_SECONDS)
+        sleep(interval)
+        remaining -= interval
+        data = _flag_data(get_json(flag_url))
+        _check_expected_variant(data, expected_variant)
+        if _flag_fingerprint(data) != fingerprint:
+            raise CaptureError("flag configuration changed during capture; discard this run")
+    return data
+
+
 def _trace_observations(
     jaeger: str,
     services: list[str],
@@ -356,7 +426,7 @@ class CaptureConfig:
     prometheus_url: str = "http://localhost:9090"
     jaeger_url: str | None = None
     duration_seconds: int = 180
-    warmup_seconds: int = 15
+    warmup_seconds: int = MIN_WARMUP_SECONDS
     settle_seconds: int = 75
     baseline_case: Path | None = None
 
@@ -373,8 +443,10 @@ def capture_phase(
         raise CaptureError("phase must be normal, fault, or recovery")
     if not config.case_id or any(x not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for x in config.case_id):
         raise CaptureError("case_id may contain only letters, digits, hyphen, underscore")
-    if config.duration_seconds < 120 or config.warmup_seconds < 0 or config.settle_seconds < 0:
-        raise CaptureError("duration must be at least 120 seconds; delays cannot be negative")
+    if config.duration_seconds < 120 or config.settle_seconds < 0:
+        raise CaptureError("duration must be at least 120 seconds; settle delay cannot be negative")
+    if config.warmup_seconds < MIN_WARMUP_SECONDS:
+        raise CaptureError(f"warmup must be at least {MIN_WARMUP_SECONDS} seconds to isolate phase metrics")
     public_root = config.public_root.resolve()
     private_root = config.private_root.resolve()
     if public_root == private_root or public_root.is_relative_to(private_root) or private_root.is_relative_to(public_root):
@@ -399,19 +471,23 @@ def capture_phase(
         if baseline_meta.get("phase") != "normal" or baseline_meta.get("simulator_source_commit") != SHOP_COMMIT:
             raise CaptureError("baseline must be a normal phase from the pinned Shop version")
     baseline = baseline_from_case(config.baseline_case) if config.baseline_case else {}
-    if config.warmup_seconds:
-        sleep(config.warmup_seconds)
+    _wait_with_stable_flags(
+        config.warmup_seconds, preflight["flag_url"], expected_variant, initial_fingerprint,
+        get_json=get_json, sleep=sleep,
+    )
     start = now().astimezone(timezone.utc)
-    sleep(config.duration_seconds)
+    flag_after = _wait_with_stable_flags(
+        config.duration_seconds, preflight["flag_url"], expected_variant, initial_fingerprint,
+        get_json=get_json, sleep=sleep,
+    )
     end = now().astimezone(timezone.utc)
     if end <= start:
         raise CaptureError("capture clock did not advance")
-    flag_after = _flag_data(get_json(preflight["flag_url"]))
-    _check_expected_variant(flag_after, expected_variant)
-    if _flag_fingerprint(flag_after) != initial_fingerprint:
-        raise CaptureError("flag configuration changed during capture; discard this run")
     if config.settle_seconds:
-        sleep(config.settle_seconds)
+        _wait_with_stable_flags(
+            config.settle_seconds, preflight["flag_url"], expected_variant, initial_fingerprint,
+            get_json=get_json, sleep=sleep,
+        )
     metrics = _metric_observations(
         preflight["prometheus"], start, end, get_json=get_json, baseline=baseline
     )
@@ -422,6 +498,7 @@ def capture_phase(
         raise CaptureError(
             f"Incomplete live evidence: {len(metrics)} metric rows and {len(spans)} spans; no captured case written"
         )
+    path_validation = _require_checkout_path(spans, config.phase)
     # Avoid a partial public case if a later step fails. The manifest is placed
     # in a separate directory so the application never receives the answer.
     captured_at = _iso(now())
@@ -466,10 +543,18 @@ def capture_phase(
             "jaeger": preflight["jaeger"],
         },
         "observation_counts": {"metric": len(metrics), "span": len(spans)},
+        "path_validation": path_validation,
+        "timing": {
+            "warmup_seconds": config.warmup_seconds,
+            "duration_seconds": config.duration_seconds,
+            "settle_seconds": config.settle_seconds,
+            "flag_poll_seconds": FLAG_POLL_SECONDS,
+        },
         "baseline_case": str(config.baseline_case) if config.baseline_case else None,
         "limitations": [
             "Jaeger HTTP JSON trace search is an internal API and can change between versions.",
-            "Flag snapshots cannot detect a transient scheduler change that starts and ends within the window.",
+            "Flag polling cannot detect a transient change between consecutive polls; stop the scheduler.",
+            "The warmup excludes the PromQL lookback from the prior phase but cannot bound all telemetry delays.",
             "Trace span tags are allowlisted, so some error detail is intentionally omitted.",
         ],
     }

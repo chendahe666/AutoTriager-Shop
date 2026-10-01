@@ -6,7 +6,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from autotriager_shop.capture import CaptureConfig, CaptureError, capture_phase
+from autotriager_shop.capture import MIN_WARMUP_SECONDS, CaptureConfig, CaptureError, capture_phase
 
 
 def main() -> int:
@@ -20,7 +20,7 @@ def main() -> int:
     parser.add_argument("--prometheus-url", default="http://localhost:9090")
     parser.add_argument("--jaeger-url", default=None)
     parser.add_argument("--duration-seconds", type=int, default=180)
-    parser.add_argument("--warmup-seconds", type=int, default=15)
+    parser.add_argument("--warmup-seconds", type=int, default=MIN_WARMUP_SECONDS)
     parser.add_argument("--settle-seconds", type=int, default=75)
     args = parser.parse_args()
     config = CaptureConfig(
