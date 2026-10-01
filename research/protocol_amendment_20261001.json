@@ -1,0 +1,34 @@
+{
+  "amendment_version": "official-shop-pilot-v1-a1",
+  "recorded_at": "2026-10-01T18:25:00Z",
+  "original_plan": "experiment_plan.json",
+  "stage": "Before any official-case Gemini calls",
+  "transport": {
+    "change": "Use explicit 127.0.0.1 origins for subsequent captures",
+    "reason": "A recovery attempt timed out at localhost feature API. A single subsequent read-only probe took 2.121 seconds through localhost and 0.017 seconds through 127.0.0.1 on Windows. This does not prove the cause of the timeout.",
+    "unchanged": "Capture implementation, 180-second warmup, 180-second window, 75-second settling, traffic, source version, and acceptance gates",
+    "replacement": "Retain rejected shop-pilot-002-c. Allocate a fresh development recovery ID shop-pilot-002-d using accepted shop-pilot-002-a as baseline. Report that the development triplet includes a replacement interval."
+  },
+  "candidate": {
+    "name": "modality_balanced",
+    "motivating_observation": "Prioritized selection on accepted fault shop-pilot-002-b selects 48 spans and zero metrics from the available pool. The grounded validator requires two cited signal types.",
+    "single_factor": "Evidence selection-policy ablation: preserve the existing priority within each kind, round-robin metric/span/log groups to the same 48-record cap. The policy changes both selected composition and presentation order; their effects are not separately identified.",
+    "unchanged": "Both prompts, Gemini model, generation configuration, request timeout, validators, labels, call seed, record cap, and API retry policy",
+    "claim_boundary": "Correcting modality starvation is an engineering hypothesis, not an established diagnostic improvement or novel research contribution."
+  },
+  "development_budget": {
+    "maximum_calls_unchanged": 18,
+    "allocation": [
+      "6 calls: unchanged prioritized selection, complete development inputs, two prompts on three phases",
+      "6 calls: modality-balanced selection, same complete inputs and two prompts",
+      "6 calls: metrics-only development view of the selected implementation, two prompts on three phases"
+    ],
+    "deferred": "Spans-only view is not evaluated in this bounded run. It must not be reported as tested.",
+    "primary_output": "grounded/application on complete development inputs",
+    "supporting_output": "direct_strong/application on the same complete development inputs",
+    "raw_format_guard": "For each prompt, the candidate must not increase the count of schema-invalid raw responses relative to prioritized selection. A validator-induced deferral is reported separately from a model-declared abstention. It is never described as evidence of correct reasoning.",
+    "selection_rule": "The original retention rule applies to the primary output: no reduction in fault localization, no increase in clean false attribution, and fewer wrong fault attributions or a declared engineering defect fixed. Any reduction in direct_strong/application fault localization or increase in its clean false attribution vetoes retention. Raw and alternative-validator results are secondary audits, not post hoc selection targets. On conflicting results retain prioritized selection and label the candidate inconclusive. A demonstrated modality-starvation fix may be retained when both methods meet the no-regression gates; this need not be an accuracy gain.",
+    "confirmation": "Freeze method and evaluator before two fresh confirmation triplets. Confirmation remains at most 12 calls on complete inputs: two prompts on six phase windows using only the selected selection policy. It measures repeatability and the matched prompt comparison. It does not independently confirm a modality-balanced versus prioritized selection improvement; that contrast remains development-only."
+  },
+  "interpretation": "This is an explicitly documented adaptive development amendment after inspecting telemetry and before model responses. It is not an untouched preregistration."
+}

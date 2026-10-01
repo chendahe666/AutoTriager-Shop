@@ -1,0 +1,48 @@
+{
+  "amendment_version": "official-shop-pilot-v1-a3",
+  "recorded_at": "2026-10-01T19:27:30.6888249Z",
+  "stage": "After confirmation003 analysis and confirmation004 transport failure, before replacement005 starts",
+  "purpose": "One bounded capture-recovery replacement, not a new method candidate or model-score-driven selection",
+  "preserved_failure": {
+    "group": "shop-check-004",
+    "normal": "Accepted; retained but unmodeled because the complete-group eligibility rule was not met",
+    "fault": "Failed feature API read at 19:22:55 UTC; retained",
+    "recovery": "Not attempted after the driver stopped; retained separately",
+    "restoration": "Driver verified paymentFailure off and other API-visible flags unchanged"
+  },
+  "environment_observation": "Read-only preflight at 19:25:20 UTC passed. Container logs and restored availability do not establish the timeout's cause or an engineering repair.",
+  "replacement": {
+    "group": "shop-check-005",
+    "maximum_replacement_groups": 1,
+    "phases": [
+      "normal",
+      "fault",
+      "recovery"
+    ],
+    "baseline": "Fresh005-a within the replacement group; no reuse of earlier baseline medians",
+    "unchanged": [
+      "Capture implementation",
+      "Acceptance gates",
+      "Warmup180s",
+      "Record180s",
+      "Settle75s",
+      "Traffic",
+      "Runtime images and configuration",
+      "Model",
+      "Prompts",
+      "Selector",
+      "Validators",
+      "Scorer"
+    ],
+    "eligibility": "Use the complete fresh group only if all three captures are accepted; preserve every attempted, rejected and unattempted phase"
+  },
+  "budget": {
+    "already_recorded_calls": 24,
+    "remaining_confirmation_calls": 6,
+    "maximum_total_calls": 30,
+    "api_retries": 0,
+    "if_replacement_incomplete": "No further capture replacement or model calls in this round; finalize with missing data disclosed"
+  },
+  "claim_boundary": "Three attempted confirmation groups, at most two completed and modeled. All003 negative outcomes and the unknown development retention gate remain. Replacement is not a timeout repair, preregistration without changes, or diagnostic improvement.",
+  "timestamp_source": "Original file creation time UTC; timestamp precision normalized after launch, protocol terms recorded before replacement capture"
+}

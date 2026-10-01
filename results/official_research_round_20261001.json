@@ -1,0 +1,1695 @@
+{
+  "schema_version": "official-research-aggregate-v1",
+  "as_of": "2026-10-01T19:52:31.787958+00:00",
+  "author": "Dahe Chen",
+  "scope": "One controlled paymentFailure mechanism on local OpenTelemetry Astronomy Shop 3.1.0.",
+  "analysis_unit": "Temporal capture triplets sharing one deployment and mechanism; phase windows, traces, variants, and development candidate reruns are dependent.",
+  "source_commit": "dedc0178918e260823323b8d95005a8cb924b007",
+  "cohorts": {
+    "confirmation": {
+      "unique_capture_windows": 6,
+      "capture_group_count": 2,
+      "saved_run_count": 2
+    },
+    "development": {
+      "unique_capture_windows": 3,
+      "capture_group_count": 1,
+      "saved_run_count": 3
+    }
+  },
+  "capture_yield": {
+    "scheduled_phases": 14,
+    "attempted_phases": 13,
+    "accepted_captures": 10,
+    "pending_phases": 0,
+    "status_counts": {
+      "rejected": 2,
+      "accepted": 10,
+      "failed": 1,
+      "not_attempted": 1
+    },
+    "accepted_over_attempted": {
+      "numerator": 10,
+      "denominator": 13,
+      "value": 0.7692307692307693
+    },
+    "complete_snapshot": true,
+    "eligible_modeled_windows": 9,
+    "eligible_modeled_triplets": 3,
+    "accepted_windows_outside_modeled_cohort": 1
+  },
+  "frozen_method": {
+    "frozen_at": "2026-10-01T18:48:30.933073+00:00",
+    "status": "provisional_engineering_choice_for_confirmation",
+    "selection": "modality_balanced",
+    "grounded_objective": "investigation_priority",
+    "model": "gemini-3.5-flash-lite",
+    "evidence_limit": 48,
+    "generation_config": {
+      "temperature": 0,
+      "responseMimeType": "application/json",
+      "maxOutputTokens": 2048
+    },
+    "timeout_seconds": 90,
+    "seed": 5588,
+    "pause_seconds": 8,
+    "api_retries": 0
+  },
+  "frozen_hashes": {
+    "critical_function_sha256": {
+      "_brief": "66416149be45176525ad5d3c54f0aaaeb87cc876f1ebf39e2985e1700134c013",
+      "select_evidence": "3d5f79d0cad2fbdfa02d8f20745d1e6acaf61bd1e6fd7fd95329f28a4654b895",
+      "_prompt": "35c735133c9e3736d779ec1e1a8384f0e2e69f5e62da0c7ca9fe34b1f8519cee",
+      "_validate": "0f323e0c3387a2010d47631ac301f096786cf7478c4cd954df6be3d8fb64c630",
+      "generate_from_evidence": "8bc14ecbecf47c596ddb83730565fe8ff4a10f3382e12bb08d14c4210e96bfa3"
+    },
+    "schema_sha256": "9b36b59d177b8a5233e69942b821080bbea64ddd8704dc24e77a16929f07cd3f",
+    "scorer_sha256": "e418fbdc9f90fe7d8ee8b992305b91ea77fa68f5ca523589b5fa6727341618d4",
+    "verification": "All recorded frozen hashes matched current source immediately before this export."
+  },
+  "method_table": [
+    {
+      "role": "confirmation",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 2,
+      "scheduled_windows": 6,
+      "completed_windows": 6,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 2,
+      "scheduled_fault_windows": 2,
+      "completed_control_windows": 4,
+      "scheduled_control_windows": 4,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 4,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 2,
+        "denominator": 6,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "confirmation",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 2,
+      "scheduled_windows": 6,
+      "completed_windows": 6,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 2,
+      "scheduled_fault_windows": 2,
+      "completed_control_windows": 4,
+      "scheduled_control_windows": 4,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 4,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 2,
+        "denominator": 6,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "confirmation",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "investigation_priority",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 2,
+      "scheduled_windows": 6,
+      "completed_windows": 6,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 2,
+      "scheduled_fault_windows": 2,
+      "completed_control_windows": 4,
+      "scheduled_control_windows": 4,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 4,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 2,
+        "denominator": 6,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "confirmation",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "investigation_priority",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 2,
+      "scheduled_windows": 6,
+      "completed_windows": 6,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 2,
+      "scheduled_fault_windows": 2,
+      "completed_control_windows": 4,
+      "scheduled_control_windows": 4,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 4,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 2,
+        "denominator": 6,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "prioritized / initiating_failure",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "prioritized / initiating_failure",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "prioritized / initiating_failure",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "grounded",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 2,
+      "api_errors": 1,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 1,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "prioritized / initiating_failure",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "grounded",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 2,
+      "api_errors": 1,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 1,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 2,
+      "api_errors": 1,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 1,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 2,
+      "api_errors": 1,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 1,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 2,
+        "value": 0.5
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "investigation_priority",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / investigation_priority",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "investigation_priority",
+      "task_alignment": "different_objectives",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / initiating_failure",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / initiating_failure",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 1,
+        "denominator": 3,
+        "value": 0.3333333333333333
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / initiating_failure",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "grounded",
+      "output_variant": "application",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 0,
+        "denominator": 3,
+        "value": 0.0
+      }
+    },
+    {
+      "role": "development",
+      "configuration_label": "modality_balanced / initiating_failure",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "grounded",
+      "output_variant": "raw",
+      "input_budget": "same selected records; cap 48",
+      "objective": "initiating_failure",
+      "task_alignment": "same_initiating_failure_objective",
+      "pooled_saved_runs": 1,
+      "scheduled_windows": 3,
+      "completed_windows": 3,
+      "api_errors": 0,
+      "not_attempted": 0,
+      "missing_results": 0,
+      "completed_fault_windows": 1,
+      "scheduled_fault_windows": 1,
+      "completed_control_windows": 2,
+      "scheduled_control_windows": 2,
+      "invalid_outputs": 0,
+      "injection_label_agreement_completed": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "injection_label_agreement_scheduled": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "nonmatching_supported_fault_prediction": {
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0.0
+      },
+      "fault_abstention_completed": {
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1.0
+      },
+      "control_supported_prediction_completed": {
+        "numerator": 0,
+        "denominator": 2,
+        "value": 0.0
+      },
+      "control_abstention_completed": {
+        "numerator": 2,
+        "denominator": 2,
+        "value": 1.0
+      },
+      "coverage": {
+        "numerator": 0,
+        "denominator": 3,
+        "value": 0.0
+      }
+    }
+  ],
+  "citation_ID_integrity": [
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "completed_outputs": 6,
+      "cited_ID_count": 61,
+      "resolved_cited_ID_count": 61,
+      "outputs_with_nonempty_all_resolved_IDs": 6,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "completed_outputs": 6,
+      "cited_ID_count": 61,
+      "resolved_cited_ID_count": 61,
+      "outputs_with_nonempty_all_resolved_IDs": 6,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "application",
+      "completed_outputs": 6,
+      "cited_ID_count": 7,
+      "resolved_cited_ID_count": 7,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 4
+    },
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "raw",
+      "completed_outputs": 6,
+      "cited_ID_count": 7,
+      "resolved_cited_ID_count": 7,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 4
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "completed_outputs": 3,
+      "cited_ID_count": 14,
+      "resolved_cited_ID_count": 14,
+      "outputs_with_nonempty_all_resolved_IDs": 3,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "completed_outputs": 3,
+      "cited_ID_count": 14,
+      "resolved_cited_ID_count": 14,
+      "outputs_with_nonempty_all_resolved_IDs": 3,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "grounded",
+      "output_variant": "application",
+      "completed_outputs": 2,
+      "cited_ID_count": 19,
+      "resolved_cited_ID_count": 19,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "grounded",
+      "output_variant": "raw",
+      "completed_outputs": 2,
+      "cited_ID_count": 19,
+      "resolved_cited_ID_count": 19,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "completed_outputs": 2,
+      "cited_ID_count": 19,
+      "resolved_cited_ID_count": 19,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "completed_outputs": 2,
+      "cited_ID_count": 19,
+      "resolved_cited_ID_count": 19,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "application",
+      "completed_outputs": 3,
+      "cited_ID_count": 3,
+      "resolved_cited_ID_count": 3,
+      "outputs_with_nonempty_all_resolved_IDs": 1,
+      "outputs_without_citations": 2
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "output_variant": "raw",
+      "completed_outputs": 3,
+      "cited_ID_count": 3,
+      "resolved_cited_ID_count": 3,
+      "outputs_with_nonempty_all_resolved_IDs": 1,
+      "outputs_without_citations": 2
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "direct_strong",
+      "output_variant": "application",
+      "completed_outputs": 3,
+      "cited_ID_count": 16,
+      "resolved_cited_ID_count": 16,
+      "outputs_with_nonempty_all_resolved_IDs": 3,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "direct_strong",
+      "output_variant": "raw",
+      "completed_outputs": 3,
+      "cited_ID_count": 16,
+      "resolved_cited_ID_count": 16,
+      "outputs_with_nonempty_all_resolved_IDs": 3,
+      "outputs_without_citations": 0
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "grounded",
+      "output_variant": "application",
+      "completed_outputs": 3,
+      "cited_ID_count": 11,
+      "resolved_cited_ID_count": 11,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 1
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "grounded",
+      "output_variant": "raw",
+      "completed_outputs": 3,
+      "cited_ID_count": 11,
+      "resolved_cited_ID_count": 11,
+      "outputs_with_nonempty_all_resolved_IDs": 2,
+      "outputs_without_citations": 1
+    }
+  ],
+  "deterministic_reference": {
+    "method": "deterministic_signal_ranking_v2",
+    "method_source_sha256": "a1f21aaf9d15283c14d0e192197d1fd5a7ddd4648ebb2a971d3e4ed13104924a",
+    "api_calls": 0,
+    "private_labels_used_during_prediction": false,
+    "all_accepted_windows": 10,
+    "eligible_modeled_windows": 9,
+    "accepted_windows_outside_modeled_cohort": 1,
+    "outside_cohort_control_supported_predictions": 0,
+    "method_table": [
+      {
+        "role": "confirmation",
+        "configuration_label": "deterministic full observation pool",
+        "method": "deterministic_signal_ranking_v2",
+        "output_variant": "application",
+        "input_budget": "full observation pool; not matched to LLM evidence cap",
+        "objective": "inspection_priority_heuristic",
+        "task_alignment": "different method and evidence budget",
+        "scheduled_windows": 6,
+        "completed_windows": 6,
+        "api_errors": 0,
+        "not_attempted": 0,
+        "missing_results": 0,
+        "completed_fault_windows": 2,
+        "scheduled_fault_windows": 2,
+        "completed_control_windows": 4,
+        "scheduled_control_windows": 4,
+        "invalid_outputs": 0,
+        "injection_label_agreement_completed": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "injection_label_agreement_scheduled": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "nonmatching_supported_fault_prediction": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "fault_abstention_completed": {
+          "numerator": 2,
+          "denominator": 2,
+          "value": 1.0
+        },
+        "control_supported_prediction_completed": {
+          "numerator": 0,
+          "denominator": 4,
+          "value": 0.0
+        },
+        "control_abstention_completed": {
+          "numerator": 4,
+          "denominator": 4,
+          "value": 1.0
+        },
+        "coverage": {
+          "numerator": 0,
+          "denominator": 6,
+          "value": 0.0
+        }
+      },
+      {
+        "role": "development",
+        "configuration_label": "deterministic full observation pool",
+        "method": "deterministic_signal_ranking_v2",
+        "output_variant": "application",
+        "input_budget": "full observation pool; not matched to LLM evidence cap",
+        "objective": "inspection_priority_heuristic",
+        "task_alignment": "different method and evidence budget",
+        "scheduled_windows": 3,
+        "completed_windows": 3,
+        "api_errors": 0,
+        "not_attempted": 0,
+        "missing_results": 0,
+        "completed_fault_windows": 1,
+        "scheduled_fault_windows": 1,
+        "completed_control_windows": 2,
+        "scheduled_control_windows": 2,
+        "invalid_outputs": 0,
+        "injection_label_agreement_completed": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "injection_label_agreement_scheduled": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "nonmatching_supported_fault_prediction": {
+          "numerator": 0,
+          "denominator": 1,
+          "value": 0.0
+        },
+        "fault_abstention_completed": {
+          "numerator": 1,
+          "denominator": 1,
+          "value": 1.0
+        },
+        "control_supported_prediction_completed": {
+          "numerator": 0,
+          "denominator": 2,
+          "value": 0.0
+        },
+        "control_abstention_completed": {
+          "numerator": 2,
+          "denominator": 2,
+          "value": 1.0
+        },
+        "coverage": {
+          "numerator": 0,
+          "denominator": 3,
+          "value": 0.0
+        }
+      }
+    ]
+  },
+  "api_attempt_status_counts": {
+    "completed": 28,
+    "api_error": 2
+  },
+  "api_cost": {
+    "recorded_api_calls": 30,
+    "scheduled_calls": 30,
+    "latency_ms": {
+      "known_attempts": 30,
+      "unknown_attempts": 0,
+      "sum_known": 219724,
+      "median_known": 1433.5
+    },
+    "tokens": {
+      "promptTokenCount": {
+        "known_attempts": 28,
+        "unknown_attempts": 2,
+        "sum_known": 201281
+      },
+      "candidatesTokenCount": {
+        "known_attempts": 28,
+        "unknown_attempts": 2,
+        "sum_known": 4497
+      },
+      "totalTokenCount": {
+        "known_attempts": 28,
+        "unknown_attempts": 2,
+        "sum_known": 205778
+      },
+      "cachedContentTokenCount": {
+        "known_attempts": 0,
+        "unknown_attempts": 30,
+        "sum_known": null
+      },
+      "thoughtsTokenCount": {
+        "known_attempts": 0,
+        "unknown_attempts": 30,
+        "sum_known": null
+      }
+    },
+    "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+  },
+  "method_costs": [
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "cost": {
+        "recorded_api_calls": 6,
+        "scheduled_calls": 6,
+        "latency_ms": {
+          "known_attempts": 6,
+          "unknown_attempts": 0,
+          "sum_known": 9452,
+          "median_known": 1510.5
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 42591
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 1379
+          },
+          "totalTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 43970
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 6,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 6,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "confirmation",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "cost": {
+        "recorded_api_calls": 6,
+        "scheduled_calls": 6,
+        "latency_ms": {
+          "known_attempts": 6,
+          "unknown_attempts": 0,
+          "sum_known": 7977,
+          "median_known": 1326.5
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 43089
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 525
+          },
+          "totalTokenCount": {
+            "known_attempts": 6,
+            "unknown_attempts": 0,
+            "sum_known": 43614
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 6,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 6,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "direct_strong",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 51707,
+          "median_known": 8027
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 22162
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 519
+          },
+          "totalTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 22681
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "0efb46f5f43861adbea8a7c5700614678e65f7c8cb2a52caf675abdfb6c372b0",
+      "method": "grounded",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 55570,
+          "median_known": 26673
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 15942
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 389
+          },
+          "totalTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 16331
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "direct_strong",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 71993,
+          "median_known": 9135
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 13987
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 422
+          },
+          "totalTokenCount": {
+            "known_attempts": 2,
+            "unknown_attempts": 1,
+            "sum_known": 14409
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "1dddf05a551638071a82d4ae0e7190173a0aa827e4725ae9362815a9076015d9",
+      "method": "grounded",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 3646,
+          "median_known": 1261
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21336
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 300
+          },
+          "totalTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21636
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "direct_strong",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 14996,
+          "median_known": 1539
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21087
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 526
+          },
+          "totalTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21613
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    },
+    {
+      "role": "development",
+      "configuration_sha256": "e1d8d0c4336a9a1e75d435b6291c90822bbce42badc21e004c72c4cca8ef62b2",
+      "method": "grounded",
+      "cost": {
+        "recorded_api_calls": 3,
+        "scheduled_calls": 3,
+        "latency_ms": {
+          "known_attempts": 3,
+          "unknown_attempts": 0,
+          "sum_known": 4383,
+          "median_known": 1405
+        },
+        "tokens": {
+          "promptTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21087
+          },
+          "candidatesTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 437
+          },
+          "totalTokenCount": {
+            "known_attempts": 3,
+            "unknown_attempts": 0,
+            "sum_known": 21524
+          },
+          "cachedContentTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          },
+          "thoughtsTokenCount": {
+            "known_attempts": 0,
+            "unknown_attempts": 3,
+            "sum_known": null
+          }
+        },
+        "note": "Actual recorded fields only; unknown token counts are not zero. Validator variants reuse calls and add no recorded API cost."
+      }
+    }
+  ],
+  "declared_api_budget": {
+    "maximum_calls": 30,
+    "observed_calls": 30,
+    "unknown_call_state_attempts": 0,
+    "exceeds_budget": false,
+    "interpretation": "A recorded budget check, not a retrospective candidate promotion rule"
+  },
+  "modality_views": {
+    "saved_view_labels": [
+      "unspecified"
+    ],
+    "planned_views_unobserved_in_supplied_scores": [
+      "metrics_only",
+      "spans_only"
+    ],
+    "interpretation": "Saved labels identify reported views; they do not certify held-out status or input content"
+  },
+  "retention_status": "Provisional engineering selection; not promoted. Confirmation does not establish superiority or optimal-action correctness.",
+  "metric_interpretation": {
+    "injection_label_agreement": "Agreement with a known injected service, not optimal first-inspection correctness or demonstrated root causation.",
+    "control": "No declared paymentFailure intervention; not proof that every service is error-free.",
+    "nonmatching_supported_fault_prediction": "A candidate differs from the intervention label; investigation priority has no optimal-action gold.",
+    "api_error": "Unavailable result; neither diagnostic abstention nor completed analysis.",
+    "citation_ID_integrity": "Preserved selected-record references resolve; this does not prove factual or causal support.",
+    "cost": "Deduplicated by immutable source API attempt; raw/application/validator variants do not add calls."
+  },
+  "limitations": [
+    "Declared dataset roles are retained, not independently certified.",
+    "No summaries pool candidate configurations or development with confirmation.",
+    "The direct and investigation-priority prompts have different objectives; injected-service agreement is not equal-task superiority.",
+    "Views and validators do not add capture units or API calls.",
+    "Missing token/latency fields are unknown, not zero.",
+    "Capture yield covers supplied receipts only; pending attempts remain explicit.",
+    "One controlled paymentFailure mechanism; no generalization or significance test is established.",
+    "Service agreement, reference integrity, causal support and user benefit are different claims.",
+    "Grounded confirmation candidate names checkout in one fault window and payment in the other: injected-service agreement 1/2. Strong direct names payment in both: 2/2.",
+    "The first frozen confirmation normal response asserts zero error rates despite selected load-generator error records. This semantic failure is retained.",
+    "No optimal inspection-action labels, human efficiency study, new failure mechanism, significance claim, fine-tuning, or production validation.",
+    "The deterministic reference uses full observations and is not an equal-input comparator to the 48-record LLM prompts.",
+    "One accepted normal window belongs to an incomplete capture group and is excluded from modeled cohort counts, while included in all-attempt yield."
+  ]
+}

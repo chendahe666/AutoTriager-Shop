@@ -22,8 +22,10 @@ from autotriager_shop.ui import (
     build_review_record,
     gemini_result_to_analysis,
     list_case_dirs,
+    load_recorded_analysis,
     local_source_line,
     provenance_label,
+    RECORDED_FILE,
     save_review,
 )
 
@@ -62,6 +64,13 @@ COPY = {
         "result_view": "Result to inspect",
         "local_result": "Local baseline",
         "gemini_result": "Gemini grounded analysis",
+        "recorded_result": "Recorded Gemini analysis",
+        "load_recorded": "Load recorded analysis",
+        "recorded_note": "Previously recorded Gemini response; no new call.",
+        "recorded_error": "Recorded analysis cannot be loaded: {error}",
+        "recorded_details": "Recorded response and validation",
+        "recorded_disclosure": "Replay checks that the input is unchanged, citations resolve, and the displayed application decision matches the saved evidence validator. The raw model response is separate. These checks do not verify every reasoning claim or establish a root cause.",
+        "recorded_input": "Observations supplied to the recorded response",
         "model": "Model",
         "latency": "API latency",
         "visible_count": "Observations sent to model",
@@ -148,6 +157,13 @@ COPY = {
         "result_view": "查看哪项结果",
         "local_result": "本地基线",
         "gemini_result": "Gemini 证据化分析",
+        "recorded_result": "已录制的 Gemini 分析",
+        "load_recorded": "加载已录制的分析",
+        "recorded_note": "此前录制的 Gemini 回答；不会发起新调用。",
+        "recorded_error": "无法加载已录制的分析：{error}",
+        "recorded_details": "录制回答与验证",
+        "recorded_disclosure": "回放检查输入是否改变、引用能否对应观测，以及显示的应用判断是否与原有证据验证规则一致。原始模型回答单独保留。这些检查不会验证每一句推理，也不证明根因。",
+        "recorded_input": "当时发送给模型的观测记录",
         "model": "模型",
         "latency": "API 耗时",
         "visible_count": "发送给模型的观测记录数",
@@ -351,15 +367,50 @@ def _show_review(case: dict[str, Any], analysis: dict[str, Any], tr: dict[str, s
         )
 
 
+def _configured_live_method() -> dict[str, str]:
+    """Use the frozen public method when present, preserving prior defaults."""
+    path = ROOT / "research" / "selected_method.json"
+    if not path.is_file():
+        return {"model": DEFAULT_MODEL}
+    settings = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(settings, dict):
+        raise ValueError("Selected method must be a JSON object")
+    selected = {key: settings[key] for key in ("model", "selection", "grounded_objective")}
+    if selected["selection"] not in {"prioritized", "chronological", "modality_balanced"}:
+        raise ValueError("Invalid selected evidence policy")
+    if selected["grounded_objective"] not in {"initiating_failure", "investigation_priority"}:
+        raise ValueError("Invalid selected analysis objective")
+    if not isinstance(selected["model"], str):
+        raise ValueError("Invalid selected model")
+    return selected
+
+
+def _remember_case_selection() -> None:
+    """Keep case identity outside widget state, which can reset on option changes."""
+    st.session_state["selected_case_identity"] = st.session_state.get("incident_case_widget")
+
+
 def main() -> None:
     st.set_page_config(page_title="AutoTriager", layout="wide")
-    lang = st.sidebar.selectbox("Language / 语言", ["English", "中文"])
+    lang = st.sidebar.selectbox("Language", ["English", "中文"])
     language = "zh" if lang == "中文" else "en"
     tr = COPY[language]
     st.title(tr["title"])
     st.caption(tr["subtitle"])
 
     cases = list_case_dirs(CASES_DIR)
+    # Use the current live-Shop cohort when it exists. Earlier native experiments
+    # remain archived for reproducibility rather than becoming the default demo.
+    official_cases = []
+    for path in cases:
+        try:
+            public_metadata = json.loads((path / "incident.json").read_text(encoding="utf-8"))
+            if public_metadata.get("provenance", {}).get("source_kind") == "captured_shop":
+                official_cases.append(path)
+        except (OSError, ValueError, AttributeError):
+            continue
+    if official_cases:
+        cases = official_cases
     if not cases:
         st.info(tr["no_cases"])
         st.caption(tr["public_files"])
@@ -367,11 +418,22 @@ def main() -> None:
 
     # Experiment IDs may encode injected services (e.g. payment_delay). Show a
     # stable neutral alias to avoid telling a human reviewer the answer first.
-    selected_dir = st.sidebar.selectbox(
-        tr["case"], cases,
-        format_func=lambda path: f"{'Incident' if language == 'en' else '事件'} "
-        f"{hashlib.blake2s(path.name.encode('utf-8'), digest_size=3).hexdigest().upper()}",
+    # A separate identity survives both new captures and translated labels.
+    # The callback records an explicit user change before the next rerun, while
+    # reseeding widget state preserves the identity if its options/label change.
+    case_paths = {str(path.resolve()): path for path in cases}
+    remembered = st.session_state.get("selected_case_identity")
+    if remembered not in case_paths:
+        remembered = next(iter(case_paths))
+    st.session_state["incident_case_widget"] = remembered
+    selected_identity = st.sidebar.selectbox(
+        tr["case"], list(case_paths), index=None, key="incident_case_widget",
+        on_change=_remember_case_selection,
+        format_func=lambda identity: f"{'Incident' if language == 'en' else '事件'} "
+        f"{hashlib.blake2s(Path(identity).name.encode('utf-8'), digest_size=3).hexdigest().upper()}",
     )
+    st.session_state["selected_case_identity"] = selected_identity
+    selected_dir = case_paths.get(selected_identity)
     if selected_dir is None:
         return
     try:
@@ -410,6 +472,7 @@ def main() -> None:
     if st.session_state.get("analysis_case") != selected_key:
         st.session_state.pop("analysis_local", None)
         st.session_state.pop("analysis_gemini", None)
+        st.session_state.pop("analysis_recorded", None)
         st.session_state.pop("latest_review", None)
         st.session_state["analysis_case"] = selected_key
     if st.button(tr["run_local"], type="primary"):
@@ -421,6 +484,14 @@ def main() -> None:
             st.error(tr["analysis_error"].format(error=exc))
 
     st.subheader(tr["gemini_heading"])
+    if (selected_dir / RECORDED_FILE).is_file():
+        st.caption(tr["recorded_note"])
+        if st.button(tr["load_recorded"], key=f"load_recorded_{selected_key}"):
+            try:
+                st.session_state["analysis_recorded"] = load_recorded_analysis(selected_dir)
+            except (OSError, ValueError, KeyError, TypeError) as exc:
+                st.session_state.pop("analysis_recorded", None)
+                st.error(tr["recorded_error"].format(error=exc))
     eligible = provenance.get("source_kind") in {"captured_local_sim", "captured_shop"}
     if not eligible:
         st.caption(tr["gemini_unavailable"])
@@ -433,7 +504,7 @@ def main() -> None:
         else:
             try:
                 with st.spinner(tr["gemini_sending"]):
-                    raw_result = diagnose_with_gemini(selected_dir, mode="grounded", model=DEFAULT_MODEL)
+                    raw_result = diagnose_with_gemini(selected_dir, mode="grounded", **_configured_live_method())
                     st.session_state["analysis_gemini"] = gemini_result_to_analysis(incident, raw_result)
             except Exception as exc:
                 # Network, API, and validation errors are shown without hiding
@@ -445,9 +516,18 @@ def main() -> None:
                     message = message.replace(configured_key, "[redacted]")
                 st.error(tr["gemini_error"].format(error=message))
 
+    # Recheck the public files on each rerun so a stale session cannot continue
+    # showing a supported recording after its case or recording is changed.
+    if st.session_state.get("analysis_recorded"):
+        try:
+            st.session_state["analysis_recorded"] = load_recorded_analysis(selected_dir)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            st.session_state.pop("analysis_recorded", None)
+            st.error(tr["recorded_error"].format(error=exc))
     available_results = {
         "local": st.session_state.get("analysis_local"),
         "gemini": st.session_state.get("analysis_gemini"),
+        "recorded": st.session_state.get("analysis_recorded"),
     }
     available_results = {key: value for key, value in available_results.items() if value}
     if not available_results:
@@ -466,7 +546,7 @@ def main() -> None:
     else:
         st.warning(f"{tr['status']}: {tr['insufficient_evidence']}")
     st.caption(f"{tr['method']}: {analysis.get('method', '—')}")
-    if selected_result == "gemini":
+    if selected_result in {"gemini", "recorded"}:
         st.caption(
             f"{tr['model']}: {analysis.get('model') or '—'} · "
             f"{tr['latency']}: {analysis.get('latency_ms', '—')} ms · "
@@ -475,6 +555,18 @@ def main() -> None:
         invalid = analysis.get("invalid_citations", [])
         if invalid:
             st.warning(tr["invalid_citations"].format(ids=", ".join(map(str, invalid))))
+    if selected_result == "recorded":
+        st.info(tr["recorded_note"])
+        with st.expander(tr["recorded_details"]):
+            st.caption(tr["recorded_disclosure"])
+            recording = analysis["recorded"]
+            st.json({key: recording[key] for key in (
+                "source_kind", "recorded_at", "mode", "model", "configuration",
+                "input_sha256", "prompt_sha256", "configuration_sha256", "selected_ids",
+                "raw_response", "application_response", "latency_ms", "usage",
+            )})
+            st.caption(tr["recorded_input"])
+            st.json(recording["input"])
     missing = broken_evidence_references(analysis)
     if missing:
         st.error(tr["broken_refs"].format(ids=", ".join(missing)))

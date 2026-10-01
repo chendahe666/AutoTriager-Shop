@@ -1,0 +1,40 @@
+{
+  "amendment_version": "official-shop-pilot-v1-a2",
+  "recorded_at": "2026-10-01T18:42:00Z",
+  "stage": "After the first 12 development calls and independent simulated review; before the remaining six calls",
+  "prior_records": ["experiment_plan.json", "protocol_amendment_20261001.json"],
+  "observed_results": {
+    "prioritized": "Direct raw/application names the injected service in the one fault and abstains on two controls. Grounded raw names it in the fault, but its application validator defers because only spans were selected. Grounded normal was unavailable (HTTP 503), not a successful abstention.",
+    "balanced": "Direct raw/application has the same label agreement. Grounded raw/application abstains in the fault, requesting internal logs and external-dependency evidence. Both completed controls abstain.",
+    "selector_decision": "No diagnostic improvement established. The balanced-only candidate is not promoted as an accuracy improvement. It remains a fixed development condition for a separate prompt-framing experiment."
+  },
+  "second_candidate": {
+    "name": "grounded-investigation-priority-v1",
+    "change": "Only the grounded prompt objective changes, with the balanced evidence policy held fixed. Select a defensible first service to inspect rather than asserting the deepest initiating cause.",
+    "generic_evidence_requirements": "The named candidate's own observed anomaly and linked request-path evidence must support the priority. Keep candidate-specific two-signal validation, citation checks, clean/tie abstention, and explicit unknown deeper causes.",
+    "prohibited": "Do not name the injected service in instructions, supply fault counts/labels, fabricate missing signals, or force a supported output.",
+    "unchanged": "The same three public development windows, balanced selected records/order, direct prompt, model, budget, temperature, schema, timeout, and validators",
+    "interpretation": "An adaptive task-framing hypothesis, not a proven prompt bug. Injection-label agreement is descriptive; it is not ground truth for the best next investigation or a proof of root cause. The unchanged direct prompt is a descriptive reference, not a strict same-task superiority comparator."
+  },
+  "budget": {
+    "maximum_development_calls": 18,
+    "remaining_calls": 6,
+    "allocation": "Two prompts on three complete development phase windows, with grounded_objective=investigation_priority",
+    "deferred": "Both metrics-only and spans-only input views remain untested in this run.",
+    "candidate_changes_used": 2,
+    "confirmation_maximum_calls": 12
+  },
+  "retention": {
+    "comparison": "Second candidate against the fully completed balanced/initiating-failure development condition",
+    "primary": "grounded/application injection-service agreement on the fault plus clean false attribution",
+    "gates": [
+      "No decrease in fault label agreement; no increase in clean supported predictions",
+      "No increase in schema-invalid raw responses",
+      "No regression in the unchanged direct/application descriptive reference",
+      "A supported priority must cite candidate-specific metric and span observations and describe only facts that the cited evidence actually contains"
+    ],
+    "claim_boundary": "At most retain a bounded investigation-priority implementation. Do not assert RCA superiority, best-action correctness, user benefit, or independent improvement from the selector.",
+    "unavailable_prior_baseline": "The prioritized normal 503 stays missing. It cannot support a complete no-regression claim against that condition.",
+    "confirmation": "Freeze selected task/prompt/policy and evaluator before two fresh triplets. Confirmation tests repeatability on one mechanism and does not independently compare selectors."
+  }
+}

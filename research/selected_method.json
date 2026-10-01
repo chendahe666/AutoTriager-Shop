@@ -1,0 +1,39 @@
+{
+  "frozen_at": "2026-10-01T18:48:30.933073+00:00",
+  "status": "provisional_engineering_choice_for_confirmation",
+  "selection": "modality_balanced",
+  "grounded_objective": "investigation_priority",
+  "model": "gemini-3.5-flash-lite",
+  "evidence_limit": 48,
+  "generation_config": {
+    "temperature": 0,
+    "responseMimeType": "application/json",
+    "maxOutputTokens": 2048
+  },
+  "timeout_seconds": 90,
+  "seed": 5588,
+  "pause_seconds": 8,
+  "api_retries": 0,
+  "critical_function_sha256": {
+    "_brief": "66416149be45176525ad5d3c54f0aaaeb87cc876f1ebf39e2985e1700134c013",
+    "select_evidence": "3d5f79d0cad2fbdfa02d8f20745d1e6acaf61bd1e6fd7fd95329f28a4654b895",
+    "_prompt": "35c735133c9e3736d779ec1e1a8384f0e2e69f5e62da0c7ca9fe34b1f8519cee",
+    "_validate": "0f323e0c3387a2010d47631ac301f096786cf7478c4cd954df6be3d8fb64c630",
+    "generate_from_evidence": "8bc14ecbecf47c596ddb83730565fe8ff4a10f3382e12bb08d14c4210e96bfa3"
+  },
+  "schema_sha256": "9b36b59d177b8a5233e69942b821080bbea64ddd8704dc24e77a16929f07cd3f",
+  "scorer_sha256": "e418fbdc9f90fe7d8ee8b992305b91ea77fa68f5ca523589b5fa6727341618d4",
+  "development_runs": [
+    "paired-dev-prioritized-20261001T1833",
+    "paired-dev-balanced-20261001T1836",
+    "paired-dev-priority-20261001T1843"
+  ],
+  "interpretation": "Task-framing implementation chosen for bounded confirmation; no demonstrated RCA superiority or optimal inspection priority. Two development HTTP503 calls remain unavailable.",
+  "confirmation_scope": "Two fresh phase triplets on one mechanism; both prompts share selected evidence. No held-out selector comparison; no tuning after confirmation.",
+  "unmeasured": [
+    "Human task benefit",
+    "Best-first-inspection correctness",
+    "Cross-mechanism generalization",
+    "Production readiness"
+  ]
+}

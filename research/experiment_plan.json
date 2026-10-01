@@ -1,0 +1,67 @@
+{
+  "plan_version": "official-shop-pilot-v1",
+  "created_date": "2026-10-01",
+  "status": "planned_before_official_captures",
+  "scope": "Controlled paymentFailure checkout incidents on one local Astronomy Shop",
+  "source_commit": "dedc0178918e260823323b8d95005a8cb924b007",
+  "model": "gemini-3.5-flash-lite",
+  "temperature": 0,
+  "max_output_tokens": 2048,
+  "request_timeout_seconds": 90,
+  "max_visible_records": 48,
+  "selection": "prioritized",
+  "call_order_seed": 5588,
+  "methods": ["direct_strong", "grounded"],
+  "additional_validator_ablation_calls": 0,
+  "max_candidate_changes": 3,
+  "development_triplets": 1,
+  "confirmation_triplets": 2,
+  "phases_per_triplet": ["normal", "fault", "recovery"],
+  "warmup_seconds": 180,
+  "capture_seconds": 180,
+  "settle_seconds": 75,
+  "traffic": {
+    "locust_users": 5,
+    "http_user_weight": 9,
+    "browser_user_weight": 1,
+    "source": "Pinned upstream .env and load-generator source; retain actual runtime settings"
+  },
+  "incomplete_input_views": {
+    "planned": true,
+    "views": ["complete_selected_pool", "metrics_only", "spans_only"],
+    "construction": "Filter actual records by kind, then apply the same fixed selection to both methods. Never add invented records.",
+    "analysis_unit": "Original triplet; views and phases are dependent, not new independent incidents",
+    "interpretation": "A missing modality does not imply abstention is necessarily correct"
+  },
+  "retention_rule": {
+    "development_only": true,
+    "required": [
+      "Relevant regression checks pass",
+      "No reduction in fault localization count on matched development cases",
+      "No increase in clean false-attribution count",
+      "Wrong fault attributions decrease, or a declared engineering defect is corrected",
+      "Raw and postprocessed results are both retained"
+    ],
+    "unchanged_or_mixed": "Inconclusive; do not claim improvement",
+    "confirmation": "Freeze selected implementation and evaluator before two later fresh triplets; confirmation results do not drive selection"
+  },
+  "claim_support_rubric": {
+    "labels": ["supported", "contradicted", "insufficient", "not_assessed"],
+    "supported": "Each factual assertion in the reason resolves to captured content and the claimed direction follows the observed call relationship; distinguish plausible initiation from proven cause",
+    "contradicted": "At least one asserted fact or call direction conflicts with captured content",
+    "insufficient": "Available observations do not establish the assertion or distinguish a competing explanation",
+    "adjudication": "A simulated independent AI evidence audit can flag issues. It is not an expert user study or an independent human grounding score. Unreviewed cases remain not_assessed."
+  },
+  "budget": {
+    "max_calls_per_case_view": 2,
+    "baseline_pilot_views": 3,
+    "baseline_pilot_cases": 3,
+    "max_pilot_calls": 18,
+    "confirmation_complete_views_only": true,
+    "max_confirmation_calls": 12,
+    "paid_tier_authorized": false,
+    "automatic_api_retries": 0
+  },
+  "stopping_conditions": ["Iteration bound reached", "No reproducible valid baseline", "Regression", "No supporting change", "API quota exhaustion", "Required external authorization unavailable"],
+  "limitations": ["One fault mechanism", "Small pilot", "Capture acceptance conditions on visible evidence", "No demonstrated user benefit", "No cross-company generalization"]
+}

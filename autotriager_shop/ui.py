@@ -6,6 +6,7 @@ Only public incident files are considered here. The evaluator's
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -14,9 +15,174 @@ from typing import Any
 from urllib.parse import urlsplit
 from uuid import uuid4
 
+from autotriager_shop import gemini
+from autotriager_shop.schema import _reject_private_keys, load_incident
+
 
 PUBLIC_FILES = ("incident.json", "observations.json")
 DECISIONS = frozenset({"accept", "reject", "uncertain"})
+RECORDED_FILE = "recorded_analysis.json"
+_RECORD_FIELDS = {
+    "schema_version", "source_kind", "case_id", "mode", "model", "recorded_at",
+    "exported_at", "input_sha256", "public_case_sha256", "configuration_sha256",
+    "prompt_sha256", "sanitized_raw_response_sha256", "selected_ids", "input",
+    "configuration", "prompt_text", "raw_response", "application_response",
+    "latency_ms", "usage",
+}
+_CONFIG_FIELDS = {
+    "model", "generation_config", "timeout_seconds", "selection", "evidence_limit",
+    "order_seed", "pause_between_attempts_seconds", "maximum_calls_per_case", "retries",
+    "stop_http_statuses", "stop_on_missing_key", "grounded_objective",
+}
+
+
+def recorded_sha256(value: Any) -> str:
+    """Use the paired harness's canonical JSON hash without reading labels."""
+    serialized = json.dumps(value, ensure_ascii=False, sort_keys=True,
+                            separators=(",", ":"), allow_nan=False)
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def reject_recorded_private_fields(value: Any) -> None:
+    """Reject labels, intervention metadata, and credential-shaped content."""
+    _reject_private_keys(value, "recorded_analysis")
+
+    def walk(item: Any) -> None:
+        if isinstance(item, dict):
+            for key, child in item.items():
+                if not isinstance(key, str) or key.lower() in {
+                    "phase", "phase_name", "phase_kind", "injection", "injected_service",
+                    "intervention", "intervention_manifest", "expectedservice",
+                }:
+                    raise ValueError("Private experiment metadata is not allowed in a recording")
+                walk(child)
+        elif isinstance(item, list):
+            for child in item:
+                walk(child)
+
+    walk(value)
+    # An empty secret argument performs pattern/key checks only. No environment
+    # variable, credential file, or API endpoint is accessed by this replay path.
+    if gemini._sanitize_response(value, "") != value:
+        raise ValueError("Credential-shaped content is not allowed in a recording")
+
+
+def recorded_public_input(case: dict[str, Any], selected_ids: list[str]) -> dict[str, Any]:
+    """Rebuild exactly what the paired prompt saw from current public records."""
+    if (not isinstance(selected_ids, list) or not selected_ids
+            or any(not isinstance(item, str) for item in selected_ids)
+            or len(set(selected_ids)) != len(selected_ids)):
+        raise ValueError("Recorded selected IDs must be unique nonempty strings")
+    observations = {row["id"]: row for row in case["observations"]}
+    if any(item not in observations for item in selected_ids):
+        raise ValueError("Recorded selected ID is absent from the public case")
+    return {
+        "incident": {key: case[key] for key in ("title", "symptom", "start_time", "end_time")},
+        "observations": [gemini._brief(observations[item]) for item in selected_ids],
+    }
+
+
+def _check_recorded_decision(response: Any, evidence: list[dict], *, application: bool) -> None:
+    required = {"status", "candidate_service", "reason", "evidence_ids", "missing_evidence"}
+    if application:
+        required.add("invalid_citations")
+    if not isinstance(response, dict) or set(response) != required:
+        raise ValueError("Recorded decision has an invalid structure")
+    status = response["status"]
+    if not isinstance(status, str) or status not in {"supported", "insufficient_evidence"}:
+        raise ValueError("Recorded decision has an invalid status")
+    service = response["candidate_service"]
+    if status == "supported":
+        if not isinstance(service, str) or service not in {row["service"] for row in evidence}:
+            raise ValueError("Recorded candidate is absent from the selected evidence")
+    elif service is not None:
+        raise ValueError("An abstaining recorded decision must have a null candidate")
+    ids = response["evidence_ids"]
+    allowed = {row["id"] for row in evidence}
+    if (not isinstance(ids, list) or any(not isinstance(item, str) or item not in allowed for item in ids)
+            or len(set(ids)) != len(ids) or (status == "supported" and not ids)):
+        raise ValueError("Recorded decision has invalid citations")
+    if not isinstance(response["reason"], str) or not response["reason"].strip():
+        raise ValueError("Recorded decision needs a textual reason")
+    missing = response["missing_evidence"]
+    if not isinstance(missing, list) or any(not isinstance(item, str) for item in missing):
+        raise ValueError("Recorded missing evidence must be a text array")
+    if application and response["invalid_citations"] != []:
+        raise ValueError("A recording with invalid citations cannot be replayed")
+
+
+def validate_recorded_analysis(case: dict[str, Any], record: dict[str, Any]) -> dict[str, Any]:
+    """Verify a recording before its application decision reaches the UI.
+
+    Hashes detect accidental changes, not malicious replacement of every file.
+    Original and application decisions are retained separately for disclosure.
+    """
+    if not isinstance(record, dict) or set(record) != _RECORD_FIELDS:
+        raise ValueError("Recorded analysis has an invalid structure")
+    reject_recorded_private_fields(record)
+    reject_recorded_private_fields(case)
+    if record["schema_version"] != "1.0" or record["source_kind"] != "recorded_api_response":
+        raise ValueError("Recorded analysis has an unsupported source or schema")
+    if record["case_id"] != case["case_id"]:
+        raise ValueError("Recorded analysis belongs to another case")
+    if not isinstance(record["mode"], str) or record["mode"] not in {"direct_strong", "grounded"}:
+        raise ValueError("Unsupported recorded analysis mode")
+    if not isinstance(record["model"], str) or not re.fullmatch(r"[0-9A-Za-z_.-]+", record["model"]):
+        raise ValueError("Recorded model identifier is invalid")
+    for field in ("recorded_at", "exported_at"):
+        if not isinstance(record[field], str):
+            raise ValueError("Recorded timestamps must be UTC text")
+        stamp = datetime.fromisoformat(record[field].replace("Z", "+00:00"))
+        if stamp.tzinfo is None or stamp.utcoffset().total_seconds() != 0:
+            raise ValueError("Recorded timestamps must be UTC")
+    configuration = record["configuration"]
+    if (not isinstance(configuration, dict) or set(configuration) - _CONFIG_FIELDS
+            or configuration.get("model") != record["model"]):
+        raise ValueError("Recorded configuration is invalid")
+    limit = configuration.get("evidence_limit")
+    if type(limit) is not int or not 1 <= limit <= 48:
+        raise ValueError("Recorded evidence limit is invalid")
+    if not isinstance(record["selected_ids"], list) or len(record["selected_ids"]) > limit:
+        raise ValueError("Recorded selection exceeds its evidence budget")
+    payload = recorded_public_input(case, record["selected_ids"])
+    if record["input"] != payload or record["input_sha256"] != recorded_sha256(payload):
+        raise ValueError("Recorded input differs from the current public observations")
+    if record["public_case_sha256"] != recorded_sha256(case):
+        raise ValueError("Public case changed after this recording was exported")
+    if record["configuration_sha256"] != recorded_sha256(configuration):
+        raise ValueError("Recorded configuration hash does not match")
+    prompt = record["prompt_text"]
+    if (not isinstance(prompt, str)
+            or record["prompt_sha256"] != hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+            or not prompt.endswith(json.dumps(payload, ensure_ascii=False, separators=(",", ":")))):
+        raise ValueError("Recorded prompt hash or public payload does not match")
+    evidence = payload["observations"]
+    _check_recorded_decision(record["raw_response"], evidence, application=False)
+    _check_recorded_decision(record["application_response"], evidence, application=True)
+    if record["sanitized_raw_response_sha256"] != recorded_sha256(record["raw_response"]):
+        raise ValueError("Recorded raw response hash does not match")
+    if record["application_response"] != gemini._validate(record["raw_response"], evidence, record["mode"]):
+        raise ValueError("Recorded application response differs from the evidence validator")
+    if type(record["latency_ms"]) is not int or record["latency_ms"] < 0:
+        raise ValueError("Recorded latency is invalid")
+    if not isinstance(record["usage"], dict):
+        raise ValueError("Recorded API usage must be an object")
+    response = {
+        **record["application_response"], "model": record["model"],
+        "method": f"recorded-gemini-{record['mode']}", "latency_ms": record["latency_ms"],
+        "visible_evidence_count": len(evidence),
+    }
+    analysis = gemini_result_to_analysis(case, response)
+    analysis["recorded"] = record
+    return analysis
+
+
+def load_recorded_analysis(case_dir: Path) -> dict[str, Any]:
+    """Read one public recording; no labels, credentials, or API calls."""
+    case_dir = Path(case_dir)
+    case = load_incident(case_dir)
+    record = json.loads((case_dir / RECORDED_FILE).read_text(encoding="utf-8"))
+    return validate_recorded_analysis(case, record)
 
 
 def list_case_dirs(root: Path) -> list[Path]:
@@ -167,7 +333,7 @@ def build_review_record(
     if not reason.strip():
         raise ValueError("a human review reason is required")
     stamp = reviewed_at or datetime.now(timezone.utc)
-    return {
+    record = {
         "schema_version": 1,
         "case_id": case["case_id"],
         "source_kind": case.get("provenance", {}).get("source_kind", "unknown"),
@@ -181,6 +347,13 @@ def build_review_record(
         "reason": reason.strip(),
         "reviewed_at": stamp.astimezone(timezone.utc).isoformat(),
     }
+    if analysis.get("recorded"):
+        recording = analysis["recorded"]
+        record["analysis_source_kind"] = recording["source_kind"]
+        record["recorded_at"] = recording["recorded_at"]
+        record["recorded_input_sha256"] = recording["input_sha256"]
+        record["recorded_raw_response_sha256"] = recording["sanitized_raw_response_sha256"]
+    return record
 
 
 def save_review(record: dict[str, Any], reviews_dir: Path) -> Path:
