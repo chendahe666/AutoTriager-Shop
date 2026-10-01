@@ -6,6 +6,13 @@
 **Status:** Independent AI review of inspectable project artifacts. This is not
 expert certification, an acceptance prediction, or an instructor grade.
 
+**Historical scope:** this is the pre-capture review and its early second pass,
+preserved without rewriting the objections. Its then-unverified runtime and
+unspecified experiment values are not the current status. See the completed
+[official-Shop draft](OFFICIAL_SHOP_WORKSHOP_DRAFT.md),
+[final course review](FINAL_COURSE_REVIEW_20261001.md), and
+[delivery ledger](DELIVERY_STATUS_20261001.md) for subsequent evidence and limits.
+
 ## Scope and evidence boundary
 
 The reviewer read the application README, current report draft and PDF builder,

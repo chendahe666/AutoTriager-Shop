@@ -2,6 +2,11 @@
 
 Author: Dahe Chen. Independently executed October 1, 2026, 20:43–20:46 UTC.
 
+This full regression covers `139cfa1`. The later neutral-outcome UI repair at
+`1c092d3` has a separate [focused published-source verification](UI_BOUNDARY_RELEASE_VERIFICATION_20261001.md).
+Its data, frozen-method and final-artifact hashes match this release; the
+verification scopes must not be combined into a new model result.
+
 ## Verified release
 
 A new clone was fetched from the authorized public

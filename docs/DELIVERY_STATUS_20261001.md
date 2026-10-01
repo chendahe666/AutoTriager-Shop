@@ -42,6 +42,7 @@ checkout response remains available for review. The local full suite passed
 | Independent feature review | Twelve focused helper tests passed; frozen Gemini functions, schema, and scorer remained unchanged |
 | Comparison-extension publication | Public `139cfa1` independently cloned; all example/artifact/frozen hashes matched; 199 passed and one optional private-source comparison skipped in 38.97 seconds |
 | UI-boundary repair local suite | 201 passed in 38.63 seconds; one actual counterexample regression added; no new API call |
+| UI-boundary repair publication | Fresh GitHub clone of `1c092d3`; 13 focused tests passed in 4.41 seconds; public data, frozen code and final artifacts unchanged |
 
 Temporary-directory permission failures were retained and resolved through a
 separate isolated setup or authorized test execution; no application assertion
@@ -49,9 +50,10 @@ was changed to make them pass. These checks establish software behavior on the
 stated host, not another operating system or an SRE user study. See
 [FRESH_ENVIRONMENT_VALIDATION_20261001.md](FRESH_ENVIRONMENT_VALIDATION_20261001.md)
 and [INVESTIGATION_REVIEW_20261001.md](INVESTIGATION_REVIEW_20261001.md).
-The [final release verification](FINAL_RELEASE_VERIFICATION_20261001.md) covers
-`139cfa1`; the new UI repair requires a separate published-source check. The
-examples, frozen method, and reviewed PDF/PPTX bytes remain unchanged.
+The [full release verification](FINAL_RELEASE_VERIFICATION_20261001.md) covers
+`139cfa1`; the [subsequent focused check](UI_BOUNDARY_RELEASE_VERIFICATION_20261001.md)
+covers the published UI repair at `1c092d3`. The examples, frozen method, and
+reviewed PDF/PPTX bytes remain unchanged. These checks have different scopes.
 
 ## Coursework artifacts
 

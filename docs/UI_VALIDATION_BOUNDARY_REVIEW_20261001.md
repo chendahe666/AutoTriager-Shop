@@ -50,4 +50,6 @@ and the judgment reason blank. The [actual UI screenshot](../results/screenshots
 records that display. No new model inference or human judgment occurred.
 
 The earlier public-release check of `139cfa1` does not cover this new UI change.
-A verification of the subsequently published repair is recorded separately.
+A [fresh published-source verification](UI_BOUNDARY_RELEASE_VERIFICATION_20261001.md)
+covers repair commit `1c092d3`: thirteen focused tests passed in 4.41 seconds;
+all public data, frozen-method and final-artifact bytes remained unchanged.
