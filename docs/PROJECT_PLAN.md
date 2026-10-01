@@ -102,16 +102,18 @@ tests cannot replace observed task outcomes.
    and outside-recorded-input follow-ups are implemented. Independent focused
    review passed twelve helper tests; the current complete local suite passed
    200 tests in 38.04 seconds with an authorized workspace temporary directory.
-   No extra model call, scientific result, or original input was changed. Browser
-   inspection and actual human judgment remain separately recorded activities.
+   No extra model call, scientific result, or original input was changed. Actual
+   browser inspection checked component counts, observed links and input coverage;
+   genuine human judgment remains unfilled.
 10. **Revised course deliverables:** the final official-Shop Challenge 2 PDF is
-    prepared at
-    `output/pdf/AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf`; final
-    page/render review is pending. The English eight-slide Enhancement checkpoint
+    available at
+    `output/pdf/AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf`; all
+    twelve English monochrome pages passed content and render review. The
+    English eight-slide Enhancement checkpoint
     at `output/slides/AutoTriager_OfficialShop_Checkpoint_Dahe_Chen_Final.pptx`
     passed independent content and grayscale review. It is not a replacement for
-    a full Talk (4) roadmap. Publication of this subsequent revision is pending
-    final verification. See [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
+    a full Talk (4) roadmap. The delivery was published as `139cfa1`; public-source
+    verification is recorded separately. See [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
 
 ## Claim audit and unresolved gates
 

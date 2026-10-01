@@ -162,9 +162,11 @@ exact resolved versions and the retained temporary-directory setup failure.
 The current local source, including component comparison, separately passed
 **200 tests in 38.04 seconds** after using an authorized fresh workspace temporary
 directory. Its initial system-temp permission error remains recorded. These are
-software checks, not new diagnosis results. The new report and checkpoint deck
-are subsequent local deliverables; publication of this revision remains a
-separate verification step.
+software checks, not new diagnosis results. A new GitHub clone of the subsequent
+release `139cfa1` passed **199 tests with one optional private-source comparison
+skipped in 38.97 seconds** in that isolated environment. Its 27 example JSON
+files, final PDF, PPTX and frozen scientific hashes matched exactly. See the
+[final release verification](docs/FINAL_RELEASE_VERIFICATION_20261001.md).
 
 ## Coursework delivery
 

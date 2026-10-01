@@ -184,6 +184,10 @@ than lost content.
    unless its receipt is observed.
 
 The highest-value safe next action is the single real human evidence check.
+The subsequent [public-source verification](FINAL_RELEASE_VERIFICATION_20261001.md)
+closed the publication gate for `139cfa1`: exact artifact and frozen hashes,
+199 passed and one optional private-source comparison skipped. This is an
+engineering evidence update, not a rerating or new diagnostic experiment.
 All remaining reportable scientific limits can be disclosed without further
 tuning. Generic claims of novelty, superior diagnosis, optimal action,
 zero-error reasoning, production readiness, a confirmed user need, or an assured

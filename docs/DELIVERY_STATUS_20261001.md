@@ -34,7 +34,7 @@ new diagnostic experiment. Its boundaries are described in
 | New-environment public suite | 185 passed, one explicitly optional private-source audit skipped, 38.06 seconds; release predates the new comparison code |
 | Current local source suite | 200 passed in 38.04 seconds, including the post-study extension; fresh authorized workspace temporary directory |
 | Independent feature review | Twelve focused helper tests passed; frozen Gemini functions, schema, and scorer remained unchanged |
-| Current revision publication | Subsequent code, report, deck, and documentation are local pending final release verification |
+| Current revision publication | Public `139cfa1` independently cloned; all example/artifact/frozen hashes matched; 199 passed and one optional private-source comparison skipped in 38.97 seconds |
 
 Temporary-directory permission failures were retained and resolved through a
 separate isolated setup or authorized test execution; no application assertion
@@ -42,6 +42,9 @@ was changed to make them pass. These checks establish software behavior on the
 stated host, not another operating system or an SRE user study. See
 [FRESH_ENVIRONMENT_VALIDATION_20261001.md](FRESH_ENVIRONMENT_VALIDATION_20261001.md)
 and [INVESTIGATION_REVIEW_20261001.md](INVESTIGATION_REVIEW_20261001.md).
+The [final release verification](FINAL_RELEASE_VERIFICATION_20261001.md) closes
+the public-delivery gate. Later status-document edits do not change the tested
+application, examples, frozen method or reviewed artifact bytes.
 
 ## Coursework artifacts
 

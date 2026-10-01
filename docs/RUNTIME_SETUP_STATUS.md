@@ -396,7 +396,11 @@ Microsoft states that systemd services do not keep a WSL instance alive. See
 For the capture session, a hidden Windows `wsl.exe` helper ran `sleep 7200`
 in the dedicated `AutoTriager-Shop` distribution. A renewed helper's recorded
 start was **19:04:49 UTC**, with a **7,200-second** bounded lifetime. Its nominal
-expiry is 21:04:49 UTC. Saved metadata is not proof that a process is still alive;
+expiry is 21:04:49 UTC. A later hidden helper renewed retention at **20:43:21 UTC**
+for another 7,200 seconds, nominally until 22:43:21 UTC. A read-only check at that
+time passed Shop, Prometheus and Jaeger; payment failure remained off with the
+unchanged flag fingerprint, and Streamlit health returned `ok`. No new capture
+or model call was performed. Saved metadata is not proof that a process is still alive;
 do not reuse a historical PID or assume indefinite availability.
 
 For another capture session, keep a dedicated terminal running the bounded
