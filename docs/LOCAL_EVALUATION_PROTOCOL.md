@@ -22,15 +22,26 @@ py -3.13 -c "from pathlib import Path; from native_shop.run_experiment import ru
 
 The runner writes public incident/observation/raw files and a separate evaluator-only `ground_truth.json`. The model and UI read only the public files. Metric observations derive rates/latency from spans and preserve baseline and alert raw-line references. They are not independent Prometheus samples. The original private case bundles and full model responses are excluded from Git. The tracked case-level CSV intentionally publishes the expected service and prediction for evaluation, but does not permit exact-response replay. The public `examples/local-payment-001` case is an answer-free genuine local capture for product inspection.
 
-## Model and scoring
+## Model, fixed-prompt ablation, and scoring
 
-Both compared methods used `gemini-3.5-flash-lite` at temperature zero and at most 48 visible records. The strong direct prompt uses earliest records; the grounded prompt prioritizes anomalous and error records and requires two cited signal kinds from the named candidate service. Prompt, selection, and validator differ, so their comparison does not isolate retrieval. The API calls ran once per method and case, with no subsequent tuning to the captured results.
+All three evaluated modes used `gemini-3.5-flash-lite` at temperature zero and at most 48 visible records. Strong direct uses an explicitly engineered direct prompt and earliest records. Grounded chronological (`grounded_chrono`) and grounded anomaly-prioritized (`grounded`) share the same grounded prompt and validator. Chronological selects the earliest records by timestamp/ID; prioritized selects explicit anomaly/error records first. Both grounded validators require two cited signal kinds **from the named candidate service** and demote an otherwise supported answer if it cites any invalid evidence ID. The fixed-prompt grounded pair differs only in record selection/order; it does not separate selection from ordering. Strong direct also differs in prompt and validation, so comparison with it is an application-level baseline, not an isolated retrieval ablation.
+
+The first two modes were evaluated before the chronological mode was added. The chronological fixed-prompt ablation was designed **after** the strong-direct/grounded delay-case result was inspected on these same five cases. Its five calls are a post-hoc diagnostic experiment, not a preregistered or blind holdout. No further change was made between the chronological calls on the five cases, but this does not remove the post-hoc selection risk.
 
 ```powershell
-py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes direct_strong grounded --pause 1
+py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes direct_strong grounded grounded_chrono --pause 1
 py -3.13 -m scripts.evaluate_local --case-prefix valid- --out results/local_sim_valid
 ```
 
+For just the added fixed-prompt chronological condition on cases whose other outputs already exist:
+
+```powershell
+py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes grounded_chrono --pause 1
+py -3.13 -m scripts.evaluate_local --case-prefix valid- --out results/local_sim_valid
+```
+
+The batch runner skips an existing mode result. A fresh trial needs new case IDs and rerun API calls, rather than overwriting the saved responses. `ground_truth.json` is read only by the evaluator, never by either model mode or the UI.
+
 The evaluator scores a fault as localized only if a supported response names the injected service; it scores a clean control as correct only for an explicit `insufficient_evidence` response with no candidate. API errors and malformed outputs are failures, not correct abstentions. It separately counts wrong-service attributions and verifies every cited ID and raw locator. Valid references do not prove causal relevance.
 
-Measured result: both Gemini configurations localized 3/4 faults and abstained on 1/1 clean control. Strong direct wrongly attributed the delay case to checkout; grounded abstained and therefore also failed to localize payment. Median model-call latency was 1,509 ms (strong direct) and 3,077 ms (grounded). The deterministic rule-based first pass named the injected service in 4/4 faults and abstained on the clean case; it was developed against related local cases and is not independent generalization evidence. These numbers do not establish a model improvement, a speed advantage, or a benefit to working engineers.
+Measured result: all three Gemini modes localized 3/4 faults and abstained on the 1/1 clean control. Strong direct and grounded chronological wrongly attributed the delay case to checkout; anomaly-prioritized grounded abstained and therefore also failed to localize payment. Wrong-fault-attribution counts were 1, 1, and 0 respectively. Median model-call latencies were 1,509, 1,247, and 3,077 ms respectively. Every saved output included nonempty cited IDs that resolved to original local raw records. The deterministic rule-based first pass named the injected service in 4/4 faults and abstained on the clean case; it was developed against related local cases and is not independent generalization evidence. These five-case results do not establish a general model improvement, a speed advantage, or a benefit to working engineers. The tracked `results/local_sim_valid.csv` intentionally includes evaluator-only intervention labels (`injection` and `expected`) and predictions for audit; it must never be supplied as model input or indexed for retrieval.

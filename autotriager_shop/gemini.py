@@ -42,10 +42,10 @@ def _brief(observation: dict) -> dict:
 
 def select_evidence(observations: list[dict], mode: str, limit: int = 48) -> list[dict]:
     """Choose a fixed-size visible evidence budget without looking at labels."""
-    if mode not in {"direct", "direct_strong", "grounded"}:
-        raise ValueError("mode must be 'direct', 'direct_strong', or 'grounded'")
+    if mode not in {"direct", "direct_strong", "grounded", "grounded_chrono"}:
+        raise ValueError("mode must be 'direct', 'direct_strong', 'grounded', or 'grounded_chrono'")
     ordered = sorted(observations, key=lambda row: (row["timestamp"], row["id"]))
-    if mode in {"direct", "direct_strong"}:
+    if mode in {"direct", "direct_strong", "grounded_chrono"}:
         return [_brief(row) for row in ordered[:limit]]
 
     # Retrieval prioritizes anomaly metrics and errors. It uses raw fields,
@@ -118,7 +118,7 @@ def _validate(response: dict, evidence: list[dict], mode: str) -> dict:
         allowed[item]["kind"] for item in cited
         if allowed[item]["service"] == service
     }
-    if service is None or (mode == "grounded" and (len(cited_kinds_for_candidate) < 2 or invalid)):
+    if service is None or (mode in {"grounded", "grounded_chrono"} and (len(cited_kinds_for_candidate) < 2 or invalid)):
         status = "insufficient_evidence"
     if status == "insufficient_evidence":
         service = None
@@ -168,7 +168,7 @@ def diagnose_with_gemini(case_dir: Path, mode: str = "grounded",
     validated = _validate(parsed, evidence, mode)
     validated.update({
         "case_id": incident["case_id"],
-        "method": f"gemini-{mode}-{'v2' if mode == 'grounded' else 'v1'}",
+        "method": f"gemini-{mode}-{'v2' if mode in {'grounded', 'grounded_chrono'} else 'v1'}",
         "model": model, "latency_ms": latency_ms, "visible_evidence_count": len(evidence),
         "usage": body.get("usageMetadata", {}),
     })

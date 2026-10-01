@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.evaluate_local import score_case
+from scripts.evaluate_local import _source_valid, score_case
 
 
 @pytest.fixture
@@ -59,3 +59,13 @@ def test_explicit_clean_abstention_counts(case_dir: Path) -> None:
     assert result["clean_abstain"] == 1
     assert result["api_error"] == 0
     assert result["valid_output"] == 1
+
+
+def test_source_verifier_rejects_path_escaping_raw_directory(case_dir: Path) -> None:
+    (case_dir / "raw").mkdir()
+    (case_dir / "private.ndjson").write_text(
+        json.dumps({"service.name": "payment"}) + "\n", encoding="utf-8"
+    )
+    assert not _source_valid(case_dir, {
+        "source_url": "raw/../private.ndjson#L1", "service": "payment"
+    })

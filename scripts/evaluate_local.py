@@ -20,8 +20,9 @@ def _source_valid(case_dir: Path, observation: dict) -> bool:
     if not source.startswith("raw/"):
         return False
     path_str, marker, line_str = source.partition("#L")
-    path = case_dir / path_str
-    if not path.is_file():
+    raw_dir = (case_dir / "raw").resolve()
+    path = (case_dir / path_str).resolve()
+    if raw_dir not in path.parents or path.suffix != ".ndjson" or not path.is_file():
         return False
     if not marker:
         refs = observation.get("raw", {}).get("source_refs", [])
@@ -87,7 +88,7 @@ def main() -> None:
             continue
         if not (case_dir / "ground_truth.json").exists():
             continue
-        for mode in ("direct", "direct_strong", "grounded"):
+        for mode in ("direct", "direct_strong", "grounded", "grounded_chrono"):
             if (case_dir / "model_outputs" / f"{mode}.json").exists():
                 rows.append(score_case(case_dir, mode))
     if not rows:

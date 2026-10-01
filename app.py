@@ -6,6 +6,7 @@ by this application; it is reserved for offline evaluation.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -364,7 +365,13 @@ def main() -> None:
         st.caption(tr["public_files"])
         return
 
-    selected_dir = st.sidebar.selectbox(tr["case"], cases, format_func=lambda path: path.name)
+    # Experiment IDs may encode injected services (e.g. payment_delay). Show a
+    # stable neutral alias to avoid telling a human reviewer the answer first.
+    selected_dir = st.sidebar.selectbox(
+        tr["case"], cases,
+        format_func=lambda path: f"{'Incident' if language == 'en' else '事件'} "
+        f"{hashlib.blake2s(path.name.encode('utf-8'), digest_size=3).hexdigest().upper()}",
+    )
     if selected_dir is None:
         return
     try:

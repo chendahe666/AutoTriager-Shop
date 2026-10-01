@@ -15,7 +15,7 @@ def main() -> None:
     parser.add_argument("--root", type=Path, default=Path("cases"))
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--pause", type=float, default=2.0)
-    parser.add_argument("--modes", nargs="+", choices=("direct", "direct_strong", "grounded"), default=("direct", "grounded"))
+    parser.add_argument("--modes", nargs="+", choices=("direct", "direct_strong", "grounded", "grounded_chrono"), default=("direct", "grounded"))
     parser.add_argument("--case-prefix", default="", help="Only run case IDs starting with this prefix")
     args = parser.parse_args()
     for case_dir in sorted(args.root.iterdir()):
@@ -33,7 +33,8 @@ def main() -> None:
             try:
                 result = diagnose_with_gemini(case_dir, mode, args.model)
             except Exception as exc:  # keep API errors as failed runs, not silent omissions
-                result = {"case_id": case_dir.name, "method": f"gemini-{mode}-v1",
+                version = "v2" if mode in {"grounded", "grounded_chrono"} else "v1"
+                result = {"case_id": case_dir.name, "method": f"gemini-{mode}-{version}",
                           "model": args.model, "status": "api_error",
                           "error": str(exc)[:300]}
             destination.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

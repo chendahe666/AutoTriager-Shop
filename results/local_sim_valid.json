@@ -32,6 +32,21 @@
       "valid_citation_cases": 5,
       "valid_raw_link_cases": 5,
       "median_latency_ms": 3077
+    },
+    "grounded_chrono": {
+      "cases": 5,
+      "fault_cases": 4,
+      "clean_cases": 1,
+      "fault_localized": 3,
+      "clean_abstentions": 1,
+      "false_attributions": 0,
+      "wrong_fault_attributions": 1,
+      "api_errors": 0,
+      "invalid_outputs": 0,
+      "cases_with_citations": 5,
+      "valid_citation_cases": 5,
+      "valid_raw_link_cases": 5,
+      "median_latency_ms": 1247
     }
   }
 }

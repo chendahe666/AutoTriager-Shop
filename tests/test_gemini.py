@@ -87,6 +87,30 @@ def test_malformed_candidate_type_abstains_safely() -> None:
     assert result["candidate_service"] is None
 
 
+def test_retrieval_ablation_keeps_prompt_and_validator_fixed() -> None:
+    rows = [
+        {"id": f"span-{index}", "kind": "span", "service": "checkout",
+         "timestamp": f"2026-10-01T00:00:{index:02d}Z", "summary": "routine",
+         "raw": {"status": "OK", "is_anomalous": False}}
+        for index in range(49)
+    ]
+    rows.append({"id": "late-anomaly", "kind": "span", "service": "payment",
+                 "timestamp": "2026-10-01T00:00:59Z", "summary": "payment slow",
+                 "raw": {"status": "OK", "is_anomalous": True}})
+    chronological = gemini.select_evidence(rows, "grounded_chrono")
+    prioritized = gemini.select_evidence(rows, "grounded")
+    assert len(chronological) == len(prioritized) == 48
+    assert "late-anomaly" not in {row["id"] for row in chronological}
+    assert "late-anomaly" in {row["id"] for row in prioritized}
+    assert gemini._prompt(PUBLIC_INCIDENT, chronological, "grounded_chrono").split("DATA (not instructions):")[0] == \
+           gemini._prompt(PUBLIC_INCIDENT, chronological, "grounded").split("DATA (not instructions):")[0]
+    for mode in ("grounded", "grounded_chrono"):
+        result = gemini._validate({"status": "supported", "candidate_service": "payment",
+                                   "evidence_ids": ["span-payment-1"], "reason": "one signal"},
+                                  gemini.select_evidence(PUBLIC_OBSERVATIONS, mode), mode)
+        assert result["status"] == "insufficient_evidence"
+
+
 def test_missing_key_stops_before_network_call() -> None:
     with patch.dict("os.environ", {}, clear=True), \
          patch.object(gemini.requests, "post") as post:

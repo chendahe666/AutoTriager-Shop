@@ -219,9 +219,10 @@ def build() -> None:
                 "defensible first service to inspect, verify the original telemetry, and defer judgment when "
                 "the data are insufficient. We replaced an earlier benchmark replay with a running four-process "
                 "shopping simulation, collected normal/fault/recovery records, implemented a bilingual evidence "
-                "view and optional Gemini analysis, and compared methods on five newly captured local cases. A "
-                "strong direct prompt and evidence-prioritized prompting both localized 3 of 4 injected faults "
-                "and abstained on the clean control. The evidence therefore supports a working, inspectable "
+                "view and optional Gemini analysis, and compared three model paths on five newly captured "
+                "local cases. All three localized 3 of 4 injected faults and abstained on the clean control. "
+                "An evidence-selection ablation changed a delay-case wrong attribution into an abstention, "
+                "but did not increase localization. The evidence therefore supports a working, inspectable "
                 "prototype, not a localization gain or production readiness."),
               section("1. Problem and focused P1 task"),
               p("<b>User:</b> a junior on-call developer handling a bounded checkout incident. The need is a "
@@ -304,7 +305,8 @@ def build() -> None:
                 "and recovery traffic. One capacity run had 24/24 normal HTTP 200 responses, 21/24 checkout "
                 "errors during injection, and 24/24 recovery HTTP 200 responses."),
               p("The five newly captured bundles contain 260 span, 234 log, and 40 derived metric observations "
-                "(534 total). Raw spans/logs are append-only NDJSON with service, UTC timestamp, trace ID, "
+                "(534 total), with about 0.97 MB of public case files. Raw spans/logs are append-only NDJSON "
+                "with service, UTC timestamp, trace ID, "
                 "span ID, and parent-span ID. Error-rate and latency metrics are computed from normal versus alert spans; "
                 "they are not independent Prometheus measurements. A public observation has a stable ID and "
                 "a reference such as <font name='Courier'>raw/payment.spans.ndjson#L8</font>. Numeric values "
@@ -330,6 +332,9 @@ def build() -> None:
                 "and requires two cited "
                 "signal kinds for a supported grounded output. The interface resolves citations to the "
                 "original record. Referential integrity does not prove a citation is causally relevant."),
+              p("For a targeted ablation, grounded-chronological uses the same prompt, model, temperature, "
+                "48-record cap, and validator, but passes the earliest records instead of anomaly-prioritized "
+                "records. Thus the changed factor is the evidence selection and ordering policy."),
               PageBreak()]
 
     # Page 4: working application visual evidence.
@@ -354,22 +359,26 @@ def build() -> None:
     # Page 5: newly generated five-case comparison and failure analysis.
     strong = summary["summary"]["direct_strong"]
     grounded = summary["summary"]["grounded"]
+    chrono = summary["summary"]["grounded_chrono"]
     story += [section("9. Corrected five-case evaluation"),
               p("Earlier development cases had a confounded delay intervention: payment slowed while the "
                 "checkout timeout also changed. We excluded their scores. Before the five cases below were "
                 "captured, the analysis rule was frozen and checkout's payment timeout fixed at 250 ms in "
-                "all phases; the delay mode changes only payment response time. These cases were then run "
-                "once through each Gemini configuration without tuning after the results. This is still a "
-                "small local simulator, not an independent production or official-Shop estimate."),
-              p("The injected service is held in a private evaluator label. Both methods used Gemini 3.5 "
-                "Flash-Lite and a maximum 48-record context budget, but the prompt, selected evidence, and "
-                "grounded validator differ. Client latency is one model call, not human resolution time. "
-                "An API error is not scored as an abstention."),
-              tiny_table(["Gemini configuration", "Fault localized", "Clean abstain", "Clean false attribution", "Median API latency"],
-                         [["Strong direct", f"{strong['fault_localized']}/4", f"{strong['clean_abstentions']}/1", f"{strong['false_attributions']}/1", f"{strong['median_latency_ms']:,} ms"],
-                          ["Evidence-prioritized", f"{grounded['fault_localized']}/4", f"{grounded['clean_abstentions']}/1", f"{grounded['false_attributions']}/1", f"{grounded['median_latency_ms']:,} ms"]],
-                         [150, 88, 77, 113, 74]),
-              caption("Table 1. Measured five-case local-simulation comparison. The two methods tied on fault localization and clean abstention; no accuracy or speed gain is established."),
+                "all phases; the delay mode changes only payment response time. Strong direct and anomaly-first "
+                "each ran once; after inspecting their delay-case failure, we added a post-hoc chronological "
+                "ablation on the same frozen cases. No analysis rule or case changed. This is an exploratory "
+                "small-simulator comparison, not an independent production or official-Shop estimate."),
+              p("The injected service is held in a private evaluator label. All three used Gemini 3.5 "
+                "Flash-Lite and a maximum 48-record context budget. Strong direct also differs in prompt and "
+                "validator; the two grounded modes share both and change only evidence selection and order. "
+                "Client latency is one model call, not human resolution time. An API error is not scored "
+                "as an abstention."),
+              tiny_table(["Gemini configuration", "Fault localized", "Wrong service", "Clean abstain", "Median API latency"],
+                         [["Strong direct", f"{strong['fault_localized']}/4", f"{strong['wrong_fault_attributions']}/4", f"{strong['clean_abstentions']}/1", f"{strong['median_latency_ms']:,} ms"],
+                          ["Grounded: chronological", f"{chrono['fault_localized']}/4", f"{chrono['wrong_fault_attributions']}/4", f"{chrono['clean_abstentions']}/1", f"{chrono['median_latency_ms']:,} ms"],
+                          ["Grounded: anomaly first", f"{grounded['fault_localized']}/4", f"{grounded['wrong_fault_attributions']}/4", f"{grounded['clean_abstentions']}/1", f"{grounded['median_latency_ms']:,} ms"]],
+                         [156, 88, 80, 78, 102]),
+              caption("Table 1. Five-case local-simulation comparison. No mode improved localization; anomaly-first selection traded one delay-case wrong attribution for abstention."),
               section("Case-level audit"),
     ]
     def name(row: dict | None) -> str:
@@ -386,20 +395,21 @@ def build() -> None:
         group = case_rows[case]
         expected = group["direct_strong"]["expected"]
         matrix.append([short[case], expected, name(group.get("direct_strong")),
-                       name(group.get("grounded")),
-                       "miss: abstained" if case == "valid-delay-001" else "correct"])
-    story += [tiny_table(["Case", "Injected service", "Strong direct", "Grounded", "Grounded result"],
-                         matrix, [107, 98, 95, 95, 107]),
+                       name(group.get("grounded_chrono")), name(group.get("grounded")),
+                       "delay: wrong / abstain" if case == "valid-delay-001" else "correct"])
+    story += [tiny_table(["Case", "Injected service", "Strong direct", "Chronological", "Anomaly first", "Result"],
+                         matrix, [99, 82, 83, 83, 83, 74]),
               caption("Table 2. Case-level outputs from four faults and one clean control; each mode ran once per case."),
               p("<b>Failure:</b> the checkout caller timed out around 260 ms, while payment completed an "
                 "approximately 550 ms span with OK status. Strong direct incorrectly named checkout. The "
-                "grounded path abstained rather than making that false attribution, but also missed the "
-                "known payment intervention. This exposes a temporal-evidence gap, not superior localization."),
-              p("All ten saved model outputs had nonempty, known citation IDs with resolvable raw links, "
+                "grounded chronological path also named checkout; anomaly-first grounded abstained instead, "
+                "but missed the known payment intervention. This is one observed effect of changing the "
+                "evidence policy, not a demonstrated general safety gain."),
+              p("All 15 saved model outputs had nonempty, known citation IDs with resolvable raw links, "
                 "including the clean case. A valid pointer does not establish causal relevance. The observed "
                 "latency difference is based on five calls per configuration and is not a speed claim. "
-                "Differences in selection, prompt, and validation prevent causal attribution of any behavior "
-                "to retrieval alone."),
+                "Strong direct remains a useful product comparator, but its differences in prompt and "
+                "validator prevent attribution of its behavior to retrieval alone."),
               PageBreak()]
 
     # Page 6: reproducibility, limitations, future work, primary links.

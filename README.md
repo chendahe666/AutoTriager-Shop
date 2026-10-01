@@ -21,7 +21,7 @@ py -3.13 -m scripts.seed_example_case
 py -3.13 -m streamlit run app.py --server.address 127.0.0.1 --server.port 8510
 ```
 
-Open `http://127.0.0.1:8510`, choose `local-payment-001`, and click **Run local baseline**. The shipped example contains real records from the native local simulation and excludes private fault labels. The app also works without a Gemini key.
+Open `http://127.0.0.1:8510`, choose the seeded incident shown under a neutral **Incident** alias, and click **Run local baseline**. The app deliberately hides case IDs that might reveal the injected service. The shipped example contains real records from the native local simulation and excludes private fault labels. The app also works without a Gemini key.
 
 To see a running storefront, use a separate terminal:
 
@@ -58,7 +58,7 @@ The official Shop capture protocol is in [docs/SIMULATION_PROTOCOL.md](docs/SIMU
 
 After an audit, the payment caller timeout was fixed at 250 ms in **every** mode; only payment processing time changes in the delay intervention. The analysis rule was frozen before five fresh `valid-*` cases were generated: payment capacity, catalog error, checkout error, payment delay, and a no-fault control. Each case had 24 requests in each of normal, alert, and recovery phases, with concurrency 6. The deterministic first pass named the injected service in 4/4 faults and abstained on the clean case. This is an internal simulator check, not an estimate of deployment performance.
 
-On the same five cases, the strong direct Gemini prompt and evidence-prioritized grounded path each localized 3/4 faults and abstained on the clean control. In the delay case, strong direct wrongly named `checkout`; grounded abstained, avoiding that particular wrong attribution but still missing the injected `payment` fault. All ten saved model outputs cited nonempty known IDs with resolvable raw records. Median API call latency was 1,509 ms versus 3,077 ms respectively; five calls per configuration cannot support a speed claim. The prompts, selected records, and validation differ, so this is **not** an isolated retrieval ablation. See the [five-case summary](results/local_sim_valid.json) and [per-case CSV](results/local_sim_valid.csv). Private raw case bundles, answer manifests, and full model responses are excluded from Git; the evaluator's case-level CSV intentionally publishes the expected service and predictions. The shipped public example has genuine raw local-simulation records without its answer label.
+On the same five cases, strong direct Gemini, grounded chronological, and grounded anomaly-prioritized each localized 3/4 faults and abstained on the clean control. In the delay case, strong direct and grounded chronological wrongly named `checkout`; grounded prioritized abstained, avoiding that attribution but still missing the injected `payment` fault. All 15 saved model outputs cited nonempty known IDs with resolvable raw records. Median API call latencies were 1,509, 1,247, and 3,077 ms respectively; five calls per configuration cannot support a speed claim. Strong direct differs in prompt and validation, so its comparison with grounded does **not** isolate retrieval. The two grounded modes share model, grounded prompt, validator, temperature zero, and a 48-record cap; they differ only in evidence selection/order. This fixed-prompt ablation was added **post hoc after inspecting the first delay-case failure on these same cases**, so it is exploratory and not a preregistered independent test. See the [five-case summary](results/local_sim_valid.json) and [per-case CSV](results/local_sim_valid.csv). Private raw case bundles, answer manifests, and full model responses are excluded from Git; the evaluator's case-level CSV intentionally publishes the expected service and predictions. The shipped public example has genuine raw local-simulation records without its answer label.
 
 The [local evaluation protocol](docs/LOCAL_EVALUATION_PROTOCOL.md) records the exact interventions, source freeze, scorer, and limits.
 
@@ -70,7 +70,14 @@ For optional Gemini use, configure `GEMINI_API_KEY` in your own environment and 
 
 ## Reproducibility and limitations
 
-Run unit tests with `py -3.13 -m pytest tests -q -p no:cacheprovider`. The public example supports a no-key UI smoke test. To repeat the five-case protocol, generate one case per fault mode with `native_shop.run_experiment` (24 requests per phase, concurrency 6), then run `py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes direct_strong grounded` and `py -3.13 -m scripts.evaluate_local --case-prefix valid- --out results/local_sim_valid`. New API calls need your own key and will not reproduce the exact saved text or latency. Full private answer manifests and API responses are intentionally absent from the published example; the case-level CSV does contain the expected service and model predictions for evaluation. Controlled injected labels measure localization within this simulator, not performance on enterprise incidents.
+Run unit tests with `py -3.13 -m pytest tests -q -p no:cacheprovider`. The public example supports a no-key UI smoke test. To repeat the five-case protocol, generate one case per fault mode with `native_shop.run_experiment` (24 requests per phase, concurrency 6), then run:
+
+```powershell
+py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes direct_strong grounded grounded_chrono --pause 1
+py -3.13 -m scripts.evaluate_local --case-prefix valid- --out results/local_sim_valid
+```
+
+To run only the chronological fixed-prompt condition on otherwise completed cases, use `py -3.13 -m scripts.batch_gemini --case-prefix valid- --modes grounded_chrono --pause 1`, followed by the same evaluator command. The batch runner skips an output that already exists; use fresh case IDs for a new trial. New API calls need your own key and will not reproduce the exact saved text or latency. Full private answer manifests and API responses are intentionally absent from the published example; the case-level CSV does contain the expected service and model predictions for evaluation. Controlled injected labels measure localization within this simulator, not performance on enterprise incidents.
 
 The native topology is deliberately small, some failures are simple, and its logs can be more explicit than real production logs. Five cases from one simulator cannot establish generalization or junior-engineer benefit. A larger independently selected test, a live official Astronomy Shop capture, and a user study are separate acceptance gates. The system should abstain when the evidence is inadequate, and a human must validate any operational decision.
 
