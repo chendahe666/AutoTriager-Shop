@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "case_id": "local-payment-001",
+  "title": "Checkout investigation in a local shopping-service simulation",
+  "symptom": "Checkout returned HTTP errors on 6 of 6 requests in the alert window.",
+  "start_time": "2026-10-01T05:08:03.404256Z",
+  "end_time": "2026-10-01T05:08:03.441913Z",
+  "provenance": {
+    "source_kind": "captured_local_sim",
+    "repository": "native_shop (this repository)",
+    "version": "0.1.0",
+    "collection_method": "four live HTTP processes; JSON span/log capture",
+    "captured_at": "2026-10-01T05:08:03.545344Z"
+  }
+}

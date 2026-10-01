@@ -1,0 +1,788 @@
+{
+  "observations": [
+    {
+      "id": "span-frontend-8",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.405326Z",
+      "summary": "/api/checkout returned HTTP 502 in 13.108 ms",
+      "source_url": "raw/frontend.spans.ndjson#L8",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "8acb6a34375e472c",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 13.108,
+        "parent_span_id": null,
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 8
+      }
+    },
+    {
+      "id": "span-frontend-7",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.405656Z",
+      "summary": "/api/checkout returned HTTP 502 in 12.423 ms",
+      "source_url": "raw/frontend.spans.ndjson#L7",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "b6fb507aaf524687",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 12.423,
+        "parent_span_id": null,
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 7
+      }
+    },
+    {
+      "id": "span-checkout-8",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.413346Z",
+      "summary": "/checkout returned HTTP 502 in 3.954 ms",
+      "source_url": "raw/checkout.spans.ndjson#L8",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "95ac04adf8cc4e3d",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 3.954,
+        "parent_span_id": "8acb6a34375e472c",
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 8
+      }
+    },
+    {
+      "id": "span-checkout-7",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.413791Z",
+      "summary": "/checkout returned HTTP 502 in 3.432 ms",
+      "source_url": "raw/checkout.spans.ndjson#L7",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "09f373458d274a7f",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 3.432,
+        "parent_span_id": "b6fb507aaf524687",
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 7
+      }
+    },
+    {
+      "id": "span-payment-7",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.415896Z",
+      "summary": "/charge returned HTTP 503 in 0.234 ms",
+      "source_url": "raw/payment.spans.ndjson#L7",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "0e98a499afbd4d97",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.234,
+        "parent_span_id": "95ac04adf8cc4e3d",
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 7
+      }
+    },
+    {
+      "id": "span-payment-8",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.416272Z",
+      "summary": "/charge returned HTTP 503 in 0.17 ms",
+      "source_url": "raw/payment.spans.ndjson#L8",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "ad3178330dfa456b",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.17,
+        "parent_span_id": "09f373458d274a7f",
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 8
+      }
+    },
+    {
+      "id": "log-payment-1",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.416385Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L1",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "0e98a499afbd4d97",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 1
+      }
+    },
+    {
+      "id": "log-payment-2",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.416773Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L2",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "ad3178330dfa456b",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 2
+      }
+    },
+    {
+      "id": "log-checkout-1",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.417424Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L1",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "09f373458d274a7f",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 1
+      }
+    },
+    {
+      "id": "log-checkout-2",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.417947Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L2",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "95ac04adf8cc4e3d",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 2
+      }
+    },
+    {
+      "id": "log-frontend-1",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.418374Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L1",
+      "trace_id": "70a1e487326c472f95de3f7161468999",
+      "span_id": "b6fb507aaf524687",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "70a1e487326c472f95de3f7161468999",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 1
+      }
+    },
+    {
+      "id": "log-frontend-2",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.418771Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L2",
+      "trace_id": "fea2125ea5494140ae993154c366ebc4",
+      "span_id": "8acb6a34375e472c",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "fea2125ea5494140ae993154c366ebc4",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 2
+      }
+    },
+    {
+      "id": "span-frontend-9",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.419765Z",
+      "summary": "/api/checkout returned HTTP 502 in 6.005 ms",
+      "source_url": "raw/frontend.spans.ndjson#L9",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "5e7ee4b7f1d14d9e",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 6.005,
+        "parent_span_id": null,
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 9
+      }
+    },
+    {
+      "id": "span-frontend-10",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.420266Z",
+      "summary": "/api/checkout returned HTTP 502 in 5.856 ms",
+      "source_url": "raw/frontend.spans.ndjson#L10",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "4b3739d84e214907",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 5.856,
+        "parent_span_id": null,
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 10
+      }
+    },
+    {
+      "id": "span-checkout-9",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.420780Z",
+      "summary": "/checkout returned HTTP 502 in 3.945 ms",
+      "source_url": "raw/checkout.spans.ndjson#L9",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "807f92df5a0b4adc",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 3.945,
+        "parent_span_id": "5e7ee4b7f1d14d9e",
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 9
+      }
+    },
+    {
+      "id": "span-checkout-10",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.421251Z",
+      "summary": "/checkout returned HTTP 502 in 3.857 ms",
+      "source_url": "raw/checkout.spans.ndjson#L10",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "71a0bf7bf2404452",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 3.857,
+        "parent_span_id": "4b3739d84e214907",
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 10
+      }
+    },
+    {
+      "id": "span-frontend-12",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.422809Z",
+      "summary": "/api/checkout returned HTTP 502 in 18.052 ms",
+      "source_url": "raw/frontend.spans.ndjson#L12",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "7a783af4593b4c2b",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 18.052,
+        "parent_span_id": null,
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 12
+      }
+    },
+    {
+      "id": "span-payment-9",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.423351Z",
+      "summary": "/charge returned HTTP 503 in 0.403 ms",
+      "source_url": "raw/payment.spans.ndjson#L9",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "4f3c530a6bf9417b",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.403,
+        "parent_span_id": "807f92df5a0b4adc",
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 9
+      }
+    },
+    {
+      "id": "span-checkout-12",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.423589Z",
+      "summary": "/checkout returned HTTP 502 in 16.624 ms",
+      "source_url": "raw/checkout.spans.ndjson#L12",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "f698d23ad9f8426c",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 16.624,
+        "parent_span_id": "7a783af4593b4c2b",
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 12
+      }
+    },
+    {
+      "id": "span-payment-10",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.423609Z",
+      "summary": "/charge returned HTTP 503 in 0.265 ms",
+      "source_url": "raw/payment.spans.ndjson#L10",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "a5ca6f31b33046ed",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.265,
+        "parent_span_id": "71a0bf7bf2404452",
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 10
+      }
+    },
+    {
+      "id": "log-payment-3",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.424032Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L3",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "4f3c530a6bf9417b",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 3
+      }
+    },
+    {
+      "id": "log-payment-4",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.424654Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L4",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "a5ca6f31b33046ed",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 4
+      }
+    },
+    {
+      "id": "log-checkout-3",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.425030Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L3",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "807f92df5a0b4adc",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 3
+      }
+    },
+    {
+      "id": "log-checkout-4",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.425528Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L4",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "71a0bf7bf2404452",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 4
+      }
+    },
+    {
+      "id": "log-frontend-3",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.426055Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L3",
+      "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+      "span_id": "5e7ee4b7f1d14d9e",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "d15703a0effb4114aaaf2b11f9c74697",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 3
+      }
+    },
+    {
+      "id": "log-frontend-4",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.426541Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L4",
+      "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+      "span_id": "4b3739d84e214907",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "7abafcc7d0314fcfb90b4b173fc9ceca",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 4
+      }
+    },
+    {
+      "id": "span-frontend-11",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.427466Z",
+      "summary": "/api/checkout returned HTTP 502 in 4.043 ms",
+      "source_url": "raw/frontend.spans.ndjson#L11",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "0940312e992f4a68",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "duration_ms": 4.043,
+        "parent_span_id": null,
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\frontend.spans.ndjson",
+        "source_line": 11
+      }
+    },
+    {
+      "id": "span-checkout-11",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.428295Z",
+      "summary": "/checkout returned HTTP 502 in 2.631 ms",
+      "source_url": "raw/checkout.spans.ndjson#L11",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "60ec9c95cec64f0b",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "duration_ms": 2.631,
+        "parent_span_id": "0940312e992f4a68",
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\checkout.spans.ndjson",
+        "source_line": 11
+      }
+    },
+    {
+      "id": "span-payment-11",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.430317Z",
+      "summary": "/charge returned HTTP 503 in 0.129 ms",
+      "source_url": "raw/payment.spans.ndjson#L11",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "a70a450bc2864d67",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.129,
+        "parent_span_id": "60ec9c95cec64f0b",
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 11
+      }
+    },
+    {
+      "id": "log-payment-5",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.430589Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L5",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "a70a450bc2864d67",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 5
+      }
+    },
+    {
+      "id": "log-checkout-5",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.431094Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L5",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "60ec9c95cec64f0b",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 5
+      }
+    },
+    {
+      "id": "log-frontend-5",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.431681Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L5",
+      "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+      "span_id": "0940312e992f4a68",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "338a02d8a2f5498da0ec0c4e0f45c588",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 5
+      }
+    },
+    {
+      "id": "span-payment-12",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.439559Z",
+      "summary": "/charge returned HTTP 503 in 0.132 ms",
+      "source_url": "raw/payment.spans.ndjson#L12",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "f809a68a448d45fd",
+      "raw": {
+        "status": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "duration_ms": 0.132,
+        "parent_span_id": "f698d23ad9f8426c",
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\payment.spans.ndjson",
+        "source_line": 12
+      }
+    },
+    {
+      "id": "log-payment-6",
+      "kind": "log",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.439835Z",
+      "summary": "payment request failed",
+      "source_url": "raw/payment.logs.ndjson#L6",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "f809a68a448d45fd",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 503,
+        "route": "/charge",
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\payment.logs.ndjson",
+        "source_line": 6
+      }
+    },
+    {
+      "id": "log-checkout-6",
+      "kind": "log",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.440385Z",
+      "summary": "payment dependency failed",
+      "source_url": "raw/checkout.logs.ndjson#L6",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "f698d23ad9f8426c",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/checkout",
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\checkout.logs.ndjson",
+        "source_line": 6
+      }
+    },
+    {
+      "id": "log-frontend-6",
+      "kind": "log",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.441077Z",
+      "summary": "checkout dependency failed",
+      "source_url": "raw/frontend.logs.ndjson#L6",
+      "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+      "span_id": "7a783af4593b4c2b",
+      "raw": {
+        "severity_text": "ERROR",
+        "status_code": 502,
+        "route": "/api/checkout",
+        "trace_id": "ccb47d9a429d406e83ea483c9dd79af9",
+        "source_file": "raw\\frontend.logs.ndjson",
+        "source_line": 6
+      }
+    },
+    {
+      "id": "metric-catalog-error-rate",
+      "kind": "metric",
+      "service": "catalog",
+      "timestamp": "2026-10-01T05:08:03.441913Z",
+      "summary": "HTTP 5xx rate: 0/6 in alert window; baseline 0/6",
+      "source_url": "raw/catalog.spans.ndjson",
+      "raw": {
+        "metric": "http.server.error_fraction",
+        "value": 0.0,
+        "baseline": 0.0,
+        "is_anomalous": false,
+        "alert_count": 6,
+        "error_count": 0,
+        "baseline_count": 6,
+        "source_refs": [
+          "raw/catalog.spans.ndjson#L7",
+          "raw/catalog.spans.ndjson#L8",
+          "raw/catalog.spans.ndjson#L9",
+          "raw/catalog.spans.ndjson#L10",
+          "raw/catalog.spans.ndjson#L11",
+          "raw/catalog.spans.ndjson#L12"
+        ]
+      }
+    },
+    {
+      "id": "metric-checkout-error-rate",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T05:08:03.441913Z",
+      "summary": "HTTP 5xx rate: 6/6 in alert window; baseline 0/6",
+      "source_url": "raw/checkout.spans.ndjson",
+      "raw": {
+        "metric": "http.server.error_fraction",
+        "value": 1.0,
+        "baseline": 0.0,
+        "is_anomalous": true,
+        "alert_count": 6,
+        "error_count": 6,
+        "baseline_count": 6,
+        "source_refs": [
+          "raw/checkout.spans.ndjson#L7",
+          "raw/checkout.spans.ndjson#L8",
+          "raw/checkout.spans.ndjson#L9",
+          "raw/checkout.spans.ndjson#L10",
+          "raw/checkout.spans.ndjson#L11",
+          "raw/checkout.spans.ndjson#L12"
+        ]
+      }
+    },
+    {
+      "id": "metric-frontend-error-rate",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T05:08:03.441913Z",
+      "summary": "HTTP 5xx rate: 6/6 in alert window; baseline 0/6",
+      "source_url": "raw/frontend.spans.ndjson",
+      "raw": {
+        "metric": "http.server.error_fraction",
+        "value": 1.0,
+        "baseline": 0.0,
+        "is_anomalous": true,
+        "alert_count": 6,
+        "error_count": 6,
+        "baseline_count": 6,
+        "source_refs": [
+          "raw/frontend.spans.ndjson#L7",
+          "raw/frontend.spans.ndjson#L8",
+          "raw/frontend.spans.ndjson#L9",
+          "raw/frontend.spans.ndjson#L10",
+          "raw/frontend.spans.ndjson#L11",
+          "raw/frontend.spans.ndjson#L12"
+        ]
+      }
+    },
+    {
+      "id": "metric-payment-error-rate",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T05:08:03.441913Z",
+      "summary": "HTTP 5xx rate: 6/6 in alert window; baseline 0/6",
+      "source_url": "raw/payment.spans.ndjson",
+      "raw": {
+        "metric": "http.server.error_fraction",
+        "value": 1.0,
+        "baseline": 0.0,
+        "is_anomalous": true,
+        "alert_count": 6,
+        "error_count": 6,
+        "baseline_count": 6,
+        "source_refs": [
+          "raw/payment.spans.ndjson#L7",
+          "raw/payment.spans.ndjson#L8",
+          "raw/payment.spans.ndjson#L9",
+          "raw/payment.spans.ndjson#L10",
+          "raw/payment.spans.ndjson#L11",
+          "raw/payment.spans.ndjson#L12"
+        ]
+      }
+    }
+  ]
+}

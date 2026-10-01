@@ -1,0 +1,39 @@
+{
+  "scope": "exploratory local Python shopping simulation; not official Shop",
+  "case_count": 9,
+  "summary": {
+    "direct": {
+      "cases": 9,
+      "fault_cases": 7,
+      "clean_cases": 2,
+      "fault_localized": 0,
+      "clean_abstentions": 2,
+      "false_attributions": 0,
+      "valid_citation_cases": 9,
+      "valid_raw_link_cases": 9,
+      "median_latency_ms": 1459
+    },
+    "direct_strong": {
+      "cases": 9,
+      "fault_cases": 7,
+      "clean_cases": 2,
+      "fault_localized": 6,
+      "clean_abstentions": 2,
+      "false_attributions": 0,
+      "valid_citation_cases": 9,
+      "valid_raw_link_cases": 9,
+      "median_latency_ms": 1266
+    },
+    "grounded": {
+      "cases": 9,
+      "fault_cases": 7,
+      "clean_cases": 2,
+      "fault_localized": 6,
+      "clean_abstentions": 2,
+      "false_attributions": 0,
+      "valid_citation_cases": 9,
+      "valid_raw_link_cases": 9,
+      "median_latency_ms": 1097
+    }
+  }
+}
