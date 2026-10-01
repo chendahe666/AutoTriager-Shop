@@ -29,7 +29,7 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "docs" / "OFFICIAL_SHOP_WORKSHOP_DRAFT.md"
-DEFAULT_OUTPUT = ROOT / "output" / "pdf" / "AutoTriager_OfficialShop_Workshop_Dahe_Chen.pdf"
+DEFAULT_OUTPUT = ROOT / "output" / "pdf" / "AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf"
 PAGE_W, PAGE_H = letter
 MARGIN_X, MARGIN_TOP, MARGIN_BOTTOM, GUTTER = 44.0, 42.0, 43.0, 18.0
 FULL_W = PAGE_W - 2 * MARGIN_X

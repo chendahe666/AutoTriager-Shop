@@ -45,6 +45,8 @@ Codex examined the handout, design records, repository, and simulator. The instr
 
 The assistant proposed compact records, stable IDs, timestamps, trace relationships, ranking, optional model interpretation, and a bilingual interface. Separating computation from explanation helped implementation; benchmark framing, weak comparison, runtime feasibility, and evidence sufficiency still required correction.
 
+The proposed evaluation compared service predictions with benchmark answers and checked references. That was useful for an initial offline pipeline, but it did not establish a user need in the shopping application. Reviewed co-design replaced the primary input with captured Shop telemetry, retained a direct model reference and normal/recovery controls, and separated label agreement from explanation support. RAG and additional agents remained alternatives rather than requirements: no measured knowledge gap justified their implementation in this cycle.
+
 ```text
 Incident data → adapter → compact evidence → LLM / possible tools
               → diagnosis dashboard
@@ -55,6 +57,13 @@ Incident data → adapter → compact evidence → LLM / possible tools
 ### 4.3 Reviewed co-design
 
 Human judgment retained the review boundary, accepted structured provenance, rejected benchmark replay as product validation, simplified orchestration, and required private labels and a strong comparator. Development responses demanded deeper-cause evidence although the application intended to prioritize inspection. Co-design explicitly clarified that task while preserving the same evidence. This observation does not establish that the earlier prompt was defective. These choices improve inspectability by design; their user benefit remains untested.
+
+Four user-reported instructor concerns drove concrete changes; these are paraphrases of the recorded discussion, not recovered written quotations:
+
+- **Who needs the output?** The design now names an on-call developer new to this shopping system and the first inspection decision. A user-task study remains absent.
+- **What actual situation motivates it?** Official Astronomy Shop checkout captures replace benchmark replay as the primary application scenario. Runtime and intervention receipts document the new setting.
+- **Why use a product if an engineer can prompt directly?** The study retains a capable direct reference and reports the negative comparison. The interface adds inspectable source records rather than claiming that a dashboard proves superiority.
+- **How can the result be checked?** Preserved IDs, numerical fields and parent references support source inspection; a separate claim audit exposes unsupported explanation sentences.
 
 | Aspect | Human Design | AI Design | Reviewed co-design |
 |---|---|---|---|
@@ -97,6 +106,8 @@ The application resolves citations and records accept/reject/uncertain review wi
 
 The user selects a neutral incident alias, reviews provenance, runs the baseline or optional Gemini analysis, opens evidence, and records judgment. API errors display incomplete analysis, not absence of an incident. Language switching preserves case state. Figure 4 shows actual official fault evidence in the application.
 
+After the frozen 30-call study, an offline engineering extension adds selection of two or three components and predefined evidence queries. It compares the full public observation pool, marks recorded-input membership separately from citation membership, and resolves only unique same-trace parent-child links. Missing or ambiguous parents remain explicit. Live Gemini results do not retain selected IDs, so their membership is unknown. These queries do not modify an old answer, call a model or establish causal propagation. Their diagnostic or user benefit was not evaluated in the frozen study.
+
 ![Official captured payment evidence in Streamlit](../results/screenshots/official_case_app_20261001.jpg)
 
 **Figure 4. Actual recorded analysis of an accepted official fault case.** The interface displays the saved payment inspection priority, explanation, and cited IDs, explicitly identifying replay and distinguishing priority from proven root cause. The screenshot establishes interface behavior, not diagnostic correctness or user benefit.
@@ -122,6 +133,8 @@ Within each condition, prompts share identical records/order: `gemini-3.5-flash-
 `selected_method.json` froze balanced selection plus investigation-priority framing at 18:48:30 UTC, including function/scorer hashes. This is a provisional engineering choice: the full direct-reference no-regression gate is unknown because recovery returned 503. Confirmation triplet 003 started at 18:48:36 and completed three accepted captures at 19:10:24, including verified restoration. Its six calls completed without API failure. Triplet 004 accepted its normal phase but failed during fault collection at 19:22:55 because the feature API timed out; recovery was not attempted. Fault-off restoration was verified. Amendment A3, recorded before replacement 005 started at 19:27:36, permits one entire fresh group with its own baseline and unchanged methods. The remaining six calls are conditional on all replacement phases being accepted. All attempted phases are retained; no further replacement is allowed. This is three attempted confirmation groups, at most two completed and modeled, not an unchanged preregistration. No tuning or held-out selector comparison is allowed.
 
 ## 7. Results and evidence audit
+
+Capture accounting precedes model analysis. Rejected attempts remain in Table 2; development and frozen confirmation are reported separately.
 
 | Official event | Recorded outcome | Interpretation |
 |---|---|---|
@@ -200,13 +213,15 @@ Limits include one injected mechanism, one host, dependent samples, evidence-con
 
 ## 9. Reproducibility, sources, and AI use
 
-From the repository root, install `requirements.txt`, run `py -3.13 -m scripts.seed_official_examples`, and launch `py -3.13 -m streamlit run app.py --server.address 127.0.0.1 --server.port 8510`. Nine public official examples preserve exact incident/observation bytes and actual recorded responses, including the first confirmation's non-match. **Load recorded analysis** requires neither Docker nor an API key and makes no call. These are recorded observations, not a freshly running simulation. New official startup and capture require the dedicated WSL/Docker environment and `docs/SIMULATION_PROTOCOL.md`; run `py -3.13 -m scripts.check_shop` before capture. Preflight alone does not establish capture acceptance.
+Install `requirements.txt`, run `py -3.13 -m scripts.seed_official_examples`, then `py -3.13 -m streamlit run app.py --server.address 127.0.0.1 --server.port 8510`. **Load recorded analysis** opens nine exact captured examples without Docker, a key or an API call, including the confirmation non-match. Fresh capture requires WSL/Docker and `docs/SIMULATION_PROTOCOL.md`. Run `scripts.check_shop` first; preflight does not establish capture acceptance.
 
-`scripts.run_paired_experiment` saves frozen inputs, responses, validators, and failures; `scripts.score_paired_experiment` separately reads private labels. The plan, A1/A2/A3 amendments, `selected_method.json`, claim audit, ledger, and runtime records specify provenance. Private configuration is excluded from inference/public releases. Before final example expansion, full local regression passed 186 tests in 34.27 seconds. The final nine-example public-source snapshot, without original cases or private API records, passed 185 tests in 39.17 seconds and skipped only the explicitly optional original-private-source audit; fresh seeding and verification passed. Its first attempt had 20 temporary-directory setup errors under sandbox permissions, with 165 tests passing. The unchanged suite passed after using a fresh writable workspace temporary directory. These checks establish software behavior, not diagnostic performance. The [public repository](https://github.com/chendahe666/AutoTriager-Shop) contains the implementation, aggregate results, nine recorded examples and report. Published implementation commit `ec09fb3` was cloned into a fresh checkout on this configured Python environment: all 27 example JSON files, the PDF, and frozen schema/scorer byte hashes matched, and fresh seeding plus verification passed without Docker or API calls. Publication is separate from diagnostic or user-benefit validation.
+`scripts.run_paired_experiment` saves inputs, responses, validators, and failures; a separate scorer reads private labels. The plan, A1/A2/A3 amendments, `selected_method.json`, claim audit and ledger preserve provenance. Private configuration is excluded from inference and publication. The [public repository](https://github.com/chendahe666/AutoTriager-Shop) provides code, aggregate results and nine recorded examples. A clean checkout verified all 27 example JSON files and frozen schema/scorer hashes. These checks establish software integrity, not diagnostic performance.
 
 Code is MIT; Shop remains Apache-2.0. Sources are the versioned papers in Section 3, pinned Shop, and the course handout. Codex assisted investigation, implementation, writing, and simulated review. `RESEARCH_REVIEW_20261001.md` and `CLAIM_AUDIT_20261001.md` record objections and unresolved limits; simulated agreement is not certification.
 
-The bounded loop adapts [Karpathy's autoresearch](https://github.com/karpathy/autoresearch) and a [Codex-compatible skill, version 2.2.2](https://github.com/uditgoenka/autoresearch/blob/master/plugins/autoresearch/skills/autoresearch/SKILL.md). The original trains a small model; here the loop tests a fixed-budget inference pipeline. Reading and adapting that protocol does not imply installing its automation or training a model.
+A fresh Python 3.13.12 environment installed requirements without system-site packages and passed `pip check`. Release `16bbe7c` replayed nine cases and eighteen bilingual AppTest views without HTTP calls, credential reads or human judgments: 185 tests passed, with one optional private-source comparison skipped (38.06 seconds). All example hashes stayed unchanged. This same-workstation dependency check, resolved versions and initial temporary-directory failure are documented in `FRESH_ENVIRONMENT_VALIDATION_20261001.md`; it is not a new Docker deployment or diagnostic experiment.
+
+The loop adapts [Karpathy's autoresearch](https://github.com/karpathy/autoresearch) and a [Codex-compatible skill, v2.2.2](https://github.com/uditgoenka/autoresearch/blob/master/plugins/autoresearch/skills/autoresearch/SKILL.md) for bounded inference experiments. No model training or third-party automation installation is claimed.
 
 ## References
 
@@ -228,7 +243,7 @@ The bounded loop adapts [Karpathy's autoresearch](https://github.com/karpathy/au
 | 6. Methods / architecture | Sections 5–6; Figure 3 | A1/A2 development and A3 replacement disclosed |
 | 7. Grounding / provenance | Section 7; Table 4 | Simulated audit; semantic failures retained |
 | 8. End-to-end feature | Section 5; Figure 4 | Actual official evidence UI; user benefit unmeasured |
-| 9. Results / 5–10 cases | Section 7; Tables 2–4 and 6; supplement below | Nine dependent official phase windows, not diverse independent faults |
+| 9. Results / 5–10 cases | Section 7; Tables 2–4 and 6; nine-case ledger below | Nine dependent official phase windows, not diverse independent faults |
 | 10. Three-stage comparison | Table 1, all 11 aspects | User-quality comparison unmeasured |
 | 11. GitHub / reproducibility | Section 9 | Public commit and fresh-checkout replay verified |
 | 12. Lessons / next challenge | Section 8 | Fresh controlled evidence required |
@@ -246,3 +261,193 @@ These five earlier four-process Python cases used 24 requests per phase, concurr
 | Payment delay | payment | checkout | checkout | abstain |
 
 **Table 5. Historical native outcomes.** Model conditions each localized 3/4 faults; the rule baseline localized 4/4. All abstained on the clean case. The post-hoc selection/order ablation avoided one wrong attribution by abstaining, without localization gain. It is not independent confirmation or official evidence.
+
+
+### Nine official phase windows: evidence and outcome ledger
+
+This ledger audits the nine public **grounded investigation-priority** records.
+It adds no model calls or human judgments. All selected inputs contain 48
+observations: 24 metrics and 24 spans, with no captured logs. IDs are case-local.
+The error metric is in **calls/s**, not percent, and derives from spans.
+
+Expected observations come from the controlled phase and preserved path checks,
+not an optimal-inspection-action gold standard. For all nine cases, the private
+manifest's case/time fields match the public incident and its canonical JSON
+hash matches the separate scorer receipt. Those evaluator files remain outside
+the app/model inputs. A control's accepted linked path does not imply that every
+service or request is healthy. Raw and application decisions agree in these nine
+saved records; valid citation IDs do not establish every reasoning claim.
+
+### Case overview
+
+| Public example | Experimental phase | Linked payment spans: ERROR / total | Actual grounded raw / app | Descriptive outcome |
+|---|---|---|---|---|
+| 01: `002-a` | Development normal | 0/10 | abstain / abstain | No service accusation; explanation error |
+| 02: `002-b` | Development fault | 26/26 | payment / payment | Payment-label agreement; incomplete caller citation |
+| 03: `002-d` | Development recovery | 0/13 | abstain / abstain | No service accusation; residual evidence |
+| 04: `003-a` | Confirmation normal | 0/12 | abstain / abstain | No service accusation; explanation error |
+| 05: `003-b` | Confirmation fault | 14/14 | checkout / checkout | Payment-label non-match; best action unassessed |
+| 06: `003-c` | Confirmation recovery | 0/6 | abstain / abstain | No service accusation; residual evidence |
+| 07: `005-a` | Replacement normal | 0/8 | abstain / abstain | Selected-input observation supported; visibility limit |
+| 08: `005-b` | Replacement fault | 12/12 | payment / payment | Payment-label agreement; caller link actually cited |
+| 09: `005-c` | Replacement recovery | 0/14 | abstain / abstain | No service accusation; blanket normality unsupported |
+
+These are nine **dependent phase windows in three groups**, covering one injected
+mechanism. The rejected captures, incomplete 004 group, and two development HTTP
+503 calls remain in the aggregate accounting; this table does not replace them.
+
+### 01 — Normal `shop-pilot-002-a`
+
+Source: [public example 01](../examples/official_shop/example-01/recorded_analysis.json).
+Window: 17:57:09–18:00:21 UTC. Expected: the observed checkout/payment path has no
+linked payment ERROR span; no injected service should be accused.
+
+- **Selected versus cited:** checkout `metric-00004` and payment `metric-00022`
+  are zero. Load-generator `metric-00019` is 0.16666666666666666 calls/s and
+  selected `span-00001` is ERROR. The answer cites **no IDs**.
+- **Actual:** raw/app abstain, agreeing with the control's evaluator label.
+  Its statement that all services have zero rates or normal metrics is
+  contradicted by records already selected.
+- **Limitation / stage:** reasoning and explanation grounding; no retrieval
+  excuse applies to the included counterexample. Abstention is not global health.
+
+### 02 — Fault `shop-pilot-002-b`
+
+Source: [public example 02](../examples/official_shop/example-02/recorded_analysis.json).
+Window: 18:09:26–18:12:38 UTC. Expected: payment-local ERROR spans linked to
+checkout; payment is the intervention label, not proven optimal first action.
+
+- **Selected versus cited:** actual citations are payment `metric-00022`
+  (0.06666666666666667 calls/s, baseline 0) and ERROR `span-00007/00008`.
+  Selected checkout `span-00006` has ID `e583cbbc1d5f75f8`; payment `00007` has
+  that parent, and `00008` has parent `263b28468ee221d5`, the ID of `00007`.
+- **Actual:** raw/app payment, matching the verified evaluator label. Payment
+  anomaly facts are supported. The checkout caller is selected but **uncited**.
+- **Limitation / stage:** evidence-citation completeness and causal interpretation.
+  Metric/span agreement is not independent proof of initiating cause.
+
+### 03 — Recovery `shop-pilot-002-d`
+
+Source: [public example 03](../examples/official_shop/example-03/recorded_analysis.json).
+Window: 18:28:04–18:31:04 UTC. Expected: restored linked checkout/payment path;
+this fresh interval replaces the failed 002-c transport attempt.
+
+- **Selected versus cited:** checkout `metric-00004` and payment `metric-00022`
+  are zero. Load-generator `metric-00019` is 0.11666666666666667 versus
+  0.09444444444444444 baseline; `span-00001` is ERROR. No IDs are cited.
+- **Actual:** raw/app abstain, agreeing with the control label. The reason states
+  insufficient candidate operation and call links rather than universal health.
+- **Limitation / stage:** incomplete rationale citation and unresolved residuals.
+  No selected failing backend link establishes the source of the load-generator
+  error; neither an independent fault nor export delay is demonstrated.
+
+### 04 — Normal `shop-check-003-a`
+
+Source: [public example 04](../examples/official_shop/example-04/recorded_analysis.json).
+Window: 18:51:36–18:54:36 UTC. Expected: a fresh normal linked payment path without
+an injected service accusation.
+
+- **Selected versus cited:** core rates are zero, but load-generator
+  `metric-00019` is 0.0666677777962966 calls/s and `span-00001` is ERROR.
+  Actual citations are empty.
+- **Actual:** raw/app abstain. The answer nevertheless claims zero rates across
+  all services, directly contradicted by its selected input.
+- **Limitation / stage:** a repeated reasoning/grounding failure under frozen
+  confirmation. Correct control abstention does not make the explanation faithful.
+
+### 05 — Fault `shop-check-003-b`
+
+Source: [public example 05](../examples/official_shop/example-05/recorded_analysis.json).
+Window: 18:58:52–19:01:52 UTC. Expected: payment ERROR and a linked checkout caller ERROR;
+the evaluator-only intervention label is payment.
+
+- **Selected versus cited:** actual citations are checkout `metric-00004`
+  (0.066670000166675 calls/s, baseline 0), ERROR `span-00005` and `00006`.
+  Selected payment `span-00008` has parent `93e127b2079a4f8a`, the ID of
+  checkout `00006`; payment `00007` is its ERROR child. Payment's positive
+  `metric-00022` is also selected but uncited.
+- **Actual:** raw/app checkout, a payment-label **non-match**. The cited checkout
+  errors are real; the reason does not justify checkout ahead of payment.
+- **Limitation / stage:** model prioritization/comparison, not invalid references.
+  Without action-value annotations, a label non-match is not proof that checkout
+  is the wrong first inspection. This negative result remains visible.
+
+### 06 — Recovery `shop-check-003-c`
+
+Source: [public example 06](../examples/official_shop/example-06/recorded_analysis.json).
+Window: 19:06:08–19:09:08 UTC. Expected: no ERROR on the specified linked payment
+path after restoration; residual aggregate counters may remain.
+
+- **Selected versus cited:** payment `metric-00022` is 0.016666666666666666
+  calls/s versus 0 baseline; load-generator `metric-00019` is
+  0.11666666666666667 versus 0.09444481482098775. Selected load-generator
+  `span-00001/00002` are ERROR. Actual citations are empty.
+- **Actual:** raw/app abstain, agreeing with the control label. The explanation
+  says candidate-specific anomalous operation and call links are insufficient.
+- **Limitation / stage:** rationale coverage and unresolved metric/span
+  interpretation. The observed linked-path recovery does not prove universal
+  health or explain all aggregate error events.
+
+### 07 — Normal `shop-check-005-a`
+
+Source: [public example 07](../examples/official_shop/example-07/recorded_analysis.json).
+Window: 19:30:36–19:33:36 UTC. Expected: a fresh normal baseline for the whole
+replacement group, not reuse of 004's incomplete group.
+
+- **Selected versus cited:** all 24 selected spans are OK; selected error-rate
+  samples, including `metric-00019`, are zero. Actual citations are empty.
+  The full public pool's **unselected** load-generator `metric-00021` is
+  0.06666666666666667 calls/s at 19:33:36.515 UTC.
+- **Actual:** raw/app abstain. Unlike 003, absence of errors is supported within
+  this selected input; the full-window conclusion has limited visibility.
+- **Limitation / stage:** retrieval coverage and scope of explanation. Do not
+  relabel an unselected observation as a contradiction the model could see.
+
+### 08 — Fault `shop-check-005-b`
+
+Source: [public example 08](../examples/official_shop/example-08/recorded_analysis.json).
+Window: 19:37:52–19:40:52 UTC. Expected: payment-local ERROR with a linked checkout
+caller; the evaluator-only intervention label is payment.
+
+- **Selected versus cited:** all four actual citations resolve: payment
+  `metric-00022` (0.09999833336111066 calls/s, baseline 0), payment ERROR
+  `span-00007/00008`, and checkout ERROR `span-00006`. In their shared trace,
+  `00007` has parent `7b5891b069d19137` (checkout `00006`), and `00008` has
+  parent `fd5e334f7cd54abd` (payment `00007`).
+- **Actual:** raw/app payment, matching the label. The exact explanation—payment
+  error metrics and failure spans called by checkout—is factually supported.
+- **Limitation / stage:** no factual defect was identified in this bounded
+  explanation. Optimal-action value and deepest cause remain unassessed;
+  one complete caller citation does not establish overall reliability gains.
+
+### 09 — Recovery `shop-check-005-c`
+
+Source: [public example 09](../examples/official_shop/example-09/recorded_analysis.json).
+Window: 19:45:07–19:48:07 UTC. Expected: restored linked payment path; the control
+does not require absence of every aggregate error counter.
+
+- **Selected versus cited:** all selected spans are OK. Flagd `metric-00007`
+  and recommendation `metric-00025` each equal 0.016666666666666666 calls/s
+  versus 0 baseline. Load-generator `metric-00019` has that value **below**
+  its 0.022222222222222223 baseline. No IDs are cited.
+- **Actual:** raw/app abstain, agreeing with the control label. Blanket
+  "no anomalous error rates or failures" wording is insufficiently justified:
+  no threshold determines whether the positive counters are anomalous.
+- **Limitation / stage:** explanation grounding/threshold definition. Additional
+  unselected load-generator and payment counters limit completeness; the source
+  of counter/span differences is unassessed, not a proven active new fault.
+
+### Human review and interpretation boundary
+
+All nine records leave the **human judgment unfilled**. Automated tests and this
+simulated evidence audit are not Dahe Chen's acceptance, a user study, or an expert
+evaluation. A human can now inspect the 003-b competing payment evidence and the
+005-b complete caller link, record accept/reject/uncertain with a reason, and
+state what to inspect next. That observation must be recorded when it occurs.
+It cannot be supplied retrospectively by AI.
+
+The label endpoint passes in two of three displayed fault windows, with six
+control abstentions; the two fresh confirmation fault windows are 1/2. These
+counts mix development and confirmation only for this transparent case inventory,
+not for a claimed held-out accuracy. Control abstention, citation integrity,
+claim support, and useful next action remain separate.

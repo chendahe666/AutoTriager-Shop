@@ -17,6 +17,12 @@ grounded analyses without another API call. Replay is an inspectable feature,
 not a human study or a claim that every reason is supported. The earlier Bank
 prototype and native simulator remain historical development material.
 
+After loading a result, the user can compare two or three components and ask
+three predefined offline evidence questions. This later extension exposes full
+captured records, citations, saved-input membership, and observed direct links;
+it does not rerun diagnosis or change any recorded output. See
+[INVESTIGATION_COMPARISON.md](INVESTIGATION_COMPARISON.md).
+
 ## Challenge 2: one complete feature
 
 Problem: checkout symptoms can involve several services, making the first
@@ -75,20 +81,37 @@ tests cannot replace observed task outcomes.
    accepted. Three confirmation groups were attempted and two completed/modeled;
    004 remains incomplete. This is an amended protocol rather than
    untouched preregistration. Confirmation will not drive method tuning.
-7. **Course and release artifacts:** the English black-and-white workshop report
-   for Dahe Chen has nine pages, with five body pages and four appendix pages.
-   Text extraction and every rendered page passed inspection at 20:11 UTC.
-   The public
+7. **Study and public release:** the nine-page English workshop study report is
+   retained as a verified research snapshot. The public
    [AutoTriager-Shop repository](https://github.com/chendahe666/AutoTriager-Shop)
-   has a verified first release at
-   [ec09fb3](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
-   A fresh Git clone matched the commit, all 27 example JSON files, PDF bytes,
-   and frozen schema/scorer hashes; nine-example seeding/checking passed in
-   7.71 seconds without Docker or new API calls, using the existing Python
-   environment; a new dependency installation was not tested. Final documentation/PDF
-   publication metadata polish remains separate. Nine audited
+   first release and later publication commit
+   [16bbe7c](https://github.com/chendahe666/AutoTriager-Shop/commit/16bbe7cb3ec5fb520523ae00587ee33041088577)
+   were verified in a fresh clone, including all 27 example JSON files, study
+   PDF bytes, and frozen hashes. Nine audited
    public observation/recording bundles are packaged for offline replay; the full
    local case cohort remains ignored by Git.
+8. **Fresh dependency environment:** release `16bbe7c` installed successfully in
+   a new Python 3.13.12 venv on the same Windows host. `pip check`, nine saved
+   outputs, and eighteen English/Chinese case views passed without HTTP requests
+   or API-key reads. The public suite passed 185 tests with one optional private
+   provenance check skipped in 38.06 seconds. Exact versions and the retained
+   first setup failure are in
+   [FRESH_ENVIRONMENT_VALIDATION_20261001.md](FRESH_ENVIRONMENT_VALIDATION_20261001.md).
+   This precedes the new comparison code and does not validate another machine.
+9. **Post-study component comparison:** offline component records, direct links,
+   and outside-recorded-input follow-ups are implemented. Independent focused
+   review passed twelve helper tests; the current complete local suite passed
+   200 tests in 38.04 seconds with an authorized workspace temporary directory.
+   No extra model call, scientific result, or original input was changed. Browser
+   inspection and actual human judgment remain separately recorded activities.
+10. **Revised course deliverables:** the final official-Shop Challenge 2 PDF is
+    prepared at
+    `output/pdf/AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf`; final
+    page/render review is pending. The English eight-slide Enhancement checkpoint
+    at `output/slides/AutoTriager_OfficialShop_Checkpoint_Dahe_Chen_Final.pptx`
+    passed independent content and grayscale review. It is not a replacement for
+    a full Talk (4) roadmap. Publication of this subsequent revision is pending
+    final verification. See [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
 
 ## Claim audit and unresolved gates
 
@@ -140,29 +163,37 @@ alone does not keep it alive. See
 [SIMULATION_PROTOCOL.md](SIMULATION_PROTOCOL.md) and
 [RUNTIME_SETUP_STATUS.md](RUNTIME_SETUP_STATUS.md).
 
-The six-example public-only snapshot passed 48 tests with one optional
-private-source comparison skipped in 34.07 seconds before the latest UI repair.
-The latest full suite passed 186 tests in 34.27 seconds, including the six-example
-corpus, summarizer and incident-identity repair. A complete post-repair portable
-public-source snapshot passed 185 tests with one optional original-private-source
-provenance comparison skipped in 36.06 seconds. Its replay tests use the
-packaged examples without original private paired-run input. The
+Recorded replay tests use the packaged examples without needing original private
+paired-run input. The
 [official confirmation screenshot](../results/screenshots/official_confirmation_counterexample_20261001.jpg)
 preserves the actual checkout counterexample; rendering is separate from
 diagnosis correctness. Full `cases/` and private labels
 are ignored by Git. Nine audited bundles under `examples/official_shop` can be
 seeded into absent case directories without overwriting existing data. They
 contain captured observations and real recorded responses, with no expected
-diagnosis or human judgment supplied. The first source push and fresh-clone
-replay packaging are verified; the older CoDesign repository has not been deleted.
-The complete-suite checks above preceded packaging examples 07–09. A final
-public-source snapshot seeded all nine bundles and passed 185 tests with one
-optional original-private-source provenance comparison skipped in 39.17 seconds,
-without original cases or private API attempts. Its first unchanged-source run
-recorded 165 passes, one skip and 20 system-temp PermissionError setup errors in
-41.30 seconds, with no assertion failures. A fresh workspace temporary directory
-and authorized execution completed the unchanged suite. Both receipts remain;
-this is software validation rather than a research result.
+diagnosis or human judgment supplied. Historical six-example and final
+nine-example regression receipts are retained in the runtime ledger. The new
+same-host dependency validation and the 200-test post-extension local result
+are distinct from those earlier snapshots and from the frozen diagnostic
+experiment. Temporary-directory permission failures are retained, not counted
+as prediction errors. The older CoDesign repository has not been deleted; removal
+requires a fresh target/authorization check at action time.
+
+## Remaining human decisions and verification
+
+1. Inspect actual records in the app and save an accept/reject/uncertain judgment
+   with a reason and next check. Automated tests and AI review cannot provide
+   this student judgment or constitute an SRE user study.
+2. Confirm historical Human Design provenance and the wording of the reported
+   instructor feedback. A retrospective reflection may explain decisions but
+   must not become a backdated pre-AI artifact.
+3. Confirm the applicable deadline/extension and submit through the course
+   system, unless separate submission authorization is provided. No submission
+   receipt or instructor grade has been observed.
+
+The earlier simulated 76–86 rubric interval assessed the pre-repair nine-page
+report. It is not a current score for the revised deliverables or proof of a
+90-point result. The current files require their own final coverage review.
 
 ## Historical development
 

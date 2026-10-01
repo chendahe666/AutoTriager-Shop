@@ -23,9 +23,11 @@ Set-Location AutoTriager-Shop
 Use Python 3.13 from the repository root:
 
 ```powershell
-py -3.13 -m pip install -r requirements.txt
-py -3.13 -m scripts.seed_official_examples
-py -3.13 -m streamlit run app.py --server.address 127.0.0.1 --server.port 8510
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip check
+.\.venv\Scripts\python.exe -m scripts.seed_official_examples
+.\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8510
 ```
 
 Open [127.0.0.1:8510](http://127.0.0.1:8510), select an official captured incident,
@@ -45,6 +47,22 @@ Replay separates the original model response from the application decision.
 Hash, citation, and validation checks do not verify every reasoning claim or
 establish user benefit. Original local Prometheus and Jaeger links can become
 unavailable; the extracted observations remain inspectable offline.
+
+## Compare evidence after loading a result
+
+Choose two or three services under **Compare component evidence**. Inspect their
+captured records, cited IDs, and observed same-trace parent-child links. Three
+predefined follow-ups show a component's records, links between chosen services,
+or records outside the saved model input. These are offline evidence queries,
+not a new model conversation. They do not change the saved suggestion.
+
+The view separates the full captured pool, the verified recorded input, and
+cited records. For live Gemini results, input membership remains unknown because
+only the sent-record count is retained. See the
+[feature boundary](docs/INVESTIGATION_COMPARISON.md) and its
+[independent simulated review](docs/INVESTIGATION_REVIEW_20261001.md).
+This post-study extension improves access to existing evidence; diagnostic or
+user-task improvement has not been measured.
 
 ## Current checkpoint: October 1, 2026
 
@@ -113,8 +131,8 @@ The final round recorded **30 API calls: 28 completed and two development HTTP
 with **14 scheduled phase slots** including 004's unattempted recovery. Nine
 eligible phase windows were modeled in one development and two confirmation
 groups, all on one fault mechanism; repeated calls are not independent incidents.
-The app runs at port 8510 and has nine real recorded grounded responses available
-for offline replay. The final public-source snapshot seeded all nine examples
+The recorded app checkpoint uses port 8510 and has nine real grounded responses
+available for offline replay. The final public-source snapshot seeded all nine examples
 and passed **185 tests with one optional original-private-source provenance
 comparison skipped in 39.17 seconds**. It contained no original cases or private
 API attempts. Its first unchanged-source run had 165 passes, one skip and 20
@@ -129,14 +147,42 @@ capture status.
 The public [AutoTriager-Shop repository](https://github.com/chendahe666/AutoTriager-Shop)
 has a verified first source release at
 [commit ec09fb3](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
-A fresh Git clone matched that commit, all 27 example JSON files, the published
-PDF bytes, and the frozen schema/scorer hashes. Seeding and checking nine examples
-passed in **7.71 seconds**, without Docker or new API calls, using the existing
-Python environment; a new dependency installation was not tested. The final
-English black-and-white coursework PDF has nine pages: five body pages and four
-appendix pages. Text and every rendered page were checked. Final documentation
-and PDF publication metadata will follow in a separate commit. The older CoDesign
-repository has not been deleted.
+A fresh Git clone verified the first release and the later publication commit
+[16bbe7c](https://github.com/chendahe666/AutoTriager-Shop/commit/16bbe7cb3ec5fb520523ae00587ee33041088577),
+including all 27 example JSON files, the study PDF, and frozen hashes. A separate
+**new Python 3.13.12 environment on the same Windows host** installed the declared
+dependencies, passed `pip check`, replayed all nine outputs, and checked eighteen
+English/Chinese case views with no HTTP request or key read. Its complete public
+suite passed **185 tests with one optional private-source audit skipped in
+38.06 seconds**. This tests release `16bbe7c`, before the component-comparison
+extension, and does not certify another computer or Docker installation. The
+[fresh-environment record](docs/FRESH_ENVIRONMENT_VALIDATION_20261001.md) includes
+exact resolved versions and the retained temporary-directory setup failure.
+
+The current local source, including component comparison, separately passed
+**200 tests in 38.04 seconds** after using an authorized fresh workspace temporary
+directory. Its initial system-temp permission error remains recorded. These are
+software checks, not new diagnosis results. The new report and checkpoint deck
+are subsequent local deliverables; publication of this revision remains a
+separate verification step.
+
+## Coursework delivery
+
+- [Final official-Shop Challenge 2 report](output/pdf/AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf):
+  reviewed English PDF: five core pages and seven pages of case details,
+  comparison tables and actual screenshots; all twelve pages rendered and checked.
+- [Eight-slide Enhancement checkpoint](output/slides/AutoTriager_OfficialShop_Checkpoint_Dahe_Chen_Final.pptx):
+  English, monochrome, reviewed against the frozen results. It is a progress
+  update, not the full Talk (4) semester-roadmap submission.
+- [Delivery status](docs/DELIVERY_STATUS_20261001.md): actual verification,
+  recoverable retirement of superseded artifacts, and remaining human inputs.
+
+The nine-page workshop study report is retained as a separate research snapshot.
+The superseded native-only coursework PDF is backed up, ignored, and staged for
+removal from the current Git tree; its open local copy remains pending closure.
+The older CoDesign repository has not been deleted. Actual student evidence
+judgment, historical Human Design/feedback confirmation, and course submission
+remain human actions. No instructor grade or 90-point certification is claimed.
 
 ## Deploy or resume the official Shop on Windows
 
@@ -178,7 +224,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Deployment failed; inspect its private attempt
 For an already running Shop, continue with its read-only endpoint check:
 
 ```powershell
-py -3.13 -m scripts.check_shop --shop-url http://127.0.0.1:8080 --prometheus-url http://127.0.0.1:9090 --jaeger-url http://127.0.0.1:8080
+.\.venv\Scripts\python.exe -m scripts.check_shop --shop-url http://127.0.0.1:8080 --prometheus-url http://127.0.0.1:9090 --jaeger-url http://127.0.0.1:8080
 if ($LASTEXITCODE -ne 0) { throw 'Shop endpoint preflight failed' }
 ```
 
@@ -199,7 +245,7 @@ off. Preserve fixed runtime and traffic settings, recheck the endpoints, and
 choose a fresh neutral prefix for another collection after an active run ends:
 
 ```powershell
-py -3.13 -m scripts.run_shop_triplet --prefix shop-session-001 --scheduler-stopped --shop-url http://127.0.0.1:8080 --prometheus-url http://127.0.0.1:9090 --jaeger-url http://127.0.0.1:8080
+.\.venv\Scripts\python.exe -m scripts.run_shop_triplet --prefix shop-session-001 --scheduler-stopped --shop-url http://127.0.0.1:8080 --prometheus-url http://127.0.0.1:9090 --jaeger-url http://127.0.0.1:8080
 ```
 
 `--scheduler-stopped` records the operator's confirmation; the runner does not
@@ -267,7 +313,7 @@ Run engineering checks with:
 
 ```powershell
 $pytestRunTemp = Join-Path (Get-Location).Path ('evaluation/private/pytest-' + [Guid]::NewGuid().ToString('N'))
-py -3.13 -m pytest tests -q -p no:cacheprovider --basetemp $pytestRunTemp
+.\.venv\Scripts\python.exe -m pytest tests -q -p no:cacheprovider --basetemp $pytestRunTemp
 ```
 
 `pytest.ini` limits discovery to `tests`, avoiding unrelated temporary paths and

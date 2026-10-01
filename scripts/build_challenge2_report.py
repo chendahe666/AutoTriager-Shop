@@ -26,7 +26,7 @@ from reportlab.platypus import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "output" / "pdf" / "AutoTriager_Challenge2_Dahe_Chen.pdf"
+OUTPUT = ROOT / "evaluation" / "private" / "historical-native-report" / "AutoTriager_Native_Development_Historical.pdf"
 RESULTS = ROOT / "results" / "local_sim_valid.json"
 ROWS = ROOT / "results" / "local_sim_valid.csv"
 SCREENSHOTS = ROOT / "results" / "screenshots"

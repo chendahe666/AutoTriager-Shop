@@ -105,3 +105,45 @@ def test_explicit_case_change_clears_prior_results_and_review(interface):
     for key in ("analysis_local", "analysis_gemini", "analysis_recorded", "latest_review"):
         assert key not in ui.session_state
     assert not ui.radio
+
+
+def test_offline_comparison_queries_preserve_choices_through_translation_and_clear_on_case_change(interface):
+    ui, scratch, first, _ = interface
+    counterexample = _copy_case(scratch, "negative-confirmation", "example-05")
+    ui.run()
+    loaded = _select_and_load(ui, counterexample)
+    assert loaded["candidates"][0]["service"] == "checkout"
+    ui.multiselect(key="investigation_component_widget").set_value(["checkout", "payment"]).run()
+    assert not ui.exception
+    assert ui.session_state["investigation_components"] == ["checkout", "payment"]
+    ui.selectbox(key="investigation_query_widget").select("observed_links").run()
+    assert not ui.exception
+    assert any("direct observed trace links" in item.value for item in ui.caption)
+    ui.sidebar.selectbox[0].select("中文").run()
+    assert not ui.exception
+    assert ui.multiselect(key="investigation_component_widget").value == ["checkout", "payment"]
+    assert ui.selectbox(key="investigation_query_widget").value == "observed_links"
+    assert any("直接观测的跨度链接" in item.value for item in ui.caption)
+    # This exploration preserves the negative result rather than rewriting it.
+    assert ui.session_state["analysis_recorded"]["candidates"][0]["service"] == "checkout"
+    ui.sidebar.selectbox(key="incident_case_widget").select(str(first.resolve())).run()
+    assert not ui.exception
+    assert "investigation_components" not in ui.session_state
+    assert "investigation_query" not in ui.session_state
+    assert not ui.multiselect
+
+
+def test_live_model_outside_input_followup_discloses_unknown_membership(interface):
+    ui, _, _, chosen = interface
+    loaded = _select_and_load(ui, chosen)
+    # A live-result-shaped fixture has no saved selected IDs. It does not call Gemini.
+    live_result = dict(loaded)
+    live_result.pop("recorded")
+    live_result["method"] = "gemini-grounded-v2"
+    ui.session_state["analysis_gemini"] = live_result
+    ui.run()
+    ui.radio[0].set_value("gemini").run()
+    assert not ui.exception
+    ui.selectbox(key="investigation_query_widget").select("outside_recorded_input").run()
+    assert not ui.exception
+    assert any("Which records it saw is unknown" in item.value for item in ui.info)

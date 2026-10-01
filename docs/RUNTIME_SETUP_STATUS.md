@@ -4,8 +4,10 @@ This checkpoint records installation, source deployment, a memory-limit repair,
 and live collection on the local Windows host. The development cohort has three
 accepted phase windows from five completed attempts, including a fresh recovery
 interval after a preserved failure. Development and amended confirmation are
-complete under the frozen method. Final public-source regression and the first
-source release are verified; final documentation/PDF metadata polish remains.
+complete under the frozen method. Public release `16bbe7c` and a new same-host
+Python dependency environment are verified. The later offline comparison
+extension has a separate 200-test local pass; its revised course PDF remains in
+final review. Publication of that subsequent revision is a separate checkpoint.
 This is not a demonstration of RCA superiority or
 user benefit.
 
@@ -255,7 +257,8 @@ recovery. The modeled cohort contains **nine unique eligible phase windows in
 three groups**, one development and two confirmation, on one fault mechanism.
 Repeated methods and model calls are not additional independent incidents.
 
-The Streamlit application is running on `127.0.0.1:8510` in the current session.
+The Streamlit application was observed on `127.0.0.1:8510` at the recorded app
+checkpoint. Verify availability again before a later demonstration.
 It defaults to official captured cases when present. The development cases
 `002-a`, `002-b`, `002-d` and confirmation `003-a/b/c`, `005-a/b/c` each contain a real saved grounded response under
 `recorded_analysis.json`. **Load recorded analysis** replays that response
@@ -267,10 +270,10 @@ The [official confirmation screenshot](../results/screenshots/official_confirmat
 shows the actual recorded `003-b` checkout suggestion. It retains a negative
 injected-service agreement outcome and does not certify the reasoning.
 
-The six-example public-only snapshot passed **48 tests with one optional
+The historical six-example public-only snapshot passed **48 tests with one optional
 private-source comparison skipped in 34.07 seconds** before the latest UI repair;
 it did not rely on original ignored cases or private evaluator records. The
-latest full engineering regression passed **186 tests in 34.27 seconds**,
+earlier full engineering regression passed **186 tests in 34.27 seconds**,
 including the six-example corpus, summarizer and UI repair. Three focused checks
 also verify incident selection and language changes preserve case identity.
 A separate complete public-source snapshot after that repair passed **185 tests
@@ -300,13 +303,17 @@ The saved
 **129 passing tests** before recorded replay; the 119-test and 126-test
 checkpoints also remain historical engineering checks.
 
-The English black-and-white workshop report for Dahe Chen has nine pages: five
+The retained English black-and-white workshop study report for Dahe Chen has nine pages: five
 body pages and four appendix pages. The final PDF was rebuilt and inspected at
 **20:11 UTC**; text extraction found no CJK characters and every rendered page
 passed author and independent simulated reviewer inspection. The first released
-PDF was byte-verified in the fresh Git clone. Final documentation/PDF metadata
-updates will follow in a separate commit. These checks do not establish a grade
-or user benefit.
+PDF was byte-verified in the fresh Git clone and publication commit `16bbe7c`.
+The subsequent course report is prepared at
+`output/pdf/AutoTriager_Challenge2_OfficialShop_Dahe_Chen_Final.pdf`, with final
+page/render review pending. The reviewed eight-slide monochrome Enhancement
+checkpoint is at
+`output/slides/AutoTriager_OfficialShop_Checkpoint_Dahe_Chen_Final.pptx`.
+Neither artifact inspection nor software checks establish a grade or user benefit.
 
 A final read-only Shop preflight passed at **20:11:49 UTC** in the observed
 session: `paymentFailure` was off, its flag fingerprint matched the baseline-off
@@ -323,16 +330,19 @@ after checking its absence at **18:38 UTC**, and verified the first non-force
 push to `main` at
 [ec09fb3a5b4f835bbab99781a28ce580a3046f77](https://github.com/chendahe666/AutoTriager-Shop/commit/ec09fb3a5b4f835bbab99781a28ce580a3046f77).
 A fresh Git clone under `evaluation/private/github-release-verification-20261001`
-matched that commit. All **27 public example JSON files**, the released PDF bytes,
+matched that commit and the subsequent publication commit `16bbe7c`.
+All **27 public example JSON files**, the released study PDF bytes,
 and the frozen schema/scorer SHA values matched the source. No original private
 API runs were present. Seeding nine examples followed by `--check-only` passed
 in **7.71 seconds**, without Docker or new API calls, using the existing Python
-environment. A new dependency installation was not tested. Final documentation/PDF
-metadata polish follows this verified first release.
+environment. That first check did not install fresh dependencies. The separate
+new-environment validation below completes that same-host software check; it
+does not cover the later component extension or another Docker installation.
 
-The older `CoDesign` repository has not been deleted. Its removal
-remains a separate action with no `delete_repo` scope;
-this does not block local runtime work or report preparation.
+The older `CoDesign` repository has not been deleted. Its removal requires a
+fresh target-state check and confirmed authorization at action time. Recoverable
+local report retirement is recorded in [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md);
+remote deletion is not inferred from local archival or staged file removal.
 
 The full `cases/` cohort and private evaluator records are ignored by Git.
 Nine audited public case/recording bundles are now packaged under
@@ -347,16 +357,47 @@ or new API calls. Complete original telemetry HTTP responses were not archived;
 live source links depend on backend retention. Private labels, credentials and
 full runtime inspections remain outside the examples.
 
+## Subsequent software and coursework verification
+
+Release `16bbe7c` installed from `requirements.txt` in a new Python 3.13.12 venv
+on the existing Windows host, with system-site packages disabled. There were
+43 installed distributions including pip; `pip check` found no broken
+requirements. All nine recordings and eighteen English/Chinese case views
+passed guarded offline checks with zero HTTP requests, zero Gemini key reads,
+and no human reviews written. All 27 example JSON byte hashes stayed unchanged.
+The complete public suite passed **185 tests, one optional private-source audit
+skipped, in 38.06 seconds**. The first `ensurepip` creation failed on the system
+Temp permissions; a separate environment with workspace `TEMP`/`TMP` and
+authorized execution succeeded without source changes. Exact versions,
+commands, and receipts are documented in
+[FRESH_ENVIRONMENT_VALIDATION_20261001.md](FRESH_ENVIRONMENT_VALIDATION_20261001.md).
+
+The post-study offline component extension is separate. It shows two or three
+components' full recorded evidence, saved-input and citation membership, and
+captured direct parent-child links through three predefined questions. It makes
+no model or runtime call and retains the original diagnosis. The current local
+suite passed **200 tests in 38.04 seconds** after authorized execution with a
+fresh workspace temporary directory; the initial permission error is retained.
+The independent twelve-test helper review is in
+[INVESTIGATION_REVIEW_20261001.md](INVESTIGATION_REVIEW_20261001.md).
+The frozen 30-call study and its results remain unchanged.
+
+The revised Challenge 2 course PDF is prepared for final page/content review;
+the eight-slide Enhancement checkpoint has passed independent content and
+grayscale review. It is a current progress update, not the full Talk (4) roadmap.
+Actual student evidence judgments, confirmation of historical design/feedback,
+and course submission remain human-only verification. No new rubric score or
+90-point certification follows from these repairs.
+
 ## WSL session lifetime
 
 Microsoft states that systemd services do not keep a WSL instance alive. See
 [Microsoft's WSL systemd guide](https://learn.microsoft.com/en-us/windows/wsl/systemd#how-does-enabling-systemd-affect-wsl-architecture).
-For this capture session, a hidden Windows `wsl.exe` process runs `sleep 7200`
-in the dedicated `AutoTriager-Shop` distribution. Its metadata records
-**PID 29984**, start time **17:32:42 UTC**, and a **7,200-second** lifetime in
-the workspace's `.runtime-installers/shop-keepalive.json` outside this Git
-repository. The PID identifies this session only; do not reuse it as a startup
-command or assume the process is still alive later.
+For the capture session, a hidden Windows `wsl.exe` helper ran `sleep 7200`
+in the dedicated `AutoTriager-Shop` distribution. A renewed helper's recorded
+start was **19:04:49 UTC**, with a **7,200-second** bounded lifetime. Its nominal
+expiry is 21:04:49 UTC. Saved metadata is not proof that a process is still alive;
+do not reuse a historical PID or assume indefinite availability.
 
 For another capture session, keep a dedicated terminal running the bounded
 keepalive command in [SIMULATION_PROTOCOL.md](SIMULATION_PROTOCOL.md), or use
@@ -376,11 +417,11 @@ global `wsl --shutdown` during a capture.
    flags or assume a retry reset the runtime flag state.
 4. Inspect official captures and recorded analyses in the app at
    `127.0.0.1:8510`; the official storefront is on `127.0.0.1:8080`. Complete
-   documentation/PDF publication polish and verify the follow-up push. Preserve
+   final course-artifact review and verify any subsequent publication. Preserve
    the completed regression, clone and public-example audit receipts; update
    the report only from observed artifacts.
 
-The latest full October 1 engineering regression passed **186 tests in 34.27
+The historical full study engineering regression passed **186 tests in 34.27
 seconds**. The earlier six-example public-only checks passed 48 with one optional
 private-source comparison skipped in 34.07 seconds before the latest UI repair.
 The later complete post-repair public-source snapshot passed **185 tests and

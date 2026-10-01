@@ -17,6 +17,7 @@ import streamlit as st
 
 from autotriager_shop import analyze_incident, load_incident
 from autotriager_shop.gemini import DEFAULT_MODEL, diagnose_with_gemini
+from autotriager_shop.investigation import answer_evidence_query, compare_components
 from autotriager_shop.ui import (
     broken_evidence_references,
     build_review_record,
@@ -223,6 +224,65 @@ COPY = {
     },
 }
 
+COPY["en"].update({
+    "comparison": "Compare component evidence",
+    "comparison_help": "Offline evidence queries over all captured public observations. This post-study feature does not change the diagnosis, call a model, or prove a root cause.",
+    "comparison_components": "Components to compare (two or three)",
+    "comparison_choose": "Choose two or three components to compare their captured evidence.",
+    "comparison_error": "Cannot compare this evidence: {error}",
+    "record_count": "Captured records", "metric_count": "Metrics", "span_count": "Spans",
+    "log_count": "Logs", "error_span_count": "ERROR spans", "cited_count": "Cited records",
+    "input_count": "In recorded input", "outside_count": "Outside recorded input",
+    "outside_window_count": "Outside investigation window",
+    "input_membership": "Model input membership", "cited_record": "Cited by this result",
+    "in_window": "Within investigation window", "in_model_input": "In recorded model input",
+    "outside_model_input": "Outside recorded model input", "unknown": "Unknown",
+    "not_applicable": "No model input (local baseline)",
+    "comparison_recorded": "Recorded input membership is known from the verified saved selection. Citation membership is separate. Viewing other records does not change what the earlier model saw.",
+    "comparison_unknown": "The live Gemini result preserves an observation count but not selected IDs. Which records it saw is unknown; no membership is inferred.",
+    "comparison_local": "The local baseline is deterministic. Model-input membership does not apply.",
+    "followup": "Evidence follow-up (predefined queries)",
+    "followup_question": "Evidence question", "followup_component": "Component to inspect",
+    "component_records": "Which captured records belong to this component?",
+    "observed_links": "What observed parent-child links connect these components?",
+    "outside_recorded_input": "Which selected-component records were outside the recorded model input?",
+    "observed_links_note": "Only unique same-trace parent_span_id → span_id matches are shown. These are direct observed trace links, not an inferred call chain or causal propagation.",
+    "no_observed_links": "No resolvable cross-component parent-child link appears between the selected components.",
+    "external_links": "Observed parents outside the selected components",
+    "unresolved_parents": "Unresolved or ambiguous parent references",
+    "no_records": "No matching captured records.",
+    "inspect_record": "Record to inspect", "yes": "Yes", "no": "No",
+})
+COPY["zh"].update({
+    "comparison": "比较组件证据",
+    "comparison_help": "对全部已采集公开观测进行离线查询。这是研究结束后的工程功能，不改变诊断，不调用模型，也不证明根因。",
+    "comparison_components": "比较的组件（选择两个或三个）",
+    "comparison_choose": "请选择两个或三个组件，比较已采集的证据。",
+    "comparison_error": "无法比较这些证据：{error}",
+    "record_count": "已采集记录", "metric_count": "指标", "span_count": "跨度记录",
+    "log_count": "日志", "error_span_count": "ERROR 跨度", "cited_count": "引用记录",
+    "input_count": "录制输入内", "outside_count": "录制输入外",
+    "outside_window_count": "调查时间范围外",
+    "input_membership": "模型输入归属", "cited_record": "被当前结果引用",
+    "in_window": "调查时间范围内", "in_model_input": "录制模型输入内",
+    "outside_model_input": "录制模型输入外", "unknown": "未知",
+    "not_applicable": "无模型输入（本地基线）",
+    "comparison_recorded": "录制输入归属来自已核验的保存选取列表，是否引用单独标记。查看其他记录不会改变此前模型见过的内容。",
+    "comparison_unknown": "当前实时 Gemini 结果只保留观测数量，未保留选取的记录 ID，因此不知道模型见过哪些记录，不推测输入归属。",
+    "comparison_local": "本地基线是确定性程序，不适用模型输入归属。",
+    "followup": "证据追问（预设查询）",
+    "followup_question": "证据问题", "followup_component": "查看的组件",
+    "component_records": "哪些已采集记录属于这个组件？",
+    "observed_links": "这些组件之间有哪些已观测到的父子跨度链接？",
+    "outside_recorded_input": "所选组件的哪些记录没有进入录制模型输入？",
+    "observed_links_note": "仅显示同一 trace 中唯一的 parent_span_id → span_id 对应。这是直接观测的跨度链接，不是推断的调用链或因果传播。",
+    "no_observed_links": "所选组件间未发现可确定对应的跨组件父子跨度链接。",
+    "external_links": "位于所选组件之外的已观测父跨度",
+    "unresolved_parents": "未解析或存在歧义的父跨度引用",
+    "no_records": "没有匹配的已采集记录。",
+    "inspect_record": "核查哪条记录", "yes": "是", "no": "否",
+})
+
 
 def _human_source_link(source_url: Any, tr: dict[str, str]) -> None:
     url = str(source_url or "").strip()
@@ -367,6 +427,96 @@ def _show_review(case: dict[str, Any], analysis: dict[str, Any], tr: dict[str, s
         )
 
 
+def _show_component_comparison(case: dict[str, Any], analysis: dict[str, Any],
+                               tr: dict[str, str], case_dir: Path) -> None:
+    st.subheader(tr["comparison"])
+    st.caption(tr["comparison_help"])
+    available = sorted({row["service"] for row in case["observations"]})
+    preferred = [item["service"] for item in analysis.get("candidates", [])
+                 if item.get("service") in available]
+    defaults = list(dict.fromkeys(preferred + available))[:2]
+    # Keep choices independent of translated widget labels and result switches.
+    chosen = st.session_state.get("investigation_components", defaults)
+    chosen = [service for service in chosen if service in available][:3]
+    st.session_state["investigation_component_widget"] = chosen
+
+    def remember_components() -> None:
+        st.session_state["investigation_components"] = st.session_state["investigation_component_widget"]
+
+    components = st.multiselect(tr["comparison_components"], available, max_selections=3,
+                                key="investigation_component_widget", on_change=remember_components)
+    st.session_state["investigation_components"] = components
+    if len(components) < 2:
+        st.info(tr["comparison_choose"])
+        return
+    try:
+        comparison = compare_components(case, analysis, components)
+    except (ValueError, KeyError, TypeError) as exc:
+        st.error(tr["comparison_error"].format(error=exc))
+        return
+    visibility = comparison["model_input_visibility"]
+    st.caption(tr[f"comparison_{'recorded' if visibility == 'recorded' else 'unknown' if visibility == 'unknown' else 'local'}"])
+    summary = []
+    for item in comparison["summaries"]:
+        row = {tr["service"]: item["service"], tr["record_count"]: item["record_count"],
+               tr["metric_count"]: item["counts_by_kind"]["metric"],
+               tr["span_count"]: item["counts_by_kind"]["span"],
+               tr["log_count"]: item["counts_by_kind"]["log"],
+               tr["error_span_count"]: item["error_span_count"],
+               tr["cited_count"]: item["cited_record_count"],
+               tr["outside_window_count"]: item["outside_window_count"]}
+        if visibility == "recorded":
+            row[tr["input_count"]] = item["model_input_counts"]["in_model_input"]
+            row[tr["outside_count"]] = item["model_input_counts"]["outside_model_input"]
+        summary.append(row)
+    st.dataframe(summary, hide_index=True, width="stretch")
+    st.markdown(f"**{tr['followup']}**")
+    queries = ["component_records", "observed_links", "outside_recorded_input"]
+    remembered = st.session_state.get("investigation_query", queries[0])
+    st.session_state["investigation_query_widget"] = remembered
+
+    def remember_query() -> None:
+        st.session_state["investigation_query"] = st.session_state["investigation_query_widget"]
+
+    query = st.selectbox(tr["followup_question"], queries, format_func=lambda item: tr[item],
+                         key="investigation_query_widget", on_change=remember_query)
+    st.session_state["investigation_query"] = query
+    component = None
+    if query == "component_records":
+        component = st.selectbox(tr["followup_component"], components,
+                                 key="investigation_followup_component")
+    answer = answer_evidence_query(comparison, query, component)
+    if query == "observed_links":
+        st.caption(tr["observed_links_note"])
+        if answer["links"]:
+            st.dataframe(answer["links"], hide_index=True, width="stretch")
+        else:
+            st.info(tr["no_observed_links"])
+        for name in ("external_links", "unresolved_parents"):
+            if answer[name]:
+                with st.expander(tr[name]):
+                    st.dataframe(answer[name], hide_index=True, width="stretch")
+        return
+    if answer["status"] in {"unknown", "not_applicable"}:
+        st.info(tr["comparison_unknown"] if answer["status"] == "unknown" else tr["comparison_local"])
+        return
+    rows = answer["records"]
+    if not rows:
+        st.info(tr["no_records"])
+        return
+    overview = [{"ID": row["id"], tr["timestamp"]: row["timestamp"], tr["service"]: row["service"],
+                 tr["kind"]: row["kind"], tr["summary"]: row["summary"],
+                 tr["input_membership"]: tr[row["model_input_membership"]],
+                 tr["cited_record"]: tr["yes"] if row["cited_by_current_result"] else tr["no"],
+                 tr["in_window"]: tr["yes"] if row["in_investigation_window"] else tr["no"]}
+                for row in rows]
+    st.dataframe(overview, hide_index=True, width="stretch")
+    by_id = {row["id"]: row for row in rows}
+    evidence_id = st.selectbox(tr["inspect_record"], list(by_id),
+                               key=f"investigation_record_{query}_{component or 'all'}")
+    _show_evidence({"evidence": [by_id[evidence_id]]}, tr, case_dir)
+
+
 def _configured_live_method() -> dict[str, str]:
     """Use the frozen public method when present, preserving prior defaults."""
     path = ROOT / "research" / "selected_method.json"
@@ -474,6 +624,9 @@ def main() -> None:
         st.session_state.pop("analysis_gemini", None)
         st.session_state.pop("analysis_recorded", None)
         st.session_state.pop("latest_review", None)
+        for key in list(st.session_state):
+            if str(key).startswith("investigation_"):
+                st.session_state.pop(key, None)
         st.session_state["analysis_case"] = selected_key
     if st.button(tr["run_local"], type="primary"):
         try:
@@ -574,6 +727,7 @@ def main() -> None:
     _show_evidence(analysis, tr, selected_dir)
     st.subheader(tr["uncertainty"])
     st.write(analysis.get("uncertainty") or "—")
+    _show_component_comparison(incident, analysis, tr, selected_dir)
     _show_review(incident, analysis, tr, language)
 
 

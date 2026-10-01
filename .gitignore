@@ -16,3 +16,5 @@ tests/.tmp/
 pytest-cache-files-*/
 tmp*/
 evaluation/private/
+# Retired native-only report. The official Shop report is the current delivery.
+output/pdf/AutoTriager_Challenge2_Dahe_Chen.pdf

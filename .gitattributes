@@ -1,10 +1,12 @@
 *.pdf binary
+*.pptx binary
 *.png binary
 *.jpg binary
 *.ndjson text eol=lf
 *.py text eol=lf
 *.md text eol=lf
 .gitattributes text eol=lf
+.gitignore text eol=lf
 # Preserve exact captured/recorded JSON bytes across platforms.
 examples/official_shop/**/*.json -text whitespace=cr-at-eol
 # These two file-byte hashes are frozen research artifacts.
