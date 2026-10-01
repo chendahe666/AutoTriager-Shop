@@ -6,8 +6,10 @@ accepted phase windows from five completed attempts, including a fresh recovery
 interval after a preserved failure. Development and amended confirmation are
 complete under the frozen method. Public release `16bbe7c` and a new same-host
 Python dependency environment are verified. The later offline comparison
-extension has a separate 200-test local pass; its revised course PDF remains in
-final review. Publication of that subsequent revision is a separate checkpoint.
+extension had a separate 200-test local pass. Its final course PDF and checkpoint
+deck were rendered and reviewed, then independently verified from public
+`139cfa1`. A subsequent neutral-outcome UI repair passed 201 local tests; that
+repair has its own review and published-source check.
 This is not a demonstration of RCA superiority or
 user benefit.
 

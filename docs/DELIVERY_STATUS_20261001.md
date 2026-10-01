@@ -24,6 +24,12 @@ questions. This does not call a model, change the earlier result, or create a
 new diagnostic experiment. Its boundaries are described in
 [INVESTIGATION_COMPARISON.md](INVESTIGATION_COMPARISON.md).
 
+A subsequent [interface review](UI_VALIDATION_BOUNDARY_REVIEW_20261001.md)
+replaced the green supported-hypothesis banner with a neutral candidate outcome
+and an always-visible Gemini validation-boundary caption. The unchanged `003-b`
+checkout response remains available for review. The local full suite passed
+201 tests in 38.63 seconds. This repairs presentation, not the study's results.
+
 ## Software verification and publication
 
 | Evidence | Actual scope and status |
@@ -32,9 +38,10 @@ new diagnostic experiment. Its boundaries are described in
 | New dependency environment | Same Windows host, Python 3.13.12, isolated venv, 43 distributions including pip, clean `pip check` |
 | Public-release replay/UI checks | Nine outputs and eighteen English/Chinese views passed without HTTP requests or API-key reads |
 | New-environment public suite | 185 passed, one explicitly optional private-source audit skipped, 38.06 seconds; release predates the new comparison code |
-| Current local source suite | 200 passed in 38.04 seconds, including the post-study extension; fresh authorized workspace temporary directory |
+| Comparison-extension local suite | 200 passed in 38.04 seconds; predates the later UI wording repair |
 | Independent feature review | Twelve focused helper tests passed; frozen Gemini functions, schema, and scorer remained unchanged |
-| Current revision publication | Public `139cfa1` independently cloned; all example/artifact/frozen hashes matched; 199 passed and one optional private-source comparison skipped in 38.97 seconds |
+| Comparison-extension publication | Public `139cfa1` independently cloned; all example/artifact/frozen hashes matched; 199 passed and one optional private-source comparison skipped in 38.97 seconds |
+| UI-boundary repair local suite | 201 passed in 38.63 seconds; one actual counterexample regression added; no new API call |
 
 Temporary-directory permission failures were retained and resolved through a
 separate isolated setup or authorized test execution; no application assertion
@@ -42,9 +49,9 @@ was changed to make them pass. These checks establish software behavior on the
 stated host, not another operating system or an SRE user study. See
 [FRESH_ENVIRONMENT_VALIDATION_20261001.md](FRESH_ENVIRONMENT_VALIDATION_20261001.md)
 and [INVESTIGATION_REVIEW_20261001.md](INVESTIGATION_REVIEW_20261001.md).
-The [final release verification](FINAL_RELEASE_VERIFICATION_20261001.md) closes
-the public-delivery gate. Later status-document edits do not change the tested
-application, examples, frozen method or reviewed artifact bytes.
+The [final release verification](FINAL_RELEASE_VERIFICATION_20261001.md) covers
+`139cfa1`; the new UI repair requires a separate published-source check. The
+examples, frozen method, and reviewed PDF/PPTX bytes remain unchanged.
 
 ## Coursework artifacts
 
@@ -66,7 +73,9 @@ The earlier simulated **76–86** rubric interval assessed the pre-repair
 nine-page report at `16bbe7c`. The [updated simulated review](FINAL_COURSE_REVIEW_20261001.md)
 estimates approximately **82–90**, using the actual eight rubric weights and
 excluding unknown administrative treatment. Missing real human judgment and
-original pre-AI provenance remain explicit. Neither interval is an instructor
+independent pre-AI provenance remain explicit. The [provenance audit](HUMAN_DESIGN_PROVENANCE_20261001.md)
+verified a preserved AI-assisted preparation PDF, while finding no original
+workflow drawing in it. Neither interval is an instructor
 score, a guaranteed 90-point result, or evidence of paper acceptance.
 
 ## Recoverable retirement of superseded artifacts
@@ -88,16 +97,16 @@ present**. Source data and frozen experiment results were not deleted.
 | 07 | `AutoTriager_Talk4_Dahe_Chen.pptx` | Retired from active output; recoverable copy |
 | 08 | Initial colored `AutoTriager_OfficialShop_Checkpoint_Dahe_Chen.pptx` | Retired after the reviewed monochrome final deck; recoverable copy |
 
-The locked repository PDF is now explicitly ignored, and its removal from the
-Git index is staged. Its local file still exists, and the published tree is not
-retired until the subsequent commit and push are verified. The archive is not
+The locked repository PDF is explicitly ignored and absent from the published
+`139cfa1` tree, as independently verified. Its local file still exists and
+requires closure of its WPS PDF tab before local retirement. The archive is not
 published. Recovery uses the matching manifest entry and requires checking its
 hash; the retained copies should not be presented as current submissions.
 
 The requested old **AutoTriager-CoDesign** remote removal remains pending an
 action-time confirmation of the target and authorization. No remote deletion
-has been executed in this revision. Local archival, an ignored file, and a
-staged index deletion do not prove GitHub repository deletion.
+has been executed in this revision. Local archival, an ignored file, and
+removal from the current Git tree do not prove GitHub repository deletion.
 
 ## Remaining human-only inputs
 

@@ -147,3 +147,25 @@ def test_live_model_outside_input_followup_discloses_unknown_membership(interfac
     ui.selectbox(key="investigation_query_widget").select("outside_recorded_input").run()
     assert not ui.exception
     assert any("Which records it saw is unknown" in item.value for item in ui.info)
+
+
+def test_actual_checkout_counterexample_shows_neutral_outcome_and_visible_check_boundary_bilingually(interface):
+    ui, scratch, _, _ = interface
+    counterexample = _copy_case(scratch, "status-counterexample", "example-05")
+    ui.run()
+    loaded = _select_and_load(ui, counterexample)
+    assert loaded["status"] == "supported"
+    assert loaded["candidates"][0]["service"] == "checkout"
+    assert any(item.value == "Analysis outcome: Candidate available for review" for item in ui.info)
+    assert not ui.success
+    assert any("Candidate and citation checks do not verify every reasoning claim" in item.value
+               for item in ui.caption)
+    # The boundary is a visible caption, not only text hidden in a replay expander.
+    ui.sidebar.selectbox[0].select("中文").run()
+    assert not ui.exception
+    assert any(item.value == "分析结果: 有候选可供核查" for item in ui.info)
+    assert not ui.success
+    assert any("候选服务和引用检查不会验证每一句推理" in item.value for item in ui.caption)
+    assert ui.session_state["analysis_recorded"]["status"] == "supported"
+    assert ui.session_state["analysis_recorded"]["candidates"][0]["service"] == "checkout"
+    assert "latest_review" not in ui.session_state

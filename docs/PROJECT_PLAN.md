@@ -175,7 +175,7 @@ seeded into absent case directories without overwriting existing data. They
 contain captured observations and real recorded responses, with no expected
 diagnosis or human judgment supplied. Historical six-example and final
 nine-example regression receipts are retained in the runtime ledger. The new
-same-host dependency validation and the 200-test post-extension local result
+same-host dependency validation and the 200-test comparison-extension result
 are distinct from those earlier snapshots and from the frozen diagnostic
 experiment. Temporary-directory permission failures are retained, not counted
 as prediction errors. The older CoDesign repository has not been deleted; removal
@@ -187,7 +187,9 @@ requires a fresh target/authorization check at action time.
    with a reason and next check. Automated tests and AI review cannot provide
    this student judgment or constitute an SRE user study.
 2. Confirm historical Human Design provenance and the wording of the reported
-   instructor feedback. A retrospective reflection may explain decisions but
+   instructor feedback. The [provenance audit](HUMAN_DESIGN_PROVENANCE_20261001.md)
+   verifies a preserved AI-assisted preparation; independent pre-AI authorship
+   and an original drawing remain unestablished. A retrospective reflection may explain decisions but
    must not become a backdated pre-AI artifact.
 3. Confirm the applicable deadline/extension and submit through the course
    system, unless separate submission authorization is provided. No submission

@@ -47,6 +47,10 @@ Replay separates the original model response from the application decision.
 Hash, citation, and validation checks do not verify every reasoning claim or
 establish user benefit. Original local Prometheus and Jaeger links can become
 unavailable; the extracted observations remain inspectable offline.
+Both live and recorded Gemini results use a neutral **Candidate available for
+review** outcome with a visible validation-boundary explanation. This
+[post-study interface repair](docs/UI_VALIDATION_BOUNDARY_REVIEW_20261001.md)
+does not change the saved predictions or establish their correctness.
 
 ## Compare evidence after loading a result
 

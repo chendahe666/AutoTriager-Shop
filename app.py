@@ -78,8 +78,9 @@ COPY = {
         "invalid_citations": "Gemini supplied citations that did not match the sent evidence: {ids}. These were excluded.",
         "running": "Analyzing public observations…",
         "result": "Diagnosis",
-        "status": "Evidence status",
-        "supported": "Supported hypothesis",
+        "status": "Analysis outcome",
+        "supported": "Candidate available for review",
+        "model_check_boundary": "Candidate and citation checks do not verify every reasoning claim or establish the best next action. Inspect the records before accepting the explanation.",
         "insufficient_evidence": "Insufficient evidence",
         "method": "Analysis method",
         "candidates": "Candidate services",
@@ -121,7 +122,7 @@ COPY = {
         "download": "Download review JSON",
         "reason_required": "Enter a brief reason before saving.",
         "decision_required": "Choose your judgment before saving.",
-        "candidate_required": "Choose a candidate service before accepting or rejecting a supported hypothesis.",
+        "candidate_required": "Choose a candidate service before accepting or rejecting a candidate finding.",
         "load_error": "Could not load this case: {error}",
         "analysis_error": "Diagnosis failed: {error}",
         "review_error": "Could not save review: {error}",
@@ -171,8 +172,9 @@ COPY = {
         "invalid_citations": "Gemini 给出的这些引用无法与所发送的证据对应：{ids}。这些引用已被排除。",
         "running": "正在分析公开的观测记录…",
         "result": "诊断结果",
-        "status": "证据状态",
-        "supported": "有证据支持的假设",
+        "status": "分析结果",
+        "supported": "有候选可供核查",
+        "model_check_boundary": "候选服务和引用检查不会验证每一句推理，也不确定最佳下一步。接受解释前，请核查原始记录。",
         "insufficient_evidence": "证据不足",
         "method": "分析方法",
         "candidates": "候选服务",
@@ -214,7 +216,7 @@ COPY = {
         "download": "下载核查 JSON",
         "reason_required": "保存前请写一句判断理由。",
         "decision_required": "保存前请选择你的判断。",
-        "candidate_required": "接受或否定有证据支持的假设前，请先选择一个候选服务。",
+        "candidate_required": "接受或否定候选结论前，请先选择一个候选服务。",
         "load_error": "无法加载案例：{error}",
         "analysis_error": "诊断失败：{error}",
         "review_error": "无法保存核查记录：{error}",
@@ -695,9 +697,11 @@ def main() -> None:
     st.header(tr["result"])
     status = str(analysis.get("status", "insufficient_evidence"))
     if status == "supported":
-        st.success(f"{tr['status']}: {tr['supported']}")
+        st.info(f"{tr['status']}: {tr['supported']}")
     else:
         st.warning(f"{tr['status']}: {tr['insufficient_evidence']}")
+    if selected_result in {"gemini", "recorded"}:
+        st.caption(tr["model_check_boundary"])
     st.caption(f"{tr['method']}: {analysis.get('method', '—')}")
     if selected_result in {"gemini", "recorded"}:
         st.caption(
