@@ -181,7 +181,8 @@ experiment. Temporary-directory permission failures are retained, not counted
 as prediction errors. Following the user's exact-target confirmation, the older
 CoDesign repository's removal was verified by an authenticated lookup and its
 canonical GitHub 404 page. The retained Shop repository remains accessible.
-The older locked local PDF is a separate pending cleanup item. See the
+The older local PDF has also been removed after its recoverable backup was
+verified; current final artifacts are unchanged. See the
 [current cleanup status](DELIVERY_STATUS_20261001.md).
 
 ## Remaining human decisions and verification

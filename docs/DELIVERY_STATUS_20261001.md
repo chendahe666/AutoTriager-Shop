@@ -90,7 +90,7 @@ present**. Source data and frozen experiment results were not deleted.
 
 | Archive prefix | Superseded artifact | Recorded retirement state |
 | --- | --- | --- |
-| 01 | Repository native-only `AutoTriager_Challenge2_Dahe_Chen.pdf` | Copy preserved; original was locked and remains pending viewer closure |
+| 01 | Repository native-only `AutoTriager_Challenge2_Dahe_Chen.pdf` | Retired from active output after viewer release; recoverable copy |
 | 02 | Earlier workspace `AutoTriager_Challenge2_Dahe_Chen.pdf` | Retired from active output; recoverable copy |
 | 03 | `AutoTriager_Challenge2_Human_Design.pdf` | Retired from active output; recoverable copy |
 | 04 | `AutoTriager_Challenge2_Revision_Report_Dahe_Chen.pdf` | Retired from active output; recoverable copy |
@@ -99,11 +99,15 @@ present**. Source data and frozen experiment results were not deleted.
 | 07 | `AutoTriager_Talk4_Dahe_Chen.pptx` | Retired from active output; recoverable copy |
 | 08 | Initial colored `AutoTriager_OfficialShop_Checkpoint_Dahe_Chen.pptx` | Retired after the reviewed monochrome final deck; recoverable copy |
 
-The locked repository PDF is explicitly ignored and absent from the published
-`139cfa1` tree, as independently verified. Its local file still exists and
-requires closure of its WPS PDF tab before local retirement. The archive is not
-published. Recovery uses the matching manifest entry and requires checking its
-hash; the retained copies should not be presented as current submissions.
+The repository native-only PDF was explicitly ignored and absent from the
+published `139cfa1` tree, as independently verified. Once the file was available
+and the user authorized local cleanup, its original and archived SHA-256 were
+rechecked before the original was removed. All eight retired originals are now
+absent from active output, and all eight archived copies match their manifest
+hashes. The current final Official Shop PDF and monochrome deck retain their
+pre-cleanup hashes. The archive is not published. Recovery uses the matching
+manifest entry and requires checking its hash; retained copies should not be
+presented as current submissions.
 
 The user confirmed removal of the old **AutoTriager-CoDesign** repository.
 The browser initially required **Confirm access** account reauthentication;
@@ -130,9 +134,9 @@ this cleanup verification.
    perform or authorize LMS submission. The handout deadline was September 30;
    these records are dated October 1. No submission or extension receipt was
    inspected, and late-treatment policy remains unknown.
-4. **Cleanup input:** close the viewer holding the native-only PDF so its local
-   retirement can finish. The old remote repository's removal is verified;
-   the remaining local file is a separate cleanup item.
+
+Old remote repository removal and local output retirement are both verified.
+Neither completes the remaining human verification or course submission.
 
 Final artifact QA, release/hash checks, documentation synchronization, and
 read-only startup checks can continue autonomously. New research comparisons,

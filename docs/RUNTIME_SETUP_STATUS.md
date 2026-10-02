@@ -344,9 +344,11 @@ does not cover the later component extension or another Docker installation.
 The older `CoDesign` repository's removal is now verified following the user's
 exact-target confirmation: an authenticated lookup cannot resolve it, and its
 canonical GitHub page displays 404. The retained Shop repository remains
-accessible. Recoverable local report retirement, including the separate locked
-PDF, is recorded in [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
-This remote cleanup is distinct from runtime validation and scientific results.
+accessible. Local report retirement is also complete: all eight obsolete
+originals are absent from active output, verified recoverable copies remain,
+and current final artifacts are unchanged. This is recorded in
+[DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
+Cleanup is distinct from runtime validation and scientific results.
 
 The full `cases/` cohort and private evaluator records are ignored by Git.
 Nine audited public case/recording bundles are now packaged under
