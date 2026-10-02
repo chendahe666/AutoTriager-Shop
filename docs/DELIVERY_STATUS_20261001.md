@@ -105,10 +105,14 @@ requires closure of its WPS PDF tab before local retirement. The archive is not
 published. Recovery uses the matching manifest entry and requires checking its
 hash; the retained copies should not be presented as current submissions.
 
-The requested old **AutoTriager-CoDesign** remote removal remains pending an
-action-time confirmation of the target and authorization. No remote deletion
-has been executed in this revision. Local archival, an ignored file, and
-removal from the current Git tree do not prove GitHub repository deletion.
+The user confirmed removal of the old **AutoTriager-CoDesign** repository.
+After verifying the exact target, the browser accepted the final submission but
+GitHub required **Confirm access** account reauthentication. Deletion is not
+complete: subsequent authenticated read-only checks found both the old
+repository and the retained **AutoTriager-Shop** repository. No account scopes
+were expanded. Local archival or removal from the current Git tree does not
+prove remote deletion. The prepared authentication page is handed to the user;
+after identity verification, the outcome must be checked again.
 
 ## Remaining human-only inputs
 
@@ -125,8 +129,9 @@ removal from the current Git tree do not prove GitHub repository deletion.
    these records are dated October 1. No submission or extension receipt was
    inspected, and late-treatment policy remains unknown.
 4. **Cleanup input:** close the viewer holding the native-only PDF so its local
-   retirement can finish, and resolve the pending action-time confirmation for
-   the named old remote. Neither issue justifies inventing a completed deletion.
+   retirement can finish, and complete GitHub account reauthentication for the
+   already-confirmed old repository deletion. Neither issue justifies inventing
+   a completed deletion.
 
 Final artifact QA, release/hash checks, documentation synchronization, and
 read-only startup checks can continue autonomously. New research comparisons,

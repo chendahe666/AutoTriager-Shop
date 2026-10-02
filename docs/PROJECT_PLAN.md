@@ -178,8 +178,10 @@ nine-example regression receipts are retained in the runtime ledger. The new
 same-host dependency validation and the 200-test comparison-extension result
 are distinct from those earlier snapshots and from the frozen diagnostic
 experiment. Temporary-directory permission failures are retained, not counted
-as prediction errors. The older CoDesign repository has not been deleted; removal
-requires a fresh target/authorization check at action time.
+as prediction errors. The user confirmed removal of the older CoDesign
+repository; GitHub account reauthentication now blocks completion. Both the old
+repository and the retained Shop repository were checked and still exist. See
+the [current cleanup status](DELIVERY_STATUS_20261001.md).
 
 ## Remaining human decisions and verification
 
