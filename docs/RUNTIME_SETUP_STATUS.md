@@ -341,11 +341,12 @@ environment. That first check did not install fresh dependencies. The separate
 new-environment validation below completes that same-host software check; it
 does not cover the later component extension or another Docker installation.
 
-The older `CoDesign` repository has not been deleted. The user has now confirmed
-the exact old-target removal; GitHub requires account reauthentication before
-completion. Recoverable local report retirement and the current remote gate are
-recorded in [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md);
-remote deletion is not inferred from local archival or staged file removal.
+The older `CoDesign` repository's removal is now verified following the user's
+exact-target confirmation: an authenticated lookup cannot resolve it, and its
+canonical GitHub page displays 404. The retained Shop repository remains
+accessible. Recoverable local report retirement, including the separate locked
+PDF, is recorded in [DELIVERY_STATUS_20261001.md](DELIVERY_STATUS_20261001.md).
+This remote cleanup is distinct from runtime validation and scientific results.
 
 The full `cases/` cohort and private evaluator records are ignored by Git.
 Nine audited public case/recording bundles are now packaged under

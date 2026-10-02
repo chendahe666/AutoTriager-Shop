@@ -106,13 +106,15 @@ published. Recovery uses the matching manifest entry and requires checking its
 hash; the retained copies should not be presented as current submissions.
 
 The user confirmed removal of the old **AutoTriager-CoDesign** repository.
-After verifying the exact target, the browser accepted the final submission but
-GitHub required **Confirm access** account reauthentication. Deletion is not
-complete: subsequent authenticated read-only checks found both the old
-repository and the retained **AutoTriager-Shop** repository. No account scopes
-were expanded. Local archival or removal from the current Git tree does not
-prove remote deletion. The prepared authentication page is handed to the user;
-after identity verification, the outcome must be checked again.
+The browser initially required **Confirm access** account reauthentication;
+the pending receipt preserves that intermediate state. A later authenticated
+read-only check could no longer resolve the old repository, and its canonical
+GitHub page displayed **404 / Page not found**. The retained
+**AutoTriager-Shop** repository remained accessible. These checks verify the
+old remote repository's removal separately from local archival. A completion
+receipt and real browser screenshot are retained privately. No account scopes,
+study data, application code, or final submission artifacts were changed by
+this cleanup verification.
 
 ## Remaining human-only inputs
 
@@ -129,9 +131,8 @@ after identity verification, the outcome must be checked again.
    these records are dated October 1. No submission or extension receipt was
    inspected, and late-treatment policy remains unknown.
 4. **Cleanup input:** close the viewer holding the native-only PDF so its local
-   retirement can finish, and complete GitHub account reauthentication for the
-   already-confirmed old repository deletion. Neither issue justifies inventing
-   a completed deletion.
+   retirement can finish. The old remote repository's removal is verified;
+   the remaining local file is a separate cleanup item.
 
 Final artifact QA, release/hash checks, documentation synchronization, and
 read-only startup checks can continue autonomously. New research comparisons,
