@@ -1,0 +1,25 @@
+{
+  "corpus_id": "autotriager-incident-rag-v1",
+  "source_pin": "dedc0178918e260823323b8d95005a8cb924b007",
+  "chunk_count": 23,
+  "kinds": {
+    "general_rule": 9,
+    "platform_context": 14
+  },
+  "corpus_sha256": "f2d32871924b85e4f209174f4ae5b582753c08a0de1bb7f382f0681fefd17628",
+  "verified_source_files": [
+    "pb/demo.proto",
+    "src/checkout/main.go",
+    "src/frontend/gateways/rpc/Checkout.gateway.ts",
+    "src/frontend/pages/api/checkout.ts",
+    "src/payment/index.js"
+  ],
+  "checks": [
+    "pinned HEAD",
+    "local bytes match pinned files after newline normalization",
+    "source line anchors",
+    "schema and IDs",
+    "retrieval text leakage denylist"
+  ],
+  "limitation": "Checks validate construction, not diagnosis accuracy, complete leakage detection, or claim entailment."
+}

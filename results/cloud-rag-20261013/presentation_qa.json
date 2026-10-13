@@ -1,0 +1,29 @@
+{
+  "artifact": "output/slides/AutoTriager_Challenge3_Cloud_GraphRAG_Dahe_Chen.pptx",
+  "sha256": "322adbc8c021f0f1df14ccf61a6d1ef812c241df6f97c727aea234b52920d8a0",
+  "slide_count": 8,
+  "speaker_note_text": [],
+  "contains_CJK_slide_text": false,
+  "contains_neo4j_private_host_pattern": false,
+  "contains_API_key_pattern": false,
+  "source_screenshots": [
+    {
+      "source": "aura-graph.png",
+      "sha256": "37fc1b227909f5f4dff1928f3f1b5ef290e1ff3f89634e4e2a3f4975244189f6",
+      "embedded_original_bytes": true
+    },
+    {
+      "source": "aura-query.png",
+      "sha256": "76b812e4399d3b6260e4db0fb2eabdb86d0586153a44ec7522aa782a727e3cc6",
+      "embedded_original_bytes": true
+    },
+    {
+      "source": "workbench-rag.png",
+      "sha256": "f18d8a0e3693ef9319f5f08cefec588efa568f3796ed20d8db564712c4fd2ee6",
+      "embedded_original_bytes": true
+    }
+  ],
+  "native_powerpoint_render": "8 slides opened and exported successfully; all inspected",
+  "claim_scope": "Executed development prototype. No held-out diagnosis accuracy or comparative benefit claimed.",
+  "publication_note": "Temporary native-render contact sheet and machine paths are omitted; slide and source-image hashes are unchanged."
+}

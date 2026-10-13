@@ -1,0 +1,30 @@
+{
+  "name": "autotriager-investigation-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "build:standalone": "vite build",
+    "build:grafana": "rollup -c rollup.config.mjs",
+    "build": "npm run typecheck && npm run build:standalone && npm run build:grafana",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@grafana/data": "12.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "12.3.0",
+    "@types/react": "18.3.26",
+    "@types/react-dom": "18.3.7",
+    "@vitejs/plugin-react": "5.0.4",
+    "rollup": "4.63.6",
+    "tslib": "2.8.1",
+    "typescript": "5.9.3",
+    "vite": "7.1.9"
+  }
+}

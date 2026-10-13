@@ -14,3 +14,7 @@ autotriager_shop/schema.py -text
 scripts/score_paired_experiment.py -text
 # Linux deployment scripts need LF endings.
 *.sh text eol=lf
+# Preserve byte hashes in the published graph, corpus, and execution receipts.
+kg/*.json -text whitespace=cr-at-eol
+kg/**/*.json -text whitespace=cr-at-eol
+results/cloud-rag-20261013/*.json -text whitespace=cr-at-eol

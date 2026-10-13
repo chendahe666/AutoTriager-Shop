@@ -1,0 +1,1167 @@
+{
+  "graph_id": "autotriager-c3-v1",
+  "schema_version": "1.0",
+  "source_pin": "dedc0178918e260823323b8d95005a8cb924b007",
+  "nodes": [
+    {
+      "label": "BusinessWorkflow",
+      "properties": {
+        "id": "wf-rec",
+        "name": "Display recommendations",
+        "graph_id": "autotriager-c3-v1",
+        "scope": "Product-detail page; USD; recommendation branch only",
+        "success_criterion": "Return recommendation result; business fallback not yet verified",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "label": "BusinessWorkflow",
+      "properties": {
+        "id": "wf-checkout",
+        "name": "Place an order",
+        "graph_id": "autotriager-c3-v1",
+        "scope": "Checkout-to-payment partial path; additional dependencies omitted",
+        "success_criterion": "Order placement returns successfully",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "label": "Service",
+      "properties": {
+        "id": "svc-front",
+        "name": "frontend",
+        "graph_id": "autotriager-c3-v1",
+        "component_scope": "logical service",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Service",
+      "properties": {
+        "id": "svc-rec",
+        "name": "recommendation",
+        "graph_id": "autotriager-c3-v1",
+        "component_scope": "logical service",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Service",
+      "properties": {
+        "id": "svc-catalog",
+        "name": "product-catalog",
+        "graph_id": "autotriager-c3-v1",
+        "component_scope": "logical service",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Service",
+      "properties": {
+        "id": "svc-checkout",
+        "name": "checkout",
+        "graph_id": "autotriager-c3-v1",
+        "component_scope": "logical service",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Service",
+      "properties": {
+        "id": "svc-payment",
+        "name": "payment",
+        "graph_id": "autotriager-c3-v1",
+        "component_scope": "logical service",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-api-rec",
+        "name": "GET /api/recommendations",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "HTTP",
+        "method": "GET",
+        "rpc_service": "",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-list-rec",
+        "name": "ListRecommendations",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "gRPC",
+        "method": "ListRecommendations",
+        "rpc_service": "oteldemo.RecommendationService",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-list-prod",
+        "name": "ListProducts",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "gRPC",
+        "method": "ListProducts",
+        "rpc_service": "oteldemo.ProductCatalogService",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-get-prod",
+        "name": "GetProduct",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "gRPC",
+        "method": "GetProduct",
+        "rpc_service": "oteldemo.ProductCatalogService",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-api-checkout",
+        "name": "POST /api/checkout",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "HTTP",
+        "method": "POST",
+        "rpc_service": "",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-place",
+        "name": "PlaceOrder",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "gRPC",
+        "method": "PlaceOrder",
+        "rpc_service": "oteldemo.CheckoutService",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Operation",
+      "properties": {
+        "id": "op-charge",
+        "name": "Charge",
+        "graph_id": "autotriager-c3-v1",
+        "protocol": "gRPC",
+        "method": "Charge",
+        "rpc_service": "oteldemo.PaymentService",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-proto-rec",
+        "name": "Recommendation / catalog interfaces",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L54-L75",
+        "source_path": "pb/demo.proto",
+        "line_start": 54,
+        "line_end": 75,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "b8aac66ec78b964c12a889d426dba99ddc0b8c388e651451b4793fc2784c0e99",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-proto-pay",
+        "name": "Payment / checkout interfaces",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L174-L226",
+        "source_path": "pb/demo.proto",
+        "line_start": 174,
+        "line_end": 226,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "b8aac66ec78b964c12a889d426dba99ddc0b8c388e651451b4793fc2784c0e99",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-front-rec",
+        "name": "Recommendation API source",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/recommendations.ts#L12-L24",
+        "source_path": "src/frontend/pages/api/recommendations.ts",
+        "line_start": 12,
+        "line_end": 24,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "414b934e659770bf48e5317c3435ff15f0b6a296ff911368d215817ffe3662db",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-rec-server",
+        "name": "Recommendation cache / catalog path",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/recommendation/recommendation_server.py#L42-L113",
+        "source_path": "src/recommendation/recommendation_server.py",
+        "line_start": 42,
+        "line_end": 113,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "0ea33b41ad6b18cbae36dcd4d5e0a9004adbd9f7ebbe12d5cee5827320587650",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-front-product",
+        "name": "Catalog RPC gateway",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/gateways/rpc/ProductCatalog.gateway.ts#L10-L22",
+        "source_path": "src/frontend/gateways/rpc/ProductCatalog.gateway.ts",
+        "line_start": 10,
+        "line_end": 22,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "968ebbd80fc3cd748e7db1410442d457389760e1d032e4fb1295faff4b3e516b",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-front-checkout",
+        "name": "Checkout API source",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L20-L49",
+        "source_path": "src/frontend/pages/api/checkout.ts",
+        "line_start": 20,
+        "line_end": 49,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "85befc82780d6a0a613fb636485a1923cb0c7805591ab915d0c46144ae771a03",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-checkout-go",
+        "name": "Checkout charging path",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "source_code",
+        "locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L306-L589",
+        "source_path": "src/checkout/main.go",
+        "line_start": 306,
+        "line_end": 589,
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "sha256": "c48aed09015b3c08e6ce7550968079b4572fe73fc7ab44f39853dcbbc9a64330",
+        "evidence_status": "source_supported",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-otel",
+        "name": "OpenTelemetry semantic conventions",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "authoritative_standard",
+        "locator": "https://opentelemetry.io/docs/specs/semconv/",
+        "source_version": "retrieval date 2026-10-12",
+        "evidence_status": "documented",
+        "scope": "Vocabulary only; does not verify a dependency or incident",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-prov",
+        "name": "W3C PROV-O",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "authoritative_standard",
+        "locator": "https://www.w3.org/TR/prov-o/",
+        "source_version": "W3C Recommendation 2013-04-30",
+        "evidence_status": "documented",
+        "scope": "Provenance modeling inspiration; not an RDF conformance claim",
+        "access_scope": "public"
+      }
+    },
+    {
+      "label": "Incident",
+      "properties": {
+        "id": "incident-archive-02",
+        "name": "Archived checkout window",
+        "graph_id": "autotriager-c3-v1",
+        "original_case_id": "shop-pilot-002-b",
+        "start_utc": "2026-10-01T18:09:26.219334Z",
+        "end_utc": "2026-10-01T18:12:38.547257Z",
+        "source_kind": "archived_real_capture",
+        "deployed_version": "unverified by capture",
+        "evidence_status": "archived_runtime_observed",
+        "scope": "One trace selected from existing window; not a new experiment"
+      }
+    },
+    {
+      "label": "Evidence",
+      "properties": {
+        "id": "ev-archive",
+        "name": "Preserved checkout observations",
+        "graph_id": "autotriager-c3-v1",
+        "kind": "archived_telemetry",
+        "locator": "examples/official_shop/example-02/observations.json",
+        "sha256": "374cb404713e96e650b354786412873bc3ac7642f9d0e6e2ffa979c24c4635d6",
+        "incident_locator": "examples/official_shop/example-02/incident.json",
+        "incident_sha256": "0e6a763acc7c5a808bea84eb16e1be080df9ad6131fd2db107db8ea6401d7182",
+        "source_version": "source pin 3.1.0 (dedc0178918e260823323b8d95005a8cb924b007); runtime image unverified by capture",
+        "evidence_status": "archived_runtime_observed",
+        "access_scope": "public_sanitized"
+      }
+    },
+    {
+      "label": "Observation",
+      "properties": {
+        "id": "obs-archive-span-00003",
+        "name": "frontend internal",
+        "graph_id": "autotriager-c3-v1",
+        "original_record_id": "span-00003",
+        "kind": "span",
+        "time_utc": "2026-10-01T18:09:37.780000Z",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "span_id": "e932062fd2e5ea84",
+        "parent_span_id": "872a471779dc5d50",
+        "outcome": "ERROR",
+        "duration_ms": 100.334,
+        "original_operation": "executing api route (pages) /api/checkout",
+        "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_status": "archived_runtime_observed",
+        "deployed_version": "unverified by capture"
+      }
+    },
+    {
+      "label": "Observation",
+      "properties": {
+        "id": "obs-archive-span-00004",
+        "name": "frontend client",
+        "graph_id": "autotriager-c3-v1",
+        "original_record_id": "span-00004",
+        "kind": "span",
+        "time_utc": "2026-10-01T18:09:37.780000Z",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "span_id": "efb3cba869076aa8",
+        "parent_span_id": "e932062fd2e5ea84",
+        "outcome": "ERROR",
+        "duration_ms": 99.684,
+        "original_operation": "oteldemo.CheckoutService/PlaceOrder",
+        "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_status": "archived_runtime_observed",
+        "deployed_version": "unverified by capture"
+      }
+    },
+    {
+      "label": "Observation",
+      "properties": {
+        "id": "obs-archive-span-00005",
+        "name": "checkout server",
+        "graph_id": "autotriager-c3-v1",
+        "original_record_id": "span-00005",
+        "kind": "span",
+        "time_utc": "2026-10-01T18:09:37.781002Z",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "span_id": "69d1ec2d192dd847",
+        "parent_span_id": "efb3cba869076aa8",
+        "outcome": "ERROR",
+        "duration_ms": 98.533,
+        "original_operation": "oteldemo.CheckoutService/PlaceOrder",
+        "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_status": "archived_runtime_observed",
+        "deployed_version": "unverified by capture"
+      }
+    },
+    {
+      "label": "Observation",
+      "properties": {
+        "id": "obs-archive-span-00006",
+        "name": "checkout client",
+        "graph_id": "autotriager-c3-v1",
+        "original_record_id": "span-00006",
+        "kind": "span",
+        "time_utc": "2026-10-01T18:09:37.876284Z",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "span_id": "e583cbbc1d5f75f8",
+        "parent_span_id": "69d1ec2d192dd847",
+        "outcome": "ERROR",
+        "duration_ms": 3.197,
+        "original_operation": "oteldemo.PaymentService/Charge",
+        "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_status": "archived_runtime_observed",
+        "deployed_version": "unverified by capture"
+      }
+    },
+    {
+      "label": "Observation",
+      "properties": {
+        "id": "obs-archive-span-00007",
+        "name": "payment server",
+        "graph_id": "autotriager-c3-v1",
+        "original_record_id": "span-00007",
+        "kind": "span",
+        "time_utc": "2026-10-01T18:09:37.877000Z",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "span_id": "263b28468ee221d5",
+        "parent_span_id": "e583cbbc1d5f75f8",
+        "outcome": "ERROR",
+        "duration_ms": 1.372,
+        "original_operation": "oteldemo.PaymentService/Charge",
+        "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_status": "archived_runtime_observed",
+        "deployed_version": "unverified by capture"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "start": "svc-front",
+      "type": "EXPOSES",
+      "end": "op-api-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-front:EXPOSES:op-api-rec",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-rec",
+      "type": "EXPOSES",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-rec:EXPOSES:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-catalog",
+      "type": "EXPOSES",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-catalog:EXPOSES:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-catalog",
+      "type": "EXPOSES",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-catalog:EXPOSES:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-front",
+      "type": "EXPOSES",
+      "end": "op-api-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-front:EXPOSES:op-api-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-checkout",
+      "type": "EXPOSES",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-checkout:EXPOSES:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-pay"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-payment",
+      "type": "EXPOSES",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-payment:EXPOSES:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-pay"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "wf-rec",
+      "type": "IMPLEMENTED_BY",
+      "end": "svc-front",
+      "properties": {
+        "id": "autotriager-c3-v1:wf-rec:IMPLEMENTED_BY:svc-front",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "evidence_status": "source_supported",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "start": "wf-rec",
+      "type": "USES_OPERATION",
+      "end": "op-api-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:wf-rec:USES_OPERATION:op-api-rec",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "evidence_status": "source_supported",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "start": "wf-checkout",
+      "type": "IMPLEMENTED_BY",
+      "end": "svc-front",
+      "properties": {
+        "id": "autotriager-c3-v1:wf-checkout:IMPLEMENTED_BY:svc-front",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "evidence_status": "source_supported",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "start": "wf-checkout",
+      "type": "USES_OPERATION",
+      "end": "op-api-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:wf-checkout:USES_OPERATION:op-api-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "evidence_status": "source_supported",
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007"
+      }
+    },
+    {
+      "start": "op-api-rec",
+      "type": "CALLS",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-rec:CALLS:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Recommendation API executes",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-list-rec",
+      "type": "CALLS",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:op-list-rec:CALLS:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Cache flag off OR flag-on cache miss",
+        "evidence_ids": [
+          "ev-rec-server"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-api-rec",
+      "type": "CALLS",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-rec:CALLS:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Nonempty recommended IDs; at most four",
+        "evidence_ids": [
+          "ev-front-rec",
+          "ev-front-product"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-api-checkout",
+      "type": "CALLS",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-checkout",
+        "condition": "POST order request",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-place",
+      "type": "CALLS",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-checkout",
+        "condition": "Order preparation completed; charging step reached",
+        "evidence_ids": [
+          "ev-checkout-go"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-list-rec",
+      "type": "DEPENDS_ON",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:op-list-rec:DEPENDS_ON:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Cache flag off OR flag-on cache miss",
+        "criticality": "unknown",
+        "evidence_ids": [
+          "ev-rec-server"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "verification_status": "pending",
+        "interpretation": "Candidate business dependency; CALLS does not imply CAUSES"
+      }
+    },
+    {
+      "start": "op-place",
+      "type": "DEPENDS_ON",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-checkout",
+        "condition": "Order preparation completed; charging step reached",
+        "criticality": "unknown",
+        "evidence_ids": [
+          "ev-checkout-go"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "verification_status": "pending",
+        "interpretation": "Candidate business dependency; CALLS does not imply CAUSES"
+      }
+    },
+    {
+      "start": "incident-archive-02",
+      "type": "HAS_OBSERVATION",
+      "end": "obs-archive-span-00003",
+      "properties": {
+        "id": "autotriager-c3-v1:incident-archive-02:HAS_OBSERVATION:obs-archive-span-00003",
+        "graph_id": "autotriager-c3-v1"
+      }
+    },
+    {
+      "start": "obs-archive-span-00003",
+      "type": "EMITTED_BY",
+      "end": "svc-front",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00003:EMITTED_BY:svc-front",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "service name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00003",
+      "type": "DERIVED_FROM",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00003:DERIVED_FROM:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "record_id": "span-00003",
+        "json_pointer": "/observations/131"
+      }
+    },
+    {
+      "start": "obs-archive-span-00003",
+      "type": "OBSERVED_AT",
+      "end": "op-api-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00003:OBSERVED_AT:op-api-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "route name; HTTP method absent in captured fields",
+        "http_method_match": "not_observed",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "incident-archive-02",
+      "type": "HAS_OBSERVATION",
+      "end": "obs-archive-span-00004",
+      "properties": {
+        "id": "autotriager-c3-v1:incident-archive-02:HAS_OBSERVATION:obs-archive-span-00004",
+        "graph_id": "autotriager-c3-v1"
+      }
+    },
+    {
+      "start": "obs-archive-span-00004",
+      "type": "EMITTED_BY",
+      "end": "svc-front",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00004:EMITTED_BY:svc-front",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "service name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00004",
+      "type": "DERIVED_FROM",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00004:DERIVED_FROM:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "record_id": "span-00004",
+        "json_pointer": "/observations/132"
+      }
+    },
+    {
+      "start": "obs-archive-span-00004",
+      "type": "INVOKES",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00004:INVOKES:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "client RPC target name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "incident-archive-02",
+      "type": "HAS_OBSERVATION",
+      "end": "obs-archive-span-00005",
+      "properties": {
+        "id": "autotriager-c3-v1:incident-archive-02:HAS_OBSERVATION:obs-archive-span-00005",
+        "graph_id": "autotriager-c3-v1"
+      }
+    },
+    {
+      "start": "obs-archive-span-00005",
+      "type": "EMITTED_BY",
+      "end": "svc-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00005:EMITTED_BY:svc-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "service name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00005",
+      "type": "DERIVED_FROM",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00005:DERIVED_FROM:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "record_id": "span-00005",
+        "json_pointer": "/observations/133"
+      }
+    },
+    {
+      "start": "obs-archive-span-00005",
+      "type": "OBSERVED_AT",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00005:OBSERVED_AT:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "server RPC operation name",
+        "http_method_match": "not_applicable",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "incident-archive-02",
+      "type": "HAS_OBSERVATION",
+      "end": "obs-archive-span-00006",
+      "properties": {
+        "id": "autotriager-c3-v1:incident-archive-02:HAS_OBSERVATION:obs-archive-span-00006",
+        "graph_id": "autotriager-c3-v1"
+      }
+    },
+    {
+      "start": "obs-archive-span-00006",
+      "type": "EMITTED_BY",
+      "end": "svc-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00006:EMITTED_BY:svc-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "service name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00006",
+      "type": "DERIVED_FROM",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00006:DERIVED_FROM:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "record_id": "span-00006",
+        "json_pointer": "/observations/134"
+      }
+    },
+    {
+      "start": "obs-archive-span-00006",
+      "type": "INVOKES",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00006:INVOKES:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "client RPC target name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "incident-archive-02",
+      "type": "HAS_OBSERVATION",
+      "end": "obs-archive-span-00007",
+      "properties": {
+        "id": "autotriager-c3-v1:incident-archive-02:HAS_OBSERVATION:obs-archive-span-00007",
+        "graph_id": "autotriager-c3-v1"
+      }
+    },
+    {
+      "start": "obs-archive-span-00007",
+      "type": "EMITTED_BY",
+      "end": "svc-payment",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00007:EMITTED_BY:svc-payment",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "service name",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00007",
+      "type": "DERIVED_FROM",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00007:DERIVED_FROM:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "record_id": "span-00007",
+        "json_pointer": "/observations/135"
+      }
+    },
+    {
+      "start": "obs-archive-span-00007",
+      "type": "OBSERVED_AT",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00007:OBSERVED_AT:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "mapping_basis": "server RPC operation name",
+        "http_method_match": "not_applicable",
+        "version_match": "unverified",
+        "evidence_ids": [
+          "ev-archive"
+        ]
+      }
+    },
+    {
+      "start": "obs-archive-span-00003",
+      "type": "PARENT_OF",
+      "end": "obs-archive-span-00004",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00003:PARENT_OF:obs-archive-span-00004",
+        "graph_id": "autotriager-c3-v1",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_ids": [
+          "ev-archive"
+        ],
+        "evidence_status": "archived_runtime_observed",
+        "interpretation": "Trace hierarchy; no causal proof"
+      }
+    },
+    {
+      "start": "obs-archive-span-00004",
+      "type": "PARENT_OF",
+      "end": "obs-archive-span-00005",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00004:PARENT_OF:obs-archive-span-00005",
+        "graph_id": "autotriager-c3-v1",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_ids": [
+          "ev-archive"
+        ],
+        "evidence_status": "archived_runtime_observed",
+        "interpretation": "Trace hierarchy; no causal proof"
+      }
+    },
+    {
+      "start": "obs-archive-span-00005",
+      "type": "PARENT_OF",
+      "end": "obs-archive-span-00006",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00005:PARENT_OF:obs-archive-span-00006",
+        "graph_id": "autotriager-c3-v1",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_ids": [
+          "ev-archive"
+        ],
+        "evidence_status": "archived_runtime_observed",
+        "interpretation": "Trace hierarchy; no causal proof"
+      }
+    },
+    {
+      "start": "obs-archive-span-00006",
+      "type": "PARENT_OF",
+      "end": "obs-archive-span-00007",
+      "properties": {
+        "id": "autotriager-c3-v1:obs-archive-span-00006:PARENT_OF:obs-archive-span-00007",
+        "graph_id": "autotriager-c3-v1",
+        "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+        "evidence_ids": [
+          "ev-archive"
+        ],
+        "evidence_status": "archived_runtime_observed",
+        "interpretation": "Trace hierarchy; no causal proof"
+      }
+    },
+    {
+      "start": "ev-proto-rec",
+      "type": "DESCRIBES",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-proto-rec:DESCRIBES:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-proto-rec",
+      "type": "DESCRIBES",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-proto-rec:DESCRIBES:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-proto-rec",
+      "type": "DESCRIBES",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-proto-rec:DESCRIBES:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-proto-pay",
+      "type": "DESCRIBES",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-proto-pay:DESCRIBES:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-proto-pay",
+      "type": "DESCRIBES",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-proto-pay:DESCRIBES:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-front-rec",
+      "type": "DESCRIBES",
+      "end": "op-api-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-front-rec:DESCRIBES:op-api-rec",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-rec-server",
+      "type": "DESCRIBES",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-rec-server:DESCRIBES:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-front-product",
+      "type": "DESCRIBES",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-front-product:DESCRIBES:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-front-checkout",
+      "type": "DESCRIBES",
+      "end": "op-api-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-front-checkout:DESCRIBES:op-api-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-checkout-go",
+      "type": "DESCRIBES",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-checkout-go:DESCRIBES:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-checkout-go",
+      "type": "DESCRIBES",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-checkout-go:DESCRIBES:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-otel",
+      "type": "DESCRIBES",
+      "end": "svc-front",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-otel:DESCRIBES:svc-front",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-prov",
+      "type": "DESCRIBES",
+      "end": "ev-archive",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-prov:DESCRIBES:ev-archive",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    },
+    {
+      "start": "ev-archive",
+      "type": "DESCRIBES",
+      "end": "incident-archive-02",
+      "properties": {
+        "id": "autotriager-c3-v1:ev-archive:DESCRIBES:incident-archive-02",
+        "graph_id": "autotriager-c3-v1",
+        "semantic_scope": "concept documentation; not incident causality"
+      }
+    }
+  ],
+  "boundary": "Recommendation source-only; checkout archive name joins have unverified runtime version. No fault labels, model answers, or causality edges."
+}

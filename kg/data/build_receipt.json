@@ -1,0 +1,39 @@
+{
+  "graph_id": "autotriager-c3-v1",
+  "node_count": 30,
+  "relationship_count": 56,
+  "node_types": {
+    "BusinessWorkflow": 2,
+    "Service": 5,
+    "Operation": 7,
+    "Evidence": 10,
+    "Incident": 1,
+    "Observation": 5
+  },
+  "relationship_types": {
+    "EXPOSES": 7,
+    "IMPLEMENTED_BY": 2,
+    "USES_OPERATION": 2,
+    "CALLS": 5,
+    "DEPENDS_ON": 2,
+    "HAS_OBSERVATION": 5,
+    "EMITTED_BY": 5,
+    "DERIVED_FROM": 5,
+    "OBSERVED_AT": 3,
+    "INVOKES": 2,
+    "PARENT_OF": 4,
+    "DESCRIBES": 14
+  },
+  "graph_sha256": "976574cdd53d01c77b753590000d63896d039d9a54934ebef1742e15b7795479",
+  "checks": {
+    "unique_ids": true,
+    "endpoints_exist": true,
+    "evidence_ids_resolve": true,
+    "five_original_spans": true,
+    "same_trace": true,
+    "inside_incident_window": true,
+    "source_files_match_commit": true
+  },
+  "new_telemetry_capture": false,
+  "llm_calls": 0
+}

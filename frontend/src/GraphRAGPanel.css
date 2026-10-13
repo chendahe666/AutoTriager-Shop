@@ -1,0 +1,32 @@
+.at-workbench .at-rag { margin: 26px 0; padding: 22px; border: 1px solid var(--at-line); border-top: 3px solid var(--at-teal); background: var(--at-panel); min-width: 0; }
+.at-rag-heading { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.at-rag-heading h2 { font: 400 25px Georgia, 'Microsoft YaHei', serif; margin: 6px 0 13px; }
+.at-rag-intro { color: var(--at-muted); font-size: 12px; max-width: 65ch; }
+.at-rag-stages { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 0; margin: 18px 0; border: 1px solid var(--at-line); }
+.at-rag-stages li { padding: 11px 9px; border-right: 1px solid var(--at-line); color: var(--at-muted); }
+.at-rag-stages li:last-child { border: 0; }
+.at-rag-stages li.ready { color: var(--at-teal); background: var(--at-light-teal); }
+.at-rag-stages span, .at-rag-stages strong, .at-rag-stages small { display: block; }
+.at-rag-stages span { font: 10px Consolas, monospace; margin-bottom: 6px; }
+.at-rag-stages strong { font-size: 12px; }.at-rag-stages small { font-size: 10px; margin-top: 3px; }
+.at-rag-scope { font-size: 11px; overflow-wrap: anywhere; }.at-rag-scope .at-mono { display: block; margin-top: 3px; color: var(--at-muted); }
+.at-rag-question { display: block; font-size: 12px; font-weight: 600; }
+.at-rag-question textarea { display: block; width: 100%; resize: vertical; margin: 7px 0 12px; padding: 11px; border: 1px solid var(--at-line); color: var(--at-ink); background: white; border-radius: 3px; font-weight: 400; }
+.at-rag-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.at-rag-packet { margin-top: 22px; border-top: 1px solid var(--at-line); padding-top: 13px; }
+.at-rag summary { cursor: pointer; color: var(--at-teal); font-size: 11px; padding: 8px 0; }
+.at-rag pre { max-height: 350px; overflow: auto; padding: 12px; background: #ecefe8; font-size: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.at-rag-counts { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; border-bottom: 1px solid var(--at-line); padding: 16px 0; margin-bottom: 20px; }
+.at-rag-counts span { font-size: 10px; color: var(--at-muted); }.at-rag-counts strong { display: block; font: 24px Georgia,serif; color: var(--at-ink); }
+.at-rag h3 { font-size: 14px; }.at-rag h4 { font-size: 12px; margin: 7px 0; }
+.at-rag-knowledge { border-left: 2px solid #a9bfb0; padding: 9px 13px; margin: 13px 0; overflow-wrap: anywhere; scroll-margin-top: 25px; }
+.at-rag-knowledge > .at-mono { color: var(--at-muted); }.at-rag-knowledge p { font-size: 12px; white-space: pre-wrap; line-height: 1.65; }
+.at-rag-knowledge a { font-size: 11px; }.at-rag-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }.at-rag-tags span { background: #ecefe8; padding: 3px 5px; font-size: 10px; }
+.at-rag-observation { border-bottom: 1px solid var(--at-line); padding: 10px 0; }.at-rag-observation p { margin: 4px 0; font-size: 11px; }
+.at-rag-gaps { border: 1px solid #ded6c9; background: #f5f2eb; padding: 13px; margin: 16px 0; }.at-rag-gaps ul { margin-bottom: 0; padding-left: 18px; font-size: 11px; }
+.at-rag-answer { margin-top: 22px; padding-top: 20px; border-top: 2px solid var(--at-teal); }.at-rag-answer > p { white-space: pre-wrap; font-size: 12px; line-height: 1.75; }.at-rag-answer > ul { font-size: 12px; padding-left: 18px; }
+.at-rag-claim { padding: 11px 0; border-bottom: 1px solid var(--at-line); }.at-rag-claim p { margin-bottom: 6px; font-size: 12px; }.at-rag-citations { display: flex; flex-wrap: wrap; gap: 8px; overflow-wrap: anywhere; }
+.at-rag-review-warning { border: 1px solid #b6784d; border-left: 4px solid #a85d30; padding: 16px; margin-bottom: 20px; background: #fff0e4; color: #683619; }
+.at-rag-review-warning > strong { font-size: 14px; line-height: 1.5; display: block; }.at-rag-review-warning p { margin: 8px 0; font-size: 12px; }
+.at-rag-review-warning ul { padding-left: 18px; font-size: 12px; }.at-rag-review-warning li { margin: 10px 0; }.at-rag-review-warning li span { display: block; font-weight: 600; margin-bottom: 4px; }
+@media (max-width: 650px) { .at-workbench .at-rag { padding: 15px; }.at-rag-stages { grid-template-columns: repeat(2,minmax(0,1fr)); }.at-rag-stages li { border-bottom: 1px solid var(--at-line); }.at-rag-heading { display: block; }.at-rag-heading .at-outline-badge { display: inline-block; margin-bottom: 12px; } }

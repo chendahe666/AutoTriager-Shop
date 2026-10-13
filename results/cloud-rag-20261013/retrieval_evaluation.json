@@ -1,0 +1,84 @@
+{
+  "scope": "development retrieval checks on three questions over one previously inspected incident",
+  "cases": [
+    {
+      "case": "trace",
+      "expected_knowledge_ids": [
+        "rule-span-direction",
+        "rule-trace-identity"
+      ],
+      "retrieved_ids": [
+        "rule-error-context",
+        "rule-rpc-context",
+        "rule-span-direction",
+        "rule-trace-identity",
+        "shop-checkout-addresses",
+        "shop-checkout-charge",
+        "shop-checkout-email-handling",
+        "shop-checkout-order-sequence",
+        "shop-checkout-prepare",
+        "shop-frontend-error-mapping"
+      ],
+      "relevant_retrieved": 2,
+      "relevant_total": 2,
+      "required_knowledge_found": true,
+      "observations": 48,
+      "packet_integrity": true,
+      "scope_isolation": true
+    },
+    {
+      "case": "version",
+      "expected_knowledge_ids": [
+        "rule-service-version"
+      ],
+      "retrieved_ids": [
+        "rule-provenance",
+        "rule-rpc-context",
+        "rule-service-identity",
+        "rule-service-version",
+        "shop-checkout-addresses",
+        "shop-checkout-charge",
+        "shop-checkout-order-sequence",
+        "shop-money-contract",
+        "shop-payment-handler",
+        "shop-payment-interface"
+      ],
+      "relevant_retrieved": 1,
+      "relevant_total": 1,
+      "required_knowledge_found": true,
+      "observations": 35,
+      "packet_integrity": true,
+      "scope_isolation": true
+    },
+    {
+      "case": "contract",
+      "expected_knowledge_ids": [
+        "shop-money-contract",
+        "shop-payment-interface"
+      ],
+      "retrieved_ids": [
+        "rule-error-context",
+        "rule-log-correlation",
+        "rule-rpc-context",
+        "rule-span-status",
+        "shop-checkout-addresses",
+        "shop-checkout-charge",
+        "shop-checkout-order-sequence",
+        "shop-money-contract",
+        "shop-payment-handler",
+        "shop-payment-interface"
+      ],
+      "relevant_retrieved": 2,
+      "relevant_total": 2,
+      "required_knowledge_found": true,
+      "observations": 35,
+      "packet_integrity": true,
+      "scope_isolation": true
+    }
+  ],
+  "passed": 3,
+  "total": 3,
+  "llm_calls": 0,
+  "diagnosis_accuracy_measured": false,
+  "held_out_evaluation": false
+}

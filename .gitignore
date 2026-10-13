@@ -1,4 +1,6 @@
 .venv/
+.venv-rag/
+.npm-cache/
 __pycache__/
 .pytest_cache/
 .streamlit/secrets.toml

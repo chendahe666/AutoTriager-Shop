@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-13",
+  "execution": "actual browser interaction, not a mock screenshot",
+  "cloud_browser": {
+    "application": "official Neo4j Browser",
+    "connection_display_alias": "AutoTriager Aura",
+    "namespace": "autotriager-rag-v1",
+    "graph_query_executed": true,
+    "displayed_subgraph_nodes": 9,
+    "displayed_subgraph_relationships": 10,
+    "two_hop_table_rows": 5,
+    "screenshots": ["aura-graph.png", "aura-query.png"]
+  },
+  "workbench": {
+    "url": "http://127.0.0.1:8788/",
+    "case": "shop-pilot-002-b",
+    "components": ["checkout", "frontend", "payment"],
+    "question": "Which observations support inspecting payment next? Separate observed facts from source-based expectations and state what is still unknown.",
+    "selected_observations": 48,
+    "knowledge_chunks": 10,
+    "relationships": 3,
+    "model_response_visible": true,
+    "separate_simulated_review_visible": true,
+    "review_labels_verified": ["Next check 2", "Claim 1"],
+    "citation_opened": "span-00007",
+    "citation_result": "payment / oteldemo.PaymentService/Charge / ERROR / 1.372 ms, with trace, span, parent-span and preserved raw fields",
+    "remaining_model_attempts_after_replay": 1,
+    "screenshots": ["workbench-input.png", "workbench-rag.png"]
+  },
+  "limits": [
+    "The workbench uses preserved simulation evidence; no new live incident was injected for this check.",
+    "Browser execution and valid citation identifiers do not establish causal correctness.",
+    "The review is a separate same-family simulated audit of the exact saved answer, not an automatic semantic verifier.",
+    "Private credentials and connection addresses are excluded from these deliverable screenshots."
+  ]
+}

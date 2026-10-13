@@ -1,0 +1,31 @@
+{
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "network_calls": 0,
+  "model_calls": 0,
+  "credentials_read": false,
+  "same_relations_different_database_order": {
+    "same_relation_set": true,
+    "same_packet_id": true,
+    "first_ids": [
+      "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+      "autotriager-c3-v1:op-place:CALLS:op-charge",
+      "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge"
+    ],
+    "second_ids": [
+      "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+      "autotriager-c3-v1:op-place:CALLS:op-charge",
+      "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge"
+    ]
+  },
+  "unsupported_uncited_summary_accepted": true,
+  "summary_claim_support_status": "requires human review",
+  "tampered_corpus_import": {
+    "rejection": "CloudGraphError",
+    "mutated_text_sent_to_fake_graph": false
+  },
+  "limits": [
+    "Fake graph probes identify code behavior; they do not demonstrate a live Aura mutation.",
+    "Unsupported summary is synthetic; it is not a measured real-model failure."
+  ]
+}

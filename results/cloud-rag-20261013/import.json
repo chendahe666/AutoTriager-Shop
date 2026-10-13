@@ -1,0 +1,24 @@
+{
+  "before": {
+    "connected": true,
+    "backend": "Neo4j Aura",
+    "graph_id": "autotriager-rag-v1",
+    "total_database_nodes": 0,
+    "project_nodes": 0,
+    "project_relationships": 0,
+    "transport": "HTTPS Query API v2 with certificate verification",
+    "credentials_disclosed": false
+  },
+  "after": {
+    "connected": true,
+    "backend": "Neo4j Aura",
+    "graph_id": "autotriager-rag-v1",
+    "total_database_nodes": 73,
+    "project_nodes": 73,
+    "project_relationships": 124,
+    "transport": "HTTPS Query API v2 with certificate verification",
+    "credentials_disclosed": false
+  },
+  "operation": "namespaced upsert; no deletion",
+  "recorded_at": "2026-10-13T04:43:54.806667+00:00"
+}

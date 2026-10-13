@@ -1,13 +1,40 @@
 # AutoTriager Shop
 
-AutoTriager Shop is an incident investigation workbench for the official
-OpenTelemetry Astronomy Shop. A junior on-call engineer selects a captured
-checkout window, inspects a suggested service and its evidence, and records an
-accept/reject/uncertain judgment. A suggestion is an investigation priority,
-not proof of root cause. The analysis app is read-only; a separate local
-experiment operator changes the controlled payment flag during collection.
-Intervention labels stay in private evaluator files that the app and model do
-not read.
+AutoTriager Shop is an evidence-grounded incident investigation workbench for
+the official OpenTelemetry Astronomy Shop. An on-call engineer selects an
+incident window and components, compares observations, and asks questions about
+the supporting evidence. A suggested component is an investigation priority,
+not proof of root cause. Intervention labels remain outside model inputs.
+
+## Cloud GraphRAG checkpoint: October 13, 2026
+
+The current research prototype connects the local investigation desk to a
+Neo4j Aura knowledge graph and bounded Gemini generation. It combines captured
+Shop telemetry with sourced interpretation rules and pinned platform code
+passages. Static calls, runtime observations, and unverified explanations stay
+distinct. The demonstrated incident concerns checkout; the feature accepts
+selected components and questions, but platform-wide diagnostic coverage has
+not been established.
+
+- [Setup and step-by-step learning guide](docs/CLOUD_GRAPHRAG_WALKTHROUGH.md)
+- [English presentation — Dahe Chen](output/slides/AutoTriager_Challenge3_Cloud_GraphRAG_Dahe_Chen.pptx)
+- [Corpus sources and applicability](docs/research/RAG_CORPUS_SOURCES_20261013.md)
+- [Preserved cloud execution and review evidence](results/cloud-rag-20261013)
+- [Release scope and reproducibility checks](docs/GRAPHRAG_RELEASE_20261013.md)
+
+The executed namespace contains 73 nodes, 124 relationships and 23 knowledge
+chunks. Retrieval uses bounded graph traversal and lexical ranking; no
+embedding model or fine-tuning was used. Gemini answers are provisional:
+citation-format checks do not establish semantic support or root cause.
+The independent simulated review records unsupported assumptions. No held-out
+diagnosis improvement or user-time reduction has been measured.
+
+This release's supported GraphRAG workflow uses preserved incident evidence.
+Live recovery modules are included as workbench dependencies, but the cloud
+quick start does not enable production control. Each reader configures their
+own private Aura and optional Gemini credentials. Development caches and human
+review state are not bundled. The older offline Streamlit workflow below is
+retained as a separate reproducible October 1 checkpoint.
 
 ## Quick start: replay official Shop captures offline
 

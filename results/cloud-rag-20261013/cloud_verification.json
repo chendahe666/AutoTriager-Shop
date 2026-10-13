@@ -1,0 +1,236 @@
+{
+  "recorded_at": "2026-10-13T05:01:42.345888+00:00",
+  "backend": "Neo4j Aura",
+  "before": {
+    "connected": true,
+    "backend": "Neo4j Aura",
+    "graph_id": "autotriager-rag-v1",
+    "total_database_nodes": 73,
+    "project_nodes": 73,
+    "project_relationships": 124,
+    "transport": "HTTPS Query API v2 with certificate verification",
+    "credentials_disclosed": false
+  },
+  "after": {
+    "connected": true,
+    "backend": "Neo4j Aura",
+    "graph_id": "autotriager-rag-v1",
+    "total_database_nodes": 73,
+    "project_nodes": 73,
+    "project_relationships": 124,
+    "transport": "HTTPS Query API v2 with certificate verification",
+    "credentials_disclosed": false
+  },
+  "idempotent_counts": true,
+  "queries": [
+    {
+      "name": "node_types",
+      "statement": "MATCH (n:ATKnowledge {graph_id:$graph}) UNWIND labels(n) AS label WITH label,count(*) AS count WHERE label <> \"ATKnowledge\" RETURN label,count ORDER BY label",
+      "parameters": {
+        "graph": "autotriager-rag-v1"
+      },
+      "rows": [
+        {
+          "label": "BusinessWorkflow",
+          "count": 2
+        },
+        {
+          "label": "Chunk",
+          "count": 23
+        },
+        {
+          "label": "Evidence",
+          "count": 30
+        },
+        {
+          "label": "Incident",
+          "count": 1
+        },
+        {
+          "label": "Observation",
+          "count": 5
+        },
+        {
+          "label": "Operation",
+          "count": 7
+        },
+        {
+          "label": "Service",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "name": "relation_types",
+      "statement": "MATCH (:ATKnowledge {graph_id:$graph})-[r {graph_id:$graph}]->(:ATKnowledge {graph_id:$graph}) RETURN type(r) AS kind,count(*) AS count ORDER BY kind",
+      "parameters": {
+        "graph": "autotriager-rag-v1"
+      },
+      "rows": [
+        {
+          "kind": "ABOUT",
+          "count": 45
+        },
+        {
+          "kind": "CALLS",
+          "count": 5
+        },
+        {
+          "kind": "DEPENDS_ON",
+          "count": 2
+        },
+        {
+          "kind": "DERIVED_FROM",
+          "count": 5
+        },
+        {
+          "kind": "DESCRIBES",
+          "count": 14
+        },
+        {
+          "kind": "EMITTED_BY",
+          "count": 5
+        },
+        {
+          "kind": "EXPOSES",
+          "count": 7
+        },
+        {
+          "kind": "HAS_CHUNK",
+          "count": 23
+        },
+        {
+          "kind": "HAS_OBSERVATION",
+          "count": 5
+        },
+        {
+          "kind": "IMPLEMENTED_BY",
+          "count": 2
+        },
+        {
+          "kind": "INVOKES",
+          "count": 2
+        },
+        {
+          "kind": "OBSERVED_AT",
+          "count": 3
+        },
+        {
+          "kind": "PARENT_OF",
+          "count": 4
+        },
+        {
+          "kind": "USES_OPERATION",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "name": "payment_knowledge",
+      "statement": "MATCH (c:ATKnowledge:Chunk {graph_id:$graph}) WHERE \"payment\" IN c.services RETURN c.id AS chunk,c.title AS title,c.rule_status AS status,c.source_url AS source ORDER BY chunk",
+      "parameters": {
+        "graph": "autotriager-rag-v1"
+      },
+      "rows": [
+        {
+          "chunk": "shop-checkout-addresses",
+          "title": "Checkout downstream address configuration",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L218-L255"
+        },
+        {
+          "chunk": "shop-checkout-charge",
+          "title": "Checkout invokes the charge RPC",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588"
+        },
+        {
+          "chunk": "shop-checkout-order-sequence",
+          "title": "Charge precedes shipment",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L344-L377"
+        },
+        {
+          "chunk": "shop-money-contract",
+          "title": "Money representation and cross-field constraints",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L145-L160"
+        },
+        {
+          "chunk": "shop-payment-handler",
+          "title": "Payment handler records and returns failures",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/payment/index.js#L12-L31"
+        },
+        {
+          "chunk": "shop-payment-interface",
+          "title": "Payment RPC request and response",
+          "status": "source_supported",
+          "source": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195"
+        }
+      ]
+    },
+    {
+      "name": "bounded_path",
+      "statement": "MATCH p=(a:ATKnowledge:Operation {graph_id:$graph})-[:CALLS*1..2]->(b:ATKnowledge:Operation {graph_id:$graph}) WHERE a.name CONTAINS \"PlaceOrder\" RETURN [n IN nodes(p)|n.name] AS path,[r IN relationships(p)|r.verification_status] AS status LIMIT 6",
+      "parameters": {
+        "graph": "autotriager-rag-v1"
+      },
+      "rows": [
+        {
+          "path": [
+            "PlaceOrder",
+            "Charge"
+          ],
+          "status": [
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "name": "incident_observation_service_two_hops",
+      "statement": "MATCH (i:ATKnowledge:Incident {graph_id:$graph})-[:HAS_OBSERVATION]->(o:ATKnowledge:Observation {graph_id:$graph})-[:EMITTED_BY]->(s:ATKnowledge:Service {graph_id:$graph}) RETURN i.id AS incident,o.id AS observation,s.name AS service ORDER BY observation LIMIT 8",
+      "parameters": {
+        "graph": "autotriager-rag-v1"
+      },
+      "rows": [
+        {
+          "incident": "incident-archive-02",
+          "observation": "obs-archive-span-00003",
+          "service": "frontend"
+        },
+        {
+          "incident": "incident-archive-02",
+          "observation": "obs-archive-span-00004",
+          "service": "frontend"
+        },
+        {
+          "incident": "incident-archive-02",
+          "observation": "obs-archive-span-00005",
+          "service": "checkout"
+        },
+        {
+          "incident": "incident-archive-02",
+          "observation": "obs-archive-span-00006",
+          "service": "checkout"
+        },
+        {
+          "incident": "incident-archive-02",
+          "observation": "obs-archive-span-00007",
+          "service": "payment"
+        }
+      ]
+    }
+  ],
+  "repeated_cloud_packet_identical": true,
+  "model_attempts": {
+    "attempts": 5,
+    "ceiling": 6,
+    "remaining": 1,
+    "pending": 0,
+    "successes": 2,
+    "failures": 3,
+    "network_enabled": true
+  }
+}

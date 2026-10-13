@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "app",
+  "name": "AutoTriager",
+  "id": "dahe-autotriager-app",
+  "info": {
+    "description": "Read-only investigation of preserved incident evidence with recorded findings and human review.",
+    "author": { "name": "Dahe Chen" },
+    "keywords": ["incident", "evidence", "investigation"],
+    "logos": { "small": "img/logo.svg", "large": "img/logo.svg" },
+    "links": [],
+    "screenshots": [],
+    "version": "0.1.0",
+    "updated": "2026-10-02"
+  },
+  "dependencies": { "grafanaDependency": ">=12.2.0", "plugins": [] },
+  "includes": [{ "type": "page", "name": "Investigation desk", "path": "/a/dahe-autotriager-app", "addToNav": true, "defaultNav": true }],
+  "routes": [{ "path": "triager/*", "url": "{{ .JsonData.apiUrl }}" }]
+}

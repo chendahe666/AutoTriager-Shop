@@ -1,0 +1,41 @@
+{
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "review_date": "2026-10-13",
+  "reviewer_external_network_calls": 0,
+  "reviewer_loopback_test_attempts": 1,
+  "reviewer_loopback_test_result": "sandbox denied connection with WinError 10013",
+  "reviewer_model_calls": 0,
+  "credentials_read": false,
+  "not_a_certification": true,
+  "author_followup": {
+    "independently_rerun_by_reviewer": false,
+    "S10": "Retrieval-side text hash validation added; corrupt-text regression test passes in final 41-test author suite.",
+    "S19": "Fixed nullable section-aware UI labels; actual browser showed Next check 2 and Claim 1 correctly.",
+    "S20": "Optional review shape is validated; array-shaped JSON is ignored without modifying a completed answer.",
+    "S21": "Actual Aura graph and query-result screenshots captured through official Neo4j Browser; browser_validation.json records their scope. Final slide package checks are recorded separately."
+  },
+  "assumptions": [
+    {"id": "S01", "assumption": "Cloud build means Aura storage plus a local workbench.", "status": "explicit A01", "impact": "Does not imply hosted application or production deployment."},
+    {"id": "S02", "assumption": "Rules are curated interpretation and source-contract paraphrases.", "status": "explicit A02", "impact": "They are not universal executable causal rules."},
+    {"id": "S03", "assumption": "Current workbench incidents are preserved public development snapshots.", "status": "explicit A14", "impact": "This run does not establish live-snapshot GraphRAG integration."},
+    {"id": "S04", "assumption": "Service/operation matching plus lexical overlap is sufficient for a first retrieval demo.", "status": "explicit A04/A13; effectiveness unmeasured", "impact": "Not multilingual semantic search, full-platform coverage, or a retrieval-precision result."},
+    {"id": "S05", "assumption": "The source revision need not match the observed runtime.", "status": "explicit A07 and packet gaps", "impact": "Static source contracts remain context, not observed execution or root-cause evidence."},
+    {"id": "S06", "assumption": "A valid reference ID means the claim is supported.", "status": "invalid; observed counterexample", "evidence": "answer_review.json claim 1", "impact": "gRPC 13 is not contained in the claim's cited records; support needs a separate review."},
+    {"id": "S07", "assumption": "A shortened condition preserves the full source contract.", "status": "invalid in accepted answer claim 3", "impact": "HTTP422 mapping loses exception predicates; preserve the source condition and missing-runtime-details caveat."},
+    {"id": "S08", "assumption": "Query return ordering is a stable packet identity.", "status": "repaired in code; offline reversal probe passes", "impact": "Canonical ordering is necessary to avoid duplicate logical requests consuming extra attempts."},
+    {"id": "S09", "assumption": "Namespaced upsert completely synchronizes knowledge revisions.", "status": "partly repaired by frozen-corpus comparison", "impact": "Base topology remains an upsert. Treat this namespace as frozen and use an explicit new version for changed topology."},
+    {"id": "S10", "assumption": "Builder hash validation is automatically enforced at import and retrieval.", "status": "import repaired and independently reprobed; retrieval still trusts owned namespace", "impact": "Repeated fake import rejects stale-hash text before a write. A future shared/editable cloud namespace needs retrieval-side integrity validation."},
+    {"id": "S11", "assumption": "Three successful retrieval questions establish general retrieval quality.", "status": "explicitly rejected by evaluation scope", "impact": "Three selected questions over one previously inspected incident do not measure diagnosis accuracy, precision, or held-out generalization."},
+    {"id": "S12", "assumption": "Selecting a free-tier-listed model proves zero cost for this key/project.", "status": "unverified billing condition", "impact": "No paid fallback is configured, but serviceTier=standard and token usage do not certify billing at zero."},
+    {"id": "S13", "assumption": "Service error-span rates identify request-level status and propagation direction.", "status": "invalid", "impact": "They count error-marked spans per second over an aggregate window; individual spans/parent IDs supply different evidence."},
+    {"id": "S14", "assumption": "The cloud query's data is immutable or trusted forever.", "status": "bounded trusted-owner deployment assumption", "impact": "Hash checks can detect stale retrieval text but do not replace ownership, provenance review, or a corpus snapshot manifest."},
+    {"id": "S15", "assumption": "Live documentation URLs preserve the reviewed text.", "status": "explicit source-ledger limitation", "impact": "Web-source reviews are dated; no immutable web snapshot or independent reviewer web revalidation was performed."},
+    {"id": "S16", "assumption": "Model use stays bounded across this build.", "status": "observed five attempts within a six-attempt ledger: three failures and two accepted responses", "impact": "All three failures remain retained. A distinct ledger would create a separate authorization/accounting domain and must not be used to evade the cap."},
+    {"id": "S17", "assumption": "Same-family independent review certifies clean results.", "status": "explicitly rejected", "impact": "Review is provisional simulated scrutiny with unresolved semantic defects and untested broader properties."},
+    {"id": "S18", "assumption": "The payment service has a database dependency worth checking.", "status": "not established by narrower UI packet", "evidence": "ui_answer_review.json, next_checks item 1", "impact": "Inspect actual deployed dependencies first; a generic database check must be conditional."},
+    {"id": "S19", "assumption": "Every review finding refers to a numbered claim.", "status": "invalid for the database next-check finding; display repair requested", "impact": "Use section and item index. Null claim index must not render as Claim 1."},
+    {"id": "S20", "assumption": "Optional review JSON always has the expected shape.", "status": "loader repair requested", "impact": "A malformed annotation must not crash or rewrite an already completed model answer."},
+    {"id": "S21", "assumption": "Truthful transcribed cloud tables satisfy an actual-screenshot coursework requirement.", "status": "coverage unresolved pending original-assignment confirmation", "impact": "Prior review AI-KG-4 records actual Neo4j KG/query screenshots as required; preserve scoped actual captures or designate the new deck as an extension companion."}
+  ]
+}
