@@ -2,6 +2,11 @@
 
 Author: Dahe Chen. Implementation record: October 13, 2026.
 
+**October 15 update:** this page preserves the original foundation and its
+execution history. Use [the current coursework guide](CHALLENGE3_DELIVERY_20261015.md)
+for the revised answer contract, three new generation receipts, independent
+review, and the separately bounded four-attempt coursework runner.
+
 ## What is running
 
 Neo4j Aura stores the project graph and sourced knowledge. The existing local AutoTriager investigation desk retrieves that knowledge for a selected, preserved Shop incident. Gemini produces cited, provisional explanations. This is an incident-investigation feature, not a product-recommendation chatbot.

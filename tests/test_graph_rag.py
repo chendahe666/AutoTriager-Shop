@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from autotriager_shop.graph_rag import (GraphRAGService, GraphRAGError, identity,
-    rank_knowledge, validate_answer, load_example, check_packet, answer_schema, model_packet, restore_references, answer_content_id)
+    rank_knowledge, relationship_query_expansion, validate_answer, load_example, check_packet, answer_schema, model_packet, restore_references, answer_content_id)
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -58,22 +58,28 @@ def test_mutated_packet_rejected(packet):
         check_packet(packet)
 
 
-def test_fabricated_citation_rejected(packet):
+@pytest.mark.parametrize('status',['answered','hypotheses','insufficient_evidence'])
+def test_fabricated_citation_rejected(packet,status):
     answer=answer_for(packet)
+    answer['status']=status
     answer['claims'][0]['citation_ids']=['not-provided']
     with pytest.raises(GraphRAGError,match='unprovided'):
         validate_answer(answer,packet)
 
 
-def test_document_cannot_claim_current_observation(packet):
+@pytest.mark.parametrize('status',['answered','hypotheses','insufficient_evidence'])
+def test_document_cannot_claim_current_observation(packet,status):
     answer=answer_for(packet)
+    answer['status']=status
     answer['claims'][0]['citation_ids']=[packet['knowledge'][0]['id']]
     with pytest.raises(GraphRAGError,match='documentation alone'):
         validate_answer(answer,packet)
 
 
-def test_observation_cannot_replace_document_contract(packet):
+@pytest.mark.parametrize('status',['answered','hypotheses','insufficient_evidence'])
+def test_observation_cannot_replace_document_contract(packet,status):
     answer=answer_for(packet)
+    answer['status']=status
     answer['claims'][0]['kind']='system_knowledge'
     with pytest.raises(GraphRAGError,match='documentation'):
         validate_answer(answer,packet)
@@ -83,6 +89,45 @@ def test_valid_references_do_not_claim_causal_verification(packet):
     checked=validate_answer(answer_for(packet),packet)
     assert not checked['validation']['causal_confirmation']
     assert checked['validation']['claim_support']=='requires human review'
+
+
+@pytest.mark.parametrize('kind,source',[('observation','observations'),('system_knowledge','knowledge')])
+def test_factual_answer_accepts_one_cited_claim_without_forced_checks(packet,kind,source):
+    answer=answer_for(packet)
+    answer.update(status='answered',next_checks=[],uncertainties=[])
+    answer['claims'][0].update(kind=kind,citation_ids=[packet[source][0]['id']])
+    checked=validate_answer(answer,packet)
+    assert checked['status']=='answered' and checked['next_checks']==[]
+    assert checked['validation']=={'citation_ids_valid':True,'claim_roles_checked':True,
+                                  'claim_support':'requires human review','causal_confirmation':False}
+
+
+@pytest.mark.parametrize('kind',['hypothesis','limitation'])
+def test_factual_status_cannot_relabel_speculation_or_only_a_limitation(packet,kind):
+    answer=answer_for(packet)
+    answer.update(status='answered',next_checks=[])
+    answer['claims'][0]['kind']=kind
+    with pytest.raises(GraphRAGError,match='factual answered'):
+        validate_answer(answer,packet)
+
+
+@pytest.mark.parametrize('status',['answered','hypotheses','insufficient_evidence'])
+def test_claim_count_bound_matches_generation_schema(packet,status):
+    answer=answer_for(packet)
+    answer['status']=status
+    answer['claims']*=8
+    validate_answer(answer,packet)
+    answer['claims'].append(copy.deepcopy(answer['claims'][0]))
+    with pytest.raises(GraphRAGError,match='bounded list'):
+        validate_answer(answer,packet)
+
+
+@pytest.mark.parametrize('status',['hypotheses','insufficient_evidence'])
+def test_nonfactual_answers_still_require_next_checks(packet,status):
+    answer=answer_for(packet)
+    answer.update(status=status,next_checks=[])
+    with pytest.raises(GraphRAGError,match='verification suggestions'):
+        validate_answer(answer,packet)
 
 
 def test_cloud_credentials_not_in_packet(packet):
@@ -105,8 +150,10 @@ def test_summary_cannot_add_invented_citations(packet):
         validate_answer(answer,packet)
 
 
-def test_missing_next_checks_rejected(packet):
+@pytest.mark.parametrize('status',['answered','hypotheses','insufficient_evidence'])
+def test_missing_next_checks_rejected(packet,status):
     answer=answer_for(packet)
+    answer['status']=status
     del answer['next_checks']
     with pytest.raises(GraphRAGError,match='verification suggestions'):
         validate_answer(answer,packet)
@@ -125,10 +172,77 @@ def test_specific_shipping_contract_retrieved():
     assert 'shop-shipping-quote-contract' in {r['id'] for r in result}
 
 
+@pytest.mark.parametrize('question',[
+    'Link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source?',
+    '这些观测记录如何沿着 frontend、checkout、payment 路径连接服务和操作？哪些是运行时关系，哪些只来自源码？',
+])
+def test_relationship_questions_retrieve_trace_and_role_semantics(tmp_path,question):
+    result=GraphRAGService(FakeGraph(),ledger_dir=tmp_path,model_ceiling=0).retrieve(
+        load_example('example-02'),question,['frontend','checkout','payment'])
+    assert {'rule-span-direction','rule-trace-identity','shop-checkout-charge'} <= {r['id'] for r in result['knowledge']}
+    expansion=result['retrieval']['query_expansion']
+    assert expansion['relationship_question']
+    assert set(expansion['observed_fields'])=={'trace_id','span_id','raw.parent_span_id','raw.tags.span.kind'}
+    assert {'client','server','trace','parent'} <= set(expansion['added_terms'])
+    assert expansion['applies_to']=='general_rule'
+    assert len(result['knowledge'])<=10
+
+
+@pytest.mark.parametrize('question',[
+    'What does the payment Charge interface return?',
+    'What is the relationship between Money units and nanos?',
+    '支付接口中金额单位是什么？',
+    '金额单位和 nanos 的关系是什么？',
+    'Which source links support this documentation?',
+])
+def test_factual_questions_keep_original_ranking_despite_available_spans(question):
+    chunks=json.loads((ROOT/'kg/rag_corpus.json').read_text())['chunks']
+    observations=load_example('example-02')['observations']
+    args=(chunks,question,['payment'],['oteldemo.PaymentService/Charge'])
+    assert rank_knowledge(*args,observations=observations)==rank_knowledge(*args)
+    assert not relationship_query_expansion(question,observations)['added_terms']
+
+
+@pytest.mark.parametrize('observation,expected_fields,expected_terms',[
+    ({'kind':'metric','trace_id':'t','span_id':'s','raw':{'parent_span_id':'p','tags':{'span.kind':'client'}}},set(),set()),
+    ({'kind':'span','trace_id':'t','span_id':'s','raw':{}},set(),set()),
+    ({'kind':'span','trace_id':'t','span_id':'s','raw':{'parent_span_id':'p'}},
+     {'trace_id','span_id','raw.parent_span_id'},{'trace','context','parent','linkage'}),
+    ({'kind':'span','raw':{'tags':{'span.kind':'CLIENT'}}},
+     {'raw.tags.span.kind'},{'span','spans','client','server','internal'}),
+])
+def test_relationship_expansion_requires_the_corresponding_observed_fields(observation,expected_fields,expected_terms):
+    expansion=relationship_query_expansion('Which runtime relationships are recorded?',[observation])
+    assert set(expansion['observed_fields'])==expected_fields
+    assert set(expansion['added_terms'])==expected_terms
+
+
+def test_relationship_ranking_uses_content_not_expected_chunk_identifiers():
+    chunks=json.loads((ROOT/'kg/rag_corpus.json').read_text())['chunks']
+    renamed=copy.deepcopy(chunks)
+    for index,chunk in enumerate(renamed):
+        chunk['id']=f'arbitrary-{index:03d}'
+    kwargs={'question':'Which runtime relationships connect the observed services?',
+            'services':['frontend','checkout','payment'],'operations':[],
+            'observations':load_example('example-02')['observations']}
+    original=rank_knowledge(chunks,**kwargs)
+    alternate=rank_knowledge(renamed,**kwargs)
+    expected_titles={'Client, server, and internal spans','Trace context and parent linkage'}
+    assert expected_titles <= {row['title'] for row in original}
+    assert expected_titles <= {row['title'] for row in alternate}
+
+
 def test_schema_only_allows_supplied_citation_ids(packet):
     schema=answer_schema(packet)
     allowed=schema['properties']['claims']['items']['properties']['citation_ids']['items']['enum']
     assert set(allowed)=={r['id'] for r in packet['observations']+packet['knowledge']}
+
+
+def test_schema_allows_short_factual_answers(packet):
+    properties=answer_schema(packet)['properties']
+    assert properties['status']['enum']==['answered','hypotheses','insufficient_evidence']
+    assert (properties['claims']['minItems'],properties['claims']['maxItems'])==(1,8)
+    assert (properties['next_checks']['minItems'],properties['next_checks']['maxItems'])==(0,6)
 
 
 def test_short_reference_mapping_is_exact_and_unknown_ids_stay_invalid(packet):

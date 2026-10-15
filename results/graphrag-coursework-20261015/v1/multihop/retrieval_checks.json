@@ -1,0 +1,32 @@
+{
+  "question_type": "multihop",
+  "packet_id": "fb2752c4cb13247d8a1a5b640107774e10baec20f34b45eca80b4e583ba64eaa",
+  "packet_integrity": true,
+  "required_evidence": {
+    "knowledge": {
+      "found": [
+        "shop-checkout-charge"
+      ],
+      "missing": [
+        "rule-span-direction",
+        "rule-trace-identity"
+      ],
+      "required_count": 3
+    },
+    "observations": {
+      "found": [
+        "span-00003",
+        "span-00004",
+        "span-00005",
+        "span-00006",
+        "span-00007"
+      ],
+      "missing": [],
+      "required_count": 5
+    }
+  },
+  "knowledge_count": 10,
+  "observation_count": 48,
+  "relation_count": 3,
+  "semantic_support": "Requires separate human/independent review; ID checks do not establish meaning."
+}

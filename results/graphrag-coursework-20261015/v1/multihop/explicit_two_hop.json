@@ -1,0 +1,34 @@
+{
+  "statement": "MATCH (i:ATKnowledge:Incident {graph_id:$graph})\n-[:HAS_OBSERVATION]->(o:ATKnowledge:Observation {graph_id:$graph})\n-[:EMITTED_BY]->(s:ATKnowledge:Service {graph_id:$graph})\nRETURN i.id AS incident, o.id AS observation, s.name AS service ORDER BY observation",
+  "parameters": {
+    "graph": "autotriager-rag-v1"
+  },
+  "rows": [
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00003",
+      "service": "frontend"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00004",
+      "service": "frontend"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00005",
+      "service": "checkout"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00006",
+      "service": "checkout"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00007",
+      "service": "payment"
+    }
+  ],
+  "role": "Additional executed graph demonstration; not additional LLM input. LLM context is exactly context.json."
+}

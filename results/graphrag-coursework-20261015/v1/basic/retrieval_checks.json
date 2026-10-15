@@ -1,0 +1,23 @@
+{
+  "question_type": "basic",
+  "packet_id": "7ec161eb10fb21ebd395ac4bcfc7a95b7133cd66c4339fd025eae2cab5f88e37",
+  "packet_integrity": true,
+  "required_evidence": {
+    "knowledge": {
+      "found": [
+        "shop-payment-interface"
+      ],
+      "missing": [],
+      "required_count": 1
+    },
+    "observations": {
+      "found": [],
+      "missing": [],
+      "required_count": 0
+    }
+  },
+  "knowledge_count": 10,
+  "observation_count": 48,
+  "relation_count": 3,
+  "semantic_support": "Requires separate human/independent review; ID checks do not establish meaning."
+}

@@ -52,9 +52,38 @@ def tokens(text):
     return set(re.findall(r'[a-z][a-z0-9_.-]{2,}',(text+' '+extra).lower()))-stop
 
 
-def rank_knowledge(chunks, question, services, operations, limit=10):
+def relationship_query_expansion(question, observations):
+    """Map relationship questions to semantics of fields actually in the packet.
+
+    This fixed glossary selects interpretation context, never inferred graph
+    edges or causal facts. No corpus identifiers or evaluation answers are used.
+    """
+    query=tokens(question)
+    relationship_words={'path','paths','pathway','pathways','relationship','relationships',
+                        'caller','callee','upstream','downstream','dependency','dependencies','chain','linkage'}
+    relationship_language=bool(query & (relationship_words | {'link','links','connect','connected','connections'})) or any(
+        word in question for word in ('关系','链路','路径','调用方','被调用方'))
+    runtime_language=bool(query & {'span','spans','trace','traces','service','services','operation','operations',
+                                   'runtime','observation','observations','call','calls','invoked'}) or any(
+        word in question for word in ('服务','操作','观测','运行','调用','追踪'))
+    relationship_question=bool(query & {'caller','callee'}) or (relationship_language and runtime_language)
+    fields,terms=[],set()
+    spans=[row for row in observations if row.get('kind')=='span']
+    if relationship_question:
+        if any(row.get('trace_id') and row.get('span_id') and row.get('raw',{}).get('parent_span_id') for row in spans):
+            fields.extend(['trace_id','span_id','raw.parent_span_id'])
+            terms.update({'trace','context','parent','linkage'})
+        if any(row.get('raw',{}).get('tags',{}).get('span.kind') in {'client','server','CLIENT','SERVER'} for row in spans):
+            fields.append('raw.tags.span.kind')
+            terms.update({'span','spans','client','server','internal'})
+    return {'method':'relationship-span-field-glossary-v1','relationship_question':relationship_question,
+            'observed_fields':fields,'added_terms':sorted(terms-query),'applies_to':'general_rule'}
+
+
+def rank_knowledge(chunks, question, services, operations, limit=10, *, observations=()):
     """A transparent baseline: entity match plus lexical overlap, not embeddings."""
     q = tokens(question)
+    expanded = set(relationship_query_expansion(question, observations)['added_terms'])
     service_set = set(services)
     op_text = ' '.join(operations).lower()
     ranked = []
@@ -64,9 +93,13 @@ def rank_knowledge(chunks, question, services, operations, limit=10):
         op_score = sum(1 for name in item.get('operations', []) if name.lower() in op_text)
         overlap = len(q.intersection(tokens(item.get('title', '') + ' ' + item.get('text', ''))))
         title_overlap = len(q.intersection(tokens(item.get('title',''))))
-        score = 2 * min(entity,1) + 2 * op_score + 2 * overlap + 3 * title_overlap
+        rule_terms = expanded if item['kind']=='general_rule' else set()
+        expansion_overlap = len(rule_terms.intersection(tokens(item.get('title', '') + ' ' + item.get('text', ''))))
+        expansion_title_overlap = len(rule_terms.intersection(tokens(item.get('title',''))))
+        score = 2 * min(entity,1) + 2 * op_score + 2 * (overlap+expansion_overlap) + 3 * (title_overlap+expansion_title_overlap)
         item['retrieval_score'] = score
-        item['retrieval_reason'] = {'service_matches': entity, 'operation_matches': op_score, 'query_word_matches': overlap}
+        item['retrieval_reason'] = {'service_matches': entity, 'operation_matches': op_score, 'query_word_matches': overlap,
+                                    'expanded_word_matches':expansion_overlap,'expanded_title_matches':expansion_title_overlap}
         ranked.append(item)
     ranked.sort(key=lambda r: (-r['retrieval_score'], r['id']))
     general = [r for r in ranked if r['kind'] == 'general_rule'][:4]
@@ -94,12 +127,12 @@ def check_packet(packet):
 
 def validate_answer(answer, packet):
     check_packet(packet)
-    if not isinstance(answer, dict) or answer.get('status') not in {'hypotheses','insufficient_evidence'}:
+    if not isinstance(answer, dict) or answer.get('status') not in {'answered','hypotheses','insufficient_evidence'}:
         raise GraphRAGError('Model answer has an invalid status.')
     if not isinstance(answer.get('answer'), str) or not answer['answer'].strip():
         raise GraphRAGError('Model answer is empty.')
     claims = answer.get('claims')
-    if not isinstance(claims, list) or not 1 <= len(claims) <= 12:
+    if not isinstance(claims, list) or not 1 <= len(claims) <= 8:
         raise GraphRAGError('Model answer needs a bounded list of cited claims.')
     obs = {r['id'] for r in packet['observations']}
     docs = {r['id'] for r in packet['knowledge']}
@@ -117,6 +150,12 @@ def validate_answer(answer, packet):
             raise GraphRAGError('A system-knowledge claim must cite retrieved documentation.')
         if claim['kind'] == 'hypothesis' and not obs.intersection(cites):
             raise GraphRAGError('An incident hypothesis needs current observations.')
+    # "answered" marks a factual response, not a causal or semantic certification.
+    if answer['status'] == 'answered':
+        if any(claim['kind'] == 'hypothesis' for claim in claims):
+            raise GraphRAGError('A factual answered response cannot contain incident hypotheses.')
+        if not any(claim['kind'] in {'observation','system_knowledge'} for claim in claims):
+            raise GraphRAGError('A factual answered response needs a cited observation or system-knowledge claim.')
     summary_ids=re.findall(r'\[([^\[\]]+)\]',answer['answer'])
     for group in summary_ids:
         if any(part.strip() not in obs|docs for part in group.split(',')):
@@ -124,8 +163,9 @@ def validate_answer(answer, packet):
     if not isinstance(answer.get('uncertainties'), list) or any(not isinstance(v,str) for v in answer['uncertainties']):
         raise GraphRAGError('Model answer must state its uncertainties.')
     next_checks=answer.get('next_checks')
-    if not isinstance(next_checks,list) or not 1 <= len(next_checks) <= 6 or any(not isinstance(v,str) or not 1 <= len(v) <= 1500 for v in next_checks):
-        raise GraphRAGError('Model answer needs one to six bounded verification suggestions.')
+    minimum_checks=0 if answer['status']=='answered' else 1
+    if not isinstance(next_checks,list) or not minimum_checks <= len(next_checks) <= 6 or any(not isinstance(v,str) or not 1 <= len(v) <= 1500 for v in next_checks):
+        raise GraphRAGError('Model answer needs bounded verification suggestions (one to six unless factual answered).')
     return {**answer, 'validation': {'citation_ids_valid': True, 'claim_roles_checked': True,
                                     'claim_support': 'requires human review', 'causal_confirmation': False}}
 
@@ -134,8 +174,8 @@ def answer_schema(packet):
     """Constrain reference names, while leaving semantic support to later review."""
     ids = [r['id'] for r in packet['observations'] + packet['knowledge']]
     return {'type':'OBJECT','properties':{
-        'status':{'type':'STRING','enum':['hypotheses','insufficient_evidence']},
-        'claims':{'type':'ARRAY','minItems':3,'maxItems':8,'items':{
+        'status':{'type':'STRING','enum':['answered','hypotheses','insufficient_evidence']},
+        'claims':{'type':'ARRAY','minItems':1,'maxItems':8,'items':{
             'type':'OBJECT','properties':{
                 'kind':{'type':'STRING','enum':['observation','system_knowledge','hypothesis','limitation']},
                 'text':{'type':'STRING'},
@@ -143,7 +183,7 @@ def answer_schema(packet):
                                 'items':{'type':'STRING','enum':ids}}},
             'required':['kind','text','citation_ids']}},
         'uncertainties':{'type':'ARRAY','items':{'type':'STRING'}},
-        'next_checks':{'type':'ARRAY','minItems':1,'maxItems':6,'items':{'type':'STRING'}}},
+        'next_checks':{'type':'ARRAY','minItems':0,'maxItems':6,'items':{'type':'STRING'}}},
         'required':['status','claims','uncertainties','next_checks']}
 
 
@@ -264,7 +304,7 @@ class GraphRAGService:
         rows = self.graph.execute('MATCH (c:ATKnowledge:Chunk {graph_id:$graph}) WHERE c.kind="general_rule" OR any(s IN c.services WHERE s IN $services) RETURN properties(c) AS chunk ORDER BY c.id LIMIT 300', {'graph':GRAPH_ID,'services':retrieval_services})
         if any(hashlib.sha256(r['chunk'].get('text','').encode()).hexdigest()!=r['chunk'].get('text_sha256') for r in rows):
             raise GraphRAGError('Retrieved knowledge text does not match its recorded hash.')
-        knowledge = rank_knowledge([r['chunk'] for r in rows], question, retrieval_services, observed_ops)
+        knowledge = rank_knowledge([r['chunk'] for r in rows], question, retrieval_services, observed_ops, observations=observations)
         for item in knowledge:
             item['source_locator'] = item['source_url']
             item['version'] = item['source_version']
@@ -292,6 +332,7 @@ class GraphRAGService:
                             {'stage':'knowledge','output':f'{len(knowledge)} sourced text chunks'},
                             {'stage':'generation','output':'Not called during retrieval'}],
                   'retrieval':{'method':'entity-scoped graph traversal and lexical ranking', 'language_support':'English tokens plus explicit Chinese domain glossary', 'max_hops':2,
+                               'query_expansion':relationship_query_expansion(question,observations),
                                'knowledge_limit':10,'observation_limit':48,'embedding_model':None,
                                'seed_operation_ids':sorted(set(seeds))}}
         packet['packet_id'] = identity(packet)
@@ -305,7 +346,7 @@ class GraphRAGService:
             raise GraphRAGError('GEMINI_API_KEY is not configured locally.')
         if not packet['knowledge']:
             raise GraphRAGError('No knowledge was retrieved; import or repair the corpus first.')
-        config = {'model':MODEL,'temperature':0,'max_output_tokens':2400,'prompt_version':'incident-rag-v4-claim-summary', 'packet_version':PACKET_VERSION}
+        config = {'model':MODEL,'temperature':0,'max_output_tokens':2400,'prompt_version':'incident-rag-v5-human-dependency-gate', 'packet_version':PACKET_VERSION}
         ticket = self.ledger.reserve(case=packet,snapshot_id=packet['packet_id'],task='incident_graphrag',config=config)
         if isinstance(ticket,CachedAttempt):
             if ticket.receipt['outcome'] != 'success':
@@ -320,17 +361,25 @@ Do not pretend to have run tools or inspected other files. Keep hypotheses provi
 infer unknown business criticality, a hidden injected fault, or confirmed recovery. Apply each
 chunk's scope and application_limit. If evidence is insufficient, say exactly what is missing.
 Return JSON only with:
-status: "hypotheses" or "insufficient_evidence";
-claims: 3 to 8 objects {kind: "observation"|"system_knowledge"|"hypothesis"|"limitation",
+status: "answered" for sourced factual answers without hypotheses, "hypotheses" for provisional
+incident explanations, or "insufficient_evidence" when the requested conclusion is not supported;
+claims: 1 to 8 objects {kind: "observation"|"system_knowledge"|"hypothesis"|"limitation",
 text: a single checkable claim, citation_ids: exact observation/chunk IDs supplied};
 uncertainties: a list of concrete missing facts;
-next_checks: a list of read-only verification steps that could distinguish competing explanations.
+next_checks: a list of read-only verification steps that could distinguish competing explanations;
+use an empty list for a factual answer that needs no further investigation. Answer the question
+directly in the first claims. A basic contract question does not require an incident hypothesis.
 Each incident observation and hypothesis must cite current observation IDs. Each system knowledge
 claim must cite a knowledge chunk. Cite exact IDs, never fabricate them. The application will
 build the display summary from your first three cited claims. Do not produce a separate answer.
 Use provisional language for hypotheses: may, could, consistent with; explicitly distinguish an
 upstream error response from its still unknown internal cause. Do not equate an error span with
 fault ownership or assume all dependencies shown actually failed. Match the question's language.
+Human-reviewed policy: absence from this partial graph means unknown, not nonexistent. Before
+proposing a check of a dependency not established in the packet (for example a database), first
+request verification of whether that dependency exists in the deployed system. Only if verified
+should a subsequent conditional check inspect its health. Never present an unconfirmed dependency
+as an existing component. Keep source conditions and exceptions; do not drop them for brevity.
 Only observations[].id and knowledge[].id are citation identifiers. Do not cite relation IDs,
 trace IDs, span IDs, packet IDs or invented shortened IDs. Copy IDs without abbreviation.
 The output assists human investigation; it does not authorize an action.

@@ -1,0 +1,63 @@
+{
+  "task": "CS5588 GraphRAG Human-AI Co-Design, October 15, 2026",
+  "authorization": "User explicitly requested completion of three query types, PowerPoint and GitHub; routine operations delegated to AI, human evaluation retained by student.",
+  "new_attempt_ceiling": 4,
+  "planned_calls": 3,
+  "reserved_corrective_calls": 1,
+  "previous_run_terminal_count": 5,
+  "previous_run_receipt_hashes": {
+    "attempt-000001.terminal.json": "da8294e3a393412ebdbaed53ddffdbaf5b580a669b1ffe310f413a74b3ee308a",
+    "attempt-000002.terminal.json": "ad9f94f3d09fc2e303575458f6352d83e80cf838465443ebaad63de20f4b90e7",
+    "attempt-000003.terminal.json": "2016ca40a67faf13386b014f42dac2a14f8aab47b8b1d72078e7ed42030a04c0",
+    "attempt-000004.terminal.json": "50bbd851f1fff22548b69f8337292fc26e734cc27ea3a9a9b7ae9895682a80f6",
+    "attempt-000005.terminal.json": "ef340e5c2d8508071d8a11a3f28eacc4a4bb504398138de6470aa757de798e4e"
+  },
+  "budget_policy": "Separate newly authorized task grant. Preserve historical attempts; no reset, no retries, no paid-model fallback. All revisions share this task ledger.",
+  "model": "gemini-3.5-flash-lite",
+  "billing_status": "Free-tier-supported model; actual account billing is not verified by a generation receipt.",
+  "case": "example-02",
+  "services": [
+    "checkout",
+    "frontend",
+    "payment"
+  ],
+  "questions": {
+    "basic": "What RPC does PaymentService expose, what information goes into its request, and what does its response provide? Explain whether this interface alone proves that a payment succeeded.",
+    "multihop": "Using shop-pilot-002-b, link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source? Cite exact records; do not claim causation.",
+    "research": "Which evidence supports inspecting payment next, and why does that evidence not prove payment is the root cause? Separate current observations, source-supported system knowledge, candidate explanations, and missing evidence. Suggest the next read-only check without assuming undocumented dependencies."
+  },
+  "required_evidence": {
+    "basic": {
+      "knowledge": [
+        "shop-payment-interface"
+      ],
+      "observations": []
+    },
+    "multihop": {
+      "knowledge": [
+        "rule-span-direction",
+        "rule-trace-identity",
+        "shop-checkout-charge"
+      ],
+      "observations": [
+        "span-00003",
+        "span-00004",
+        "span-00005",
+        "span-00006",
+        "span-00007"
+      ]
+    },
+    "research": {
+      "knowledge": [
+        "shop-checkout-charge",
+        "shop-payment-handler"
+      ],
+      "observations": [
+        "span-00006",
+        "span-00007",
+        "span-00008"
+      ]
+    }
+  },
+  "evaluation_scope": "Three development questions, one inspected simulated incident; no held-out accuracy or user-benefit claim."
+}

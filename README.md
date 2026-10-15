@@ -6,6 +6,26 @@ incident window and components, compares observations, and asks questions about
 the supporting evidence. A suggested component is an investigation priority,
 not proof of root cause. Intervention labels remain outside model inputs.
 
+## Challenge 3: GraphRAG co-design, October 15, 2026
+
+The current coursework prototype connects the existing Neo4j Aura graph to
+Gemini through scoped, parameterized graph retrieval. Three fresh questions
+were executed on one preserved Shop incident: interface knowledge, multi-hop
+relationships, and an evidence-grounded investigation question. All three
+returned answers; independent simulated review found incomplete explanations
+and partially supported claims. This is a development demonstration, not a
+diagnosis-accuracy benchmark.
+
+- [Current setup, results and limitations](docs/CHALLENGE3_DELIVERY_20261015.md)
+- [Three actual questions, evidence and unedited answers](results/graphrag-coursework-20261015/THREE_QUERIES.md)
+- [Human-AI design decision and domain-learning feedback](docs/CHALLENGE3_CODESIGN_20261015.md)
+- [Eight-slide presentation](output/slides/AutoTriager_Challenge3_Human_AI_GraphRAG_Dahe_Chen_20261015.pptx)
+
+The student approved checking whether undocumented dependencies exist before
+checking their health. Answer-level student assessments remain deferred or
+pending while the application scenario and evidence types are explained.
+Independent AI review does not replace those assessments.
+
 ## Cloud GraphRAG checkpoint: October 13, 2026
 
 The current research prototype connects the local investigation desk to a

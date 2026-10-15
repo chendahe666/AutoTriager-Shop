@@ -1,0 +1,28 @@
+{
+  "question_type": "research",
+  "packet_id": "a67af44f5ae7cbf7f715aac1d6676dc20c54df1da38a52569fcccfd1be3b571d",
+  "packet_integrity": true,
+  "required_evidence": {
+    "knowledge": {
+      "found": [
+        "shop-checkout-charge",
+        "shop-payment-handler"
+      ],
+      "missing": [],
+      "required_count": 2
+    },
+    "observations": {
+      "found": [
+        "span-00006",
+        "span-00007",
+        "span-00008"
+      ],
+      "missing": [],
+      "required_count": 3
+    }
+  },
+  "knowledge_count": 10,
+  "observation_count": 48,
+  "relation_count": 3,
+  "semantic_support": "Requires separate human/independent review; ID checks do not establish meaning."
+}

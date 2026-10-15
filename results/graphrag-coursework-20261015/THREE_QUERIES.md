@@ -1,0 +1,1781 @@
+# AutoTriager: three GraphRAG questions
+
+Author: Dahe Chen. CS 5588. October 15, 2026.
+
+Displayed revision: `v2`. Report built: 2026-10-15T06:22:09+00:00.
+
+**Saved execution replay.** This is a static report of preserved receipts, not a new model run. Missing results remain pending. Valid citation IDs do not establish semantic support or root cause.
+
+Three development questions, one inspected simulated incident; no held-out accuracy or user-benefit claim.
+
+## 01. Basic factual question
+
+What RPC does PaymentService expose, what information goes into its request, and what does its response provide? Explain whether this interface alone proves that a payment succeeded.
+
+Required knowledge: 1/1 required IDs present. Required observations: 0/0 required IDs present.
+
+Packet ID: `ab61f864d0daa85e20215ba8a19aa83e6f24137197ddc86840f611d0ff997958`.
+
+### Required knowledge
+
+#### shop-payment-interface (required)
+
+Payment RPC request and response — stored paraphrase, copied in full.
+
+The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+#### shop-checkout-charge (additional cited knowledge)
+
+Checkout invokes the charge RPC — stored paraphrase, copied in full.
+
+The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+### Saved generated answer
+
+Recorded status: `answered`; model: `gemini-3.5-flash-lite`; source: `fresh_gemini`; latency: 5474 ms.
+
+1. **system_knowledge** — PaymentService exposes the Charge RPC whose request combines Money and CreditCardInfo, and whose response supplies a transaction_id.
+
+   Citations: `shop-payment-interface`
+
+2. **system_knowledge** — The declared PaymentService interface describes message shape, but this interface alone does not prove that any request succeeded.
+
+   Citations: `shop-payment-interface`
+
+3. **system_knowledge** — The charge call sends amount and credit-card information to PaymentService.Charge, where RPC errors return to the caller and successful replies expose a transaction identifier.
+
+   Citations: `shop-checkout-charge`
+
+Recorded uncertainties:
+
+
+Suggested checks (not executed by this report):
+
+
+### Graph context
+
+Literal saved relationships; possible calls and candidate dependencies do not establish cause.
+
+```json
+[
+  {
+    "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+    "kind": "CALLS",
+    "from": "POST /api/checkout",
+    "to": "PlaceOrder",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "POST order request",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-front-checkout"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+    "kind": "CALLS",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge",
+    "kind": "DEPENDS_ON",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "interpretation": "Candidate business dependency; CALLS does not imply CAUSES",
+    "evidence_status": "source_supported",
+    "criticality": "unknown",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1",
+    "verification_status": "pending"
+  }
+]
+```
+
+### Original observations
+
+Required and additional cited records, copied in full:
+
+```json
+[]
+```
+
+### Student evidence evaluation
+
+
+```json
+{
+  "status": "Deferred: domain explanation requested",
+  "student_reply_translation": "I am not an expert in this domain. I do not even understand the scenario, so I do not want to give an uncertain answer. Do I need to learn this domain to use AI better, complete my project, and build a better agent and RAG system?",
+  "semantic_verdict": null,
+  "interpretation": "No acceptance or rejection of the model answer was provided.",
+  "response": "Explain the shopping workflow and the distinction between an interface contract and an actual request outcome before asking for evidence evaluation again."
+}
+```
+
+### Original receipts
+
+- [context.json](v2/basic/context.json)
+- [answer.json](v2/basic/answer.json)
+- [retrieval_checks.json](v2/basic/retrieval_checks.json)
+
+## 02. Multi-hop question
+
+Using shop-pilot-002-b, link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source? Cite exact records; do not claim causation.
+
+Required knowledge: 3/3 required IDs present. Required observations: 5/5 required IDs present.
+
+Packet ID: `1f2ea8d2c6edf59ceb25a730d9918ae60613f2f5c7c8b3636bfbb15587b6fe72`.
+
+### Required knowledge
+
+#### shop-checkout-charge (required)
+
+Checkout invokes the charge RPC — stored paraphrase, copied in full.
+
+The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+#### rule-trace-identity (required)
+
+Trace context and parent linkage — stored paraphrase, copied in full.
+
+A span has its own SpanContext, a possible parent, timing, attributes, links, and status. SpanContext carries TraceId and SpanId. Links can connect spans across traces, separately from the parent relationship.
+
+[Original source](https://opentelemetry.io/docs/specs/otel/trace/api/)
+
+Source version: `OpenTelemetry specification 1.61.0; reviewed 2026-10-13`.
+
+Application limit: Build parent edges from preserved IDs within a trace; a call chain is not a causal attribution chain.
+
+#### rule-span-direction (required)
+
+Client, server, and internal spans — stored paraphrase, copied in full.
+
+CLIENT spans describe outgoing requests; SERVER spans describe incoming request handling. INTERNAL spans describe work inside an application. Context propagation commonly makes a remote SERVER span a child of a CLIENT span; nested CLIENT spans are also possible.
+
+[Original source](https://opentelemetry.io/docs/specs/otel/trace/api/)
+
+Source version: `OpenTelemetry specification 1.61.0; reviewed 2026-10-13`.
+
+Application limit: Separate the emitting service from the service being called. Span kinds describe execution roles, not fault responsibility.
+
+#### shop-frontend-error-mapping (additional cited knowledge)
+
+Frontend classification of checkout errors — stored paraphrase, copied in full.
+
+A failed PlaceOrder marks the frontend span ERROR. Its response mapping treats a charge-failure prefix without Unavailable or Internal as HTTP 422; other caught order-placement failures become HTTP 500. This is message-based classification, not independent cause verification.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+### Saved generated answer
+
+Recorded status: `answered`; model: `gemini-3.5-flash-lite`; source: `fresh_gemini`; latency: 5878 ms.
+
+1. **observation** — The frontend service emits span records for executing API route (pages) /api/checkout and client-side oteldemo.CheckoutService/PlaceOrder with status ERROR.
+
+   Citations: `span-00003`, `span-00004`
+
+2. **observation** — The checkout service emits server-side oteldemo.CheckoutService/PlaceOrder and client-side oteldemo.PaymentService/Charge spans with status ERROR.
+
+   Citations: `span-00005`, `span-00006`
+
+3. **observation** — The payment service emits server-side oteldemo.PaymentService/Charge and internal charge spans with status ERROR.
+
+   Citations: `span-00007`, `span-00008`
+
+4. **system_knowledge** — Static source paths in the pinned source version indicate that the frontend route calls PlaceOrder, and PlaceOrder invokes PaymentService/Charge.
+
+   Citations: `shop-frontend-error-mapping`, `shop-checkout-charge`
+
+Recorded uncertainties:
+
+
+Suggested checks (not executed by this report):
+
+
+### Graph context
+
+Literal saved relationships; possible calls and candidate dependencies do not establish cause.
+
+```json
+[
+  {
+    "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+    "kind": "CALLS",
+    "from": "POST /api/checkout",
+    "to": "PlaceOrder",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "POST order request",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-front-checkout"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+    "kind": "CALLS",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge",
+    "kind": "DEPENDS_ON",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "interpretation": "Candidate business dependency; CALLS does not imply CAUSES",
+    "evidence_status": "source_supported",
+    "criticality": "unknown",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1",
+    "verification_status": "pending"
+  }
+]
+```
+
+Additional executed query and rows (see the recorded role; these are not additional model input):
+
+```json
+{
+  "statement": "MATCH (i:ATKnowledge:Incident {graph_id:$graph})\n-[:HAS_OBSERVATION]->(o:ATKnowledge:Observation {graph_id:$graph})\n-[:EMITTED_BY]->(s:ATKnowledge:Service {graph_id:$graph})\nRETURN i.id AS incident, o.id AS observation, s.name AS service ORDER BY observation",
+  "parameters": {
+    "graph": "autotriager-rag-v1"
+  },
+  "rows": [
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00003",
+      "service": "frontend"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00004",
+      "service": "frontend"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00005",
+      "service": "checkout"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00006",
+      "service": "checkout"
+    },
+    {
+      "incident": "incident-archive-02",
+      "observation": "obs-archive-span-00007",
+      "service": "payment"
+    }
+  ],
+  "role": "Additional executed graph demonstration; not additional LLM input. LLM context is exactly context.json."
+}
+```
+
+### Original observations
+
+Required and additional cited records, copied in full:
+
+```json
+[
+  {
+    "id": "span-00003",
+    "kind": "span",
+    "service": "frontend",
+    "timestamp": "2026-10-01T18:09:37.780000Z",
+    "summary": "frontend: executing api route (pages) /api/checkout — ERROR (100.3 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "e932062fd2e5ea84",
+    "raw": {
+      "operation": "executing api route (pages) /api/checkout",
+      "parent_span_id": "872a471779dc5d50",
+      "status": "ERROR",
+      "duration_ms": 100.334,
+      "tags": {
+        "http.status_code": 422,
+        "span.kind": "internal",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00004",
+    "kind": "span",
+    "service": "frontend",
+    "timestamp": "2026-10-01T18:09:37.780000Z",
+    "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (99.7 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "efb3cba869076aa8",
+    "raw": {
+      "operation": "oteldemo.CheckoutService/PlaceOrder",
+      "parent_span_id": "e932062fd2e5ea84",
+      "status": "ERROR",
+      "duration_ms": 99.684,
+      "tags": {
+        "rpc.grpc.status_code": 13,
+        "span.kind": "client",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00005",
+    "kind": "span",
+    "service": "checkout",
+    "timestamp": "2026-10-01T18:09:37.781002Z",
+    "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (98.5 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "69d1ec2d192dd847",
+    "raw": {
+      "operation": "oteldemo.CheckoutService/PlaceOrder",
+      "parent_span_id": "efb3cba869076aa8",
+      "status": "ERROR",
+      "duration_ms": 98.533,
+      "tags": {
+        "span.kind": "server",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00006",
+    "kind": "span",
+    "service": "checkout",
+    "timestamp": "2026-10-01T18:09:37.876284Z",
+    "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (3.2 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "e583cbbc1d5f75f8",
+    "raw": {
+      "operation": "oteldemo.PaymentService/Charge",
+      "parent_span_id": "69d1ec2d192dd847",
+      "status": "ERROR",
+      "duration_ms": 3.197,
+      "tags": {
+        "span.kind": "client",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00007",
+    "kind": "span",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:09:37.877000Z",
+    "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.4 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "263b28468ee221d5",
+    "raw": {
+      "operation": "oteldemo.PaymentService/Charge",
+      "parent_span_id": "e583cbbc1d5f75f8",
+      "status": "ERROR",
+      "duration_ms": 1.372,
+      "tags": {
+        "error.type": "Error",
+        "span.kind": "server",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00008",
+    "kind": "span",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:09:37.878000Z",
+    "summary": "payment: charge — ERROR (0.4 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "8894d240e945b3de",
+    "raw": {
+      "operation": "charge",
+      "parent_span_id": "263b28468ee221d5",
+      "status": "ERROR",
+      "duration_ms": 0.373,
+      "tags": {
+        "error.type": "Error",
+        "span.kind": "internal",
+        "otel.status_code": "ERROR"
+      }
+    }
+  }
+]
+```
+
+### Student evidence evaluation
+
+
+```json
+{
+  "status": "Pending: guided domain walkthrough first",
+  "semantic_verdict": null
+}
+```
+
+### Original receipts
+
+- [context.json](v2/multihop/context.json)
+- [answer.json](v2/multihop/answer.json)
+- [retrieval_checks.json](v2/multihop/retrieval_checks.json)
+- [explicit_two_hop.json](v2/multihop/explicit_two_hop.json)
+
+## 03. Research question
+
+Which evidence supports inspecting payment next, and why does that evidence not prove payment is the root cause? Separate current observations, source-supported system knowledge, candidate explanations, and missing evidence. Suggest the next read-only check without assuming undocumented dependencies.
+
+Required knowledge: 2/2 required IDs present. Required observations: 3/3 required IDs present.
+
+Packet ID: `82d81f82968e125a8da3278e8d9fcea98f77c8e14bbb40cae7fbbd7982752a73`.
+
+### Required knowledge
+
+#### shop-payment-handler (required)
+
+Payment handler records and returns failures — stored paraphrase, copied in full.
+
+The PaymentService handler calls the charge implementation. If it throws, the handler logs the error, marks its active span ERROR, sets error.type, and returns the error through the RPC callback.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/payment/index.js#L12-L31)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+#### shop-checkout-charge (required)
+
+Checkout invokes the charge RPC — stored paraphrase, copied in full.
+
+The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+#### shop-payment-interface (additional cited knowledge)
+
+Payment RPC request and response — stored paraphrase, copied in full.
+
+The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+#### shop-frontend-error-mapping (additional cited knowledge)
+
+Frontend classification of checkout errors — stored paraphrase, copied in full.
+
+A failed PlaceOrder marks the frontend span ERROR. Its response mapping treats a charge-failure prefix without Unavailable or Internal as HTTP 422; other caught order-placement failures become HTTP 500. This is message-based classification, not independent cause verification.
+
+[Original source](https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47)
+
+Source version: `dedc0178918e260823323b8d95005a8cb924b007`.
+
+Application limit: Static source context is not proof that this path executed or caused a particular incident.
+
+### Saved generated answer
+
+Recorded status: `hypotheses`; model: `gemini-3.5-flash-lite`; source: `fresh_gemini`; latency: 5943 ms.
+
+1. **observation** — Current trace and span observations show errors occurring within PaymentService/Charge calls across multiple traces such as span 263b28468ee221d5.
+
+   Citations: `span-00007`
+
+2. **system_knowledge** — The payment handler logs execution errors, marks its active span as ERROR, and returns the error through the RPC callback.
+
+   Citations: `shop-payment-handler`
+
+3. **hypothesis** — The observed error spans in payment could reflect an upstream error response or downstream dependency failure, but these span error metrics alone do not prove payment is the root cause.
+
+   Citations: `metric-00022`, `metric-00023`, `metric-00024`
+
+4. **limitation** — Static source context and dependency paths are possible execution paths and do not constitute proof of deployed-source equality or incident causation.
+
+   Citations: `shop-payment-interface`, `shop-frontend-error-mapping`
+
+Recorded uncertainties:
+
+- Whether the deployed runtime image matches the referenced source commit.
+- The internal cause or exception stack trace within the payment service implementation.
+- Whether any unrecorded backend dependencies of the payment service are failing.
+
+Suggested checks (not executed by this report):
+
+- Verify whether the payment service has any external database or third-party dependencies defined in the deployed environment before checking their health.
+
+### Graph context
+
+Literal saved relationships; possible calls and candidate dependencies do not establish cause.
+
+```json
+[
+  {
+    "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+    "kind": "CALLS",
+    "from": "POST /api/checkout",
+    "to": "PlaceOrder",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "POST order request",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-front-checkout"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+    "kind": "CALLS",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "scope": "possible static call path",
+    "evidence_status": "source_supported",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1"
+  },
+  {
+    "id": "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge",
+    "kind": "DEPENDS_ON",
+    "from": "PlaceOrder",
+    "to": "Charge",
+    "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+    "workflow_id": "wf-checkout",
+    "condition": "Order preparation completed; charging step reached",
+    "interpretation": "Candidate business dependency; CALLS does not imply CAUSES",
+    "evidence_status": "source_supported",
+    "criticality": "unknown",
+    "evidence_ids": [
+      "ev-checkout-go"
+    ],
+    "graph_id": "autotriager-rag-v1",
+    "verification_status": "pending"
+  }
+]
+```
+
+### Original observations
+
+Required and additional cited records, copied in full:
+
+```json
+[
+  {
+    "id": "span-00006",
+    "kind": "span",
+    "service": "checkout",
+    "timestamp": "2026-10-01T18:09:37.876284Z",
+    "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (3.2 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "e583cbbc1d5f75f8",
+    "raw": {
+      "operation": "oteldemo.PaymentService/Charge",
+      "parent_span_id": "69d1ec2d192dd847",
+      "status": "ERROR",
+      "duration_ms": 3.197,
+      "tags": {
+        "span.kind": "client",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00007",
+    "kind": "span",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:09:37.877000Z",
+    "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.4 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "263b28468ee221d5",
+    "raw": {
+      "operation": "oteldemo.PaymentService/Charge",
+      "parent_span_id": "e583cbbc1d5f75f8",
+      "status": "ERROR",
+      "duration_ms": 1.372,
+      "tags": {
+        "error.type": "Error",
+        "span.kind": "server",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "span-00008",
+    "kind": "span",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:09:37.878000Z",
+    "summary": "payment: charge — ERROR (0.4 ms)",
+    "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+    "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+    "span_id": "8894d240e945b3de",
+    "raw": {
+      "operation": "charge",
+      "parent_span_id": "263b28468ee221d5",
+      "status": "ERROR",
+      "duration_ms": 0.373,
+      "tags": {
+        "error.type": "Error",
+        "span.kind": "internal",
+        "otel.status_code": "ERROR"
+      }
+    }
+  },
+  {
+    "id": "metric-00022",
+    "kind": "metric",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:10:26.219000Z",
+    "summary": "payment: span_error_rate = 0.06667 calls/s",
+    "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+    "raw": {
+      "value": 0.06666666666666667,
+      "baseline": 0.0,
+      "tags": {}
+    }
+  },
+  {
+    "id": "metric-00023",
+    "kind": "metric",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:11:26.219000Z",
+    "summary": "payment: span_error_rate = 0.1 calls/s",
+    "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+    "raw": {
+      "value": 0.1,
+      "baseline": 0.0,
+      "tags": {}
+    }
+  },
+  {
+    "id": "metric-00024",
+    "kind": "metric",
+    "service": "payment",
+    "timestamp": "2026-10-01T18:12:26.219000Z",
+    "summary": "payment: span_error_rate = 0.06667 calls/s",
+    "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+    "raw": {
+      "value": 0.06666555557407376,
+      "baseline": 0.0,
+      "tags": {}
+    }
+  }
+]
+```
+
+### Student evidence evaluation
+
+
+```json
+{
+  "status": "Pending: guided domain walkthrough first",
+  "semantic_verdict": null
+}
+```
+
+### Original receipts
+
+- [context.json](v2/research/context.json)
+- [answer.json](v2/research/answer.json)
+- [retrieval_checks.json](v2/research/retrieval_checks.json)
+
+## Full human evaluation record
+
+
+```json
+{
+  "record_date": "2026-10-15",
+  "author": "Dahe Chen",
+  "source": "Actual student replies in the project conversation; English translations of Chinese responses.",
+  "scope": "The student saw a guided summary of the basic question, evidence and answer, not an independent examination of all source records.",
+  "design_decision": {
+    "status": "accepted",
+    "student_reply_translation": "First confirm whether payment has a database; if it does, then check the connection.",
+    "implementation": "The generation prompt requires existence-first verification of undocumented dependencies before a conditional health check.",
+    "boundary": "Approval of this response policy does not approve any complete generated answer."
+  },
+  "questions": {
+    "basic": {
+      "status": "Deferred: domain explanation requested",
+      "student_reply_translation": "I am not an expert in this domain. I do not even understand the scenario, so I do not want to give an uncertain answer. Do I need to learn this domain to use AI better, complete my project, and build a better agent and RAG system?",
+      "semantic_verdict": null,
+      "interpretation": "No acceptance or rejection of the model answer was provided.",
+      "response": "Explain the shopping workflow and the distinction between an interface contract and an actual request outcome before asking for evidence evaluation again."
+    },
+    "multihop": {
+      "status": "Pending: guided domain walkthrough first",
+      "semantic_verdict": null
+    },
+    "research": {
+      "status": "Pending: guided domain walkthrough first",
+      "semantic_verdict": null
+    }
+  },
+  "reflection": "A review button is not sufficient human oversight. The reviewer must understand the scenario, the evidence being judged, and the scope of the requested decision. A novice should be allowed to defer; expert confirmation and simulated AI scrutiny must remain distinct."
+}
+```
+
+## Independent simulated AI review
+
+Simulated scrutiny is not expert certification or student approval.
+
+Review binding verified: displayed revision, packet identities, and all three context/answer file hashes match the recorded review.
+
+
+```json
+{
+  "review_version": "1.0",
+  "date": "2026-10-15",
+  "project_author": "Dahe Chen",
+  "reviewer": "Independent simulated AI reviewer in a separate agent; not the author of these outputs",
+  "review_scope": "Exact preserved v2 packets, generated claims, citations, uncertainties, next checks, short summaries, and retrieval receipts. No model generation, network access, live graph calls, or interventions by this reviewer.",
+  "overall_assessment": "partial; suitable as a transparent development demonstration with visible review corrections and limitations",
+  "student_evidence_evaluation": "pending/deferred; the student declined to judge Q1 because of limited domain background. No answer-level human pass is recorded.",
+  "expert_certification": false,
+  "raw_answers_modified": false,
+  "scoring_policy": {
+    "unit": "One original structured claim, including composite sentences. The short answer repeats selected claims and is not a second denominator. Uncertainties, next checks, and completeness are assessed separately.",
+    "pass": "All substantive content is supported within the declared evidence role.",
+    "partial": "A supported part remains, but scope, condition, citation coverage, or interpretation needs qualification.",
+    "unsupported": "No substantive part is supported by cited packet material.",
+    "contradicted": "The packet contradicts the central asserted fact.",
+    "warning": "Zero wholly unsupported claims does not mean every clause is supported. Three partial claims contain unsupported or omitted components. These are qualitative reviewer labels, not accuracy or user-benefit measurements."
+  },
+  "totals": {
+    "structured_claims": {
+      "denominator": 11,
+      "pass": 8,
+      "partial": 3,
+      "unsupported": 0,
+      "contradicted": 0
+    },
+    "citation_occurrences": {
+      "resolved": 18,
+      "denominator": 18
+    },
+    "packet_hashes": {
+      "matched": 3,
+      "denominator": 3
+    },
+    "knowledge_text_hash_occurrences": {
+      "matched": 30,
+      "denominator": 30
+    },
+    "uncertainties": {
+      "pass": 3,
+      "denominator": 3
+    },
+    "next_checks": {
+      "dependency_existence_gate_pass": 1,
+      "task_usefulness_partial": 1,
+      "denominator": 1
+    },
+    "causal_confirmation_claimed": false
+  },
+  "cases": {
+    "basic": {
+      "claim_assessments": [
+        {
+          "assessment": "pass",
+          "reason": "The cited interface explicitly names Charge, Money, CreditCardInfo, and transaction_id. This is source knowledge, not an observed successful payment.",
+          "repair_or_limit": "Keep interface and execution distinct.",
+          "claim_id": "basic-1",
+          "claim_index_zero_based": 0,
+          "kind": "system_knowledge",
+          "original_text": "PaymentService exposes the Charge RPC whose request combines Money and CreditCardInfo, and whose response supplies a transaction_id.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "shop-payment-interface",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 175,
+                "line_end": 195
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "The cited interface passage explicitly states that its message shape does not prove any request succeeded.",
+          "repair_or_limit": "None.",
+          "claim_id": "basic-2",
+          "claim_index_zero_based": 1,
+          "kind": "system_knowledge",
+          "original_text": "The declared PaymentService interface describes message shape, but this interface alone does not prove that any request succeeded.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "shop-payment-interface",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 175,
+                "line_end": 195
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "The cited checkout charge passage states amount/card inputs, returned RPC errors, and transaction identifier on successful replies. The success condition is preserved.",
+          "repair_or_limit": "Do not relabel source behavior as observed execution or verified deployed equality.",
+          "claim_id": "basic-3",
+          "claim_index_zero_based": 2,
+          "kind": "system_knowledge",
+          "original_text": "The charge call sends amount and credit-card information to PaymentService.Charge, where RPC errors return to the caller and successful replies expose a transaction identifier.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "shop-checkout-charge",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 581,
+                "line_end": 588
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        }
+      ],
+      "question_coverage": "pass: RPC, inputs, output, and interface/success distinction are answered",
+      "status_interpretation": "answered is a factual-response schema label, not semantic certification or causality",
+      "question": "What RPC does PaymentService expose, what information goes into its request, and what does its response provide? Explain whether this interface alone proves that a payment succeeded.",
+      "status": "answered",
+      "packet_id": "ab61f864d0daa85e20215ba8a19aa83e6f24137197ddc86840f611d0ff997958",
+      "model_request_id": "8397459667fabf62531df9610c9712aad48831f6fd8aadf3f42b73a613598c18",
+      "file_byte_sha256": {
+        "answer.json": "f36f0bdfed09cf11b2d7a96f44bb7c42108b6fc616810fdcb5ed9d5b6c3a3cce",
+        "context.json": "b7e9379c3f9db4b9388e6c9caa729aa20ce596f82d0dcff1ddb822cf1c0a74fd",
+        "raw_model_response.json": "58a0e7dc3352f884e98af33e8ce4244769538ae4e947529f254bd41a29e2e91f",
+        "retrieval_checks.json": "cffd176950c9f18fe971b45eb400e5e7829b804130b6315a0182b16ba3ebaed4",
+        "retrieval_queries.json": "e1a7d12e91590e1d38ee826b48eebe00ec13f8491854413f8949b9e3a5f2467c"
+      },
+      "packet_integrity_recomputed": true,
+      "source_text_integrity": {
+        "matched_text_hashes": 10,
+        "passage_denominator": 10,
+        "matched_retrieval_query_texts": 10,
+        "limit": "Matches stored packet paraphrases and query rows; no independent upstream source-line or live-URL verification."
+      },
+      "raw_claims_preserved_after_reference_map": true,
+      "claim_counts": {
+        "denominator": 3,
+        "pass": 3,
+        "partial": 0,
+        "unsupported": 0,
+        "contradicted": 0
+      },
+      "citation_integrity": {
+        "resolved_occurrences": 3,
+        "occurrence_denominator": 3,
+        "meaning": "Identifier existence only, not claim support."
+      },
+      "retrieval_required_evidence": {
+        "knowledge": {
+          "found": [
+            "shop-payment-interface"
+          ],
+          "missing": [],
+          "required_count": 1
+        },
+        "observations": {
+          "found": [],
+          "missing": [],
+          "required_count": 0
+        }
+      },
+      "retrieval_counts": {
+        "knowledge": 10,
+        "observations": 48,
+        "relations": 3
+      },
+      "uncertainty_assessments": [],
+      "next_check_assessments": []
+    },
+    "multihop": {
+      "claim_assessments": [
+        {
+          "assessment": "pass",
+          "reason": "span-00003 is frontend / executing api route (pages) /api/checkout / internal / ERROR. span-00004 is frontend / CheckoutService/PlaceOrder / client / ERROR. The emitter is correct.",
+          "repair_or_limit": "Explicitly name span-00003 internal for complete role coverage. Runtime HTTP method is absent; do not infer POST from the observation.",
+          "claim_id": "multihop-1",
+          "claim_index_zero_based": 0,
+          "kind": "observation",
+          "original_text": "The frontend service emits span records for executing API route (pages) /api/checkout and client-side oteldemo.CheckoutService/PlaceOrder with status ERROR.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "span-00003",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00003",
+                "kind": "span",
+                "service": "frontend",
+                "timestamp": "2026-10-01T18:09:37.780000Z",
+                "summary": "frontend: executing api route (pages) /api/checkout — ERROR (100.3 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "e932062fd2e5ea84",
+                "raw": {
+                  "operation": "executing api route (pages) /api/checkout",
+                  "parent_span_id": "872a471779dc5d50",
+                  "status": "ERROR",
+                  "duration_ms": 100.334,
+                  "tags": {
+                    "http.status_code": 422,
+                    "span.kind": "internal",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            },
+            {
+              "id": "span-00004",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00004",
+                "kind": "span",
+                "service": "frontend",
+                "timestamp": "2026-10-01T18:09:37.780000Z",
+                "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (99.7 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "efb3cba869076aa8",
+                "raw": {
+                  "operation": "oteldemo.CheckoutService/PlaceOrder",
+                  "parent_span_id": "e932062fd2e5ea84",
+                  "status": "ERROR",
+                  "duration_ms": 99.684,
+                  "tags": {
+                    "rpc.grpc.status_code": 13,
+                    "span.kind": "client",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "span-00005 is checkout / CheckoutService/PlaceOrder / server / ERROR. span-00006 is checkout / PaymentService/Charge / client / ERROR. Roles are not interchanged.",
+          "repair_or_limit": "Separately explain preserved parent linkage.",
+          "claim_id": "multihop-2",
+          "claim_index_zero_based": 1,
+          "kind": "observation",
+          "original_text": "The checkout service emits server-side oteldemo.CheckoutService/PlaceOrder and client-side oteldemo.PaymentService/Charge spans with status ERROR.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "span-00005",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00005",
+                "kind": "span",
+                "service": "checkout",
+                "timestamp": "2026-10-01T18:09:37.781002Z",
+                "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (98.5 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "69d1ec2d192dd847",
+                "raw": {
+                  "operation": "oteldemo.CheckoutService/PlaceOrder",
+                  "parent_span_id": "efb3cba869076aa8",
+                  "status": "ERROR",
+                  "duration_ms": 98.533,
+                  "tags": {
+                    "span.kind": "server",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            },
+            {
+              "id": "span-00006",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00006",
+                "kind": "span",
+                "service": "checkout",
+                "timestamp": "2026-10-01T18:09:37.876284Z",
+                "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (3.2 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "e583cbbc1d5f75f8",
+                "raw": {
+                  "operation": "oteldemo.PaymentService/Charge",
+                  "parent_span_id": "69d1ec2d192dd847",
+                  "status": "ERROR",
+                  "duration_ms": 3.197,
+                  "tags": {
+                    "span.kind": "client",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "span-00007 is payment / PaymentService/Charge / server / ERROR. span-00008 is payment / charge / internal / ERROR.",
+          "repair_or_limit": "span-00008 is an additional packet observation; the five imported Observation nodes stop at span-00007.",
+          "claim_id": "multihop-3",
+          "claim_index_zero_based": 2,
+          "kind": "observation",
+          "original_text": "The payment service emits server-side oteldemo.PaymentService/Charge and internal charge spans with status ERROR.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "span-00007",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00007",
+                "kind": "span",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:09:37.877000Z",
+                "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.4 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "263b28468ee221d5",
+                "raw": {
+                  "operation": "oteldemo.PaymentService/Charge",
+                  "parent_span_id": "e583cbbc1d5f75f8",
+                  "status": "ERROR",
+                  "duration_ms": 1.372,
+                  "tags": {
+                    "error.type": "Error",
+                    "span.kind": "server",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            },
+            {
+              "id": "span-00008",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00008",
+                "kind": "span",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:09:37.878000Z",
+                "summary": "payment: charge — ERROR (0.4 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "8894d240e945b3de",
+                "raw": {
+                  "operation": "charge",
+                  "parent_span_id": "263b28468ee221d5",
+                  "status": "ERROR",
+                  "duration_ms": 0.373,
+                  "tags": {
+                    "error.type": "Error",
+                    "span.kind": "internal",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "partial",
+          "reason": "The packet contains the possible static CALLS path. The frontend-error passage primarily describes error classification, and checkout-charge alone does not give the conditional PlaceOrder sequence. The claim omits POST and charging-after-preparation conditions and the unverified deployed-source equality gap.",
+          "repair_or_limit": "Present a possible source path with both relation conditions. Use packet relations and shop-checkout-order-sequence as explicitly added reviewer evidence. This structured claim is absent from the short answer.",
+          "claim_id": "multihop-4",
+          "claim_index_zero_based": 3,
+          "kind": "system_knowledge",
+          "original_text": "Static source paths in the pinned source version indicate that the frontend route calls PlaceOrder, and PlaceOrder invokes PaymentService/Charge.",
+          "appears_in_short_answer": false,
+          "citations": [
+            {
+              "id": "shop-frontend-error-mapping",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "A failed PlaceOrder marks the frontend span ERROR. Its response mapping treats a charge-failure prefix without Unavailable or Internal as HTTP 422; other caught order-placement failures become HTTP 500. This is message-based classification, not independent cause verification.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 14,
+                "line_end": 47
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            },
+            {
+              "id": "shop-checkout-charge",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 581,
+                "line_end": 588
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            }
+          ]
+        }
+      ],
+      "question_coverage": "partial: correct local mappings, but no explicit parent links or complete conditional source/runtime explanation",
+      "status_interpretation": "answered does not establish completeness or causal confirmation",
+      "question": "Using shop-pilot-002-b, link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source? Cite exact records; do not claim causation.",
+      "status": "answered",
+      "packet_id": "1f2ea8d2c6edf59ceb25a730d9918ae60613f2f5c7c8b3636bfbb15587b6fe72",
+      "model_request_id": "122aeec1770210cde005fb9c734540c408d1d7c88558c83c9241abe494616f04",
+      "file_byte_sha256": {
+        "answer.json": "164b566bbabb338a46d3befa4c920fa570537106a754d1eee18b5e0d8c7277e4",
+        "context.json": "444c63b5693ca72624aa1a64478cf6c8181bcdf4b84669cf4f4085eceac9fa8f",
+        "explicit_two_hop.json": "b89f965b7d03c3a1cbd91f437a50ed8a4acfba2ea90899a6117d0c5601b14052",
+        "raw_model_response.json": "c3fb86facdf6eb9d7129f4a141f9cfe031791eeeb6ffc4e96290934e726fd4e3",
+        "retrieval_checks.json": "1e9f577c42064463cc2622a867409523186c9a6265f195095714a5445ae6390e",
+        "retrieval_queries.json": "e1a7d12e91590e1d38ee826b48eebe00ec13f8491854413f8949b9e3a5f2467c"
+      },
+      "packet_integrity_recomputed": true,
+      "source_text_integrity": {
+        "matched_text_hashes": 10,
+        "passage_denominator": 10,
+        "matched_retrieval_query_texts": 10,
+        "limit": "Matches stored packet paraphrases and query rows; no independent upstream source-line or live-URL verification."
+      },
+      "raw_claims_preserved_after_reference_map": true,
+      "claim_counts": {
+        "denominator": 4,
+        "pass": 3,
+        "partial": 1,
+        "unsupported": 0,
+        "contradicted": 0
+      },
+      "citation_integrity": {
+        "resolved_occurrences": 8,
+        "occurrence_denominator": 8,
+        "meaning": "Identifier existence only, not claim support."
+      },
+      "retrieval_required_evidence": {
+        "knowledge": {
+          "found": [
+            "rule-span-direction",
+            "rule-trace-identity",
+            "shop-checkout-charge"
+          ],
+          "missing": [],
+          "required_count": 3
+        },
+        "observations": {
+          "found": [
+            "span-00003",
+            "span-00004",
+            "span-00005",
+            "span-00006",
+            "span-00007"
+          ],
+          "missing": [],
+          "required_count": 5
+        }
+      },
+      "retrieval_counts": {
+        "knowledge": 10,
+        "observations": 48,
+        "relations": 3
+      },
+      "uncertainty_assessments": [],
+      "next_check_assessments": []
+    },
+    "research": {
+      "claim_assessments": [
+        {
+          "assessment": "partial",
+          "reason": "span-00007 supports one payment server Charge ERROR span with span_id 263b28468ee221d5 in one trace. It cannot alone support across multiple traces. The full packet contains other payment Charge ERROR traces at span-00016, span-00022, and span-00032, but the model did not cite them.",
+          "repair_or_limit": "Narrow a separately labeled reviewed paraphrase to the cited trace, or explicitly add reviewer citations. Preserve the original answer.",
+          "claim_id": "research-1",
+          "claim_index_zero_based": 0,
+          "kind": "observation",
+          "original_text": "Current trace and span observations show errors occurring within PaymentService/Charge calls across multiple traces such as span 263b28468ee221d5.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "span-00007",
+              "resolves_in_exact_packet": true,
+              "item_kind": "span",
+              "evidence": {
+                "id": "span-00007",
+                "kind": "span",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:09:37.877000Z",
+                "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.4 ms)",
+                "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+                "span_id": "263b28468ee221d5",
+                "raw": {
+                  "operation": "oteldemo.PaymentService/Charge",
+                  "parent_span_id": "e583cbbc1d5f75f8",
+                  "status": "ERROR",
+                  "duration_ms": 1.372,
+                  "tags": {
+                    "error.type": "Error",
+                    "span.kind": "server",
+                    "otel.status_code": "ERROR"
+                  }
+                }
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "shop-payment-handler describes logging, active-span ERROR, error.type, and RPC callback error when the charge implementation throws. This is source behavior, not an inspected runtime exception.",
+          "repair_or_limit": "Retain the if-charge-throws condition when quoting source behavior; deployed equality is unverified.",
+          "claim_id": "research-2",
+          "claim_index_zero_based": 1,
+          "kind": "system_knowledge",
+          "original_text": "The payment handler logs execution errors, marks its active span as ERROR, and returns the error through the RPC callback.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "shop-payment-handler",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The PaymentService handler calls the charge implementation. If it throws, the handler logs the error, marks its active span ERROR, sets error.type, and returns the error through the RPC callback.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/payment/index.js#L12-L31",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 12,
+                "line_end": 31
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        },
+        {
+          "assessment": "partial",
+          "reason": "metric-00022/23/24 are payment aggregate error-span rates in calls/s with zero baselines. They do not identify response direction, an upstream error response, or any downstream dependency. The no-root-cause conclusion is appropriate; directional mechanisms remain untested candidates.",
+          "repair_or_limit": "Explicitly label mechanisms untested and dependency existence unknown. Prefer payment error-detail inspection as a reviewer supplement. Do not convert rates into percentages or RPC codes.",
+          "claim_id": "research-3",
+          "claim_index_zero_based": 2,
+          "kind": "hypothesis",
+          "original_text": "The observed error spans in payment could reflect an upstream error response or downstream dependency failure, but these span error metrics alone do not prove payment is the root cause.",
+          "appears_in_short_answer": true,
+          "citations": [
+            {
+              "id": "metric-00022",
+              "resolves_in_exact_packet": true,
+              "item_kind": "metric",
+              "evidence": {
+                "id": "metric-00022",
+                "kind": "metric",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:10:26.219000Z",
+                "summary": "payment: span_error_rate = 0.06667 calls/s",
+                "raw": {
+                  "value": 0.06666666666666667,
+                  "baseline": 0.0,
+                  "tags": {}
+                }
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            },
+            {
+              "id": "metric-00023",
+              "resolves_in_exact_packet": true,
+              "item_kind": "metric",
+              "evidence": {
+                "id": "metric-00023",
+                "kind": "metric",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:11:26.219000Z",
+                "summary": "payment: span_error_rate = 0.1 calls/s",
+                "raw": {
+                  "value": 0.1,
+                  "baseline": 0.0,
+                  "tags": {}
+                }
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            },
+            {
+              "id": "metric-00024",
+              "resolves_in_exact_packet": true,
+              "item_kind": "metric",
+              "evidence": {
+                "id": "metric-00024",
+                "kind": "metric",
+                "service": "payment",
+                "timestamp": "2026-10-01T18:12:26.219000Z",
+                "summary": "payment: span_error_rate = 0.06667 calls/s",
+                "raw": {
+                  "value": 0.06666555557407376,
+                  "baseline": 0.0,
+                  "tags": {}
+                }
+              },
+              "semantic_assessment": "supports cited portion, not the complete claim"
+            }
+          ]
+        },
+        {
+          "assessment": "pass",
+          "reason": "Cited source scopes/application limits and packet deployment_version_match unverified support the static-source, deployed-equality, and causation limitation.",
+          "repair_or_limit": "Keep this limitation visible; it is absent from the short answer string.",
+          "claim_id": "research-4",
+          "claim_index_zero_based": 3,
+          "kind": "limitation",
+          "original_text": "Static source context and dependency paths are possible execution paths and do not constitute proof of deployed-source equality or incident causation.",
+          "appears_in_short_answer": false,
+          "citations": [
+            {
+              "id": "shop-payment-interface",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 175,
+                "line_end": 195
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            },
+            {
+              "id": "shop-frontend-error-mapping",
+              "resolves_in_exact_packet": true,
+              "item_kind": "platform_context",
+              "evidence": {
+                "text": "A failed PlaceOrder marks the frontend span ERROR. Its response mapping treats a charge-failure prefix without Unavailable or Internal as HTTP 422; other caught order-placement failures become HTTP 500. This is message-based classification, not independent cause verification.",
+                "text_kind": "paraphrase",
+                "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+                "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+                "source_locator": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47",
+                "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+                "line_start": 14,
+                "line_end": 47
+              },
+              "semantic_assessment": "supports claim within stated evidence role"
+            }
+          ]
+        }
+      ],
+      "question_coverage": "partial: relevant errors and causal restraint, but trace citation scope and directional hypotheses require qualification; next check tests existence rather than distinguishing the current mechanism",
+      "status_interpretation": "hypotheses is not a confirmed diagnosis",
+      "uncertainty_assessments": [
+        {
+          "assessment": "pass",
+          "reason": "Packet scope explicitly leaves deployed-source equality unverified.",
+          "item_index_zero_based": 0,
+          "original_text": "Whether the deployed runtime image matches the referenced source commit."
+        },
+        {
+          "assessment": "pass",
+          "reason": "Packet contains ERROR and error.type Error, but no exception message, stack trace, or logs.",
+          "item_index_zero_based": 1,
+          "original_text": "The internal cause or exception stack trace within the payment service implementation."
+        },
+        {
+          "assessment": "pass",
+          "reason": "Whether/unrecorded phrasing does not assert a backend exists or is failing. Absence in this bounded graph is not proof of absence.",
+          "item_index_zero_based": 2,
+          "original_text": "Whether any unrecorded backend dependencies of the payment service are failing."
+        }
+      ],
+      "next_check_assessments": [
+        {
+          "dependency_existence_gate": "pass",
+          "task_usefulness": "partial",
+          "reason": "The next check verifies whether any external database or third-party dependency exists before checking health. The October 13 presupposition does not persist. Inventory verification alone does not distinguish the incident mechanism; no action benefit was measured.",
+          "suggested_reviewer_supplement": "Read original exception/error details for the cited payment trace and deployed image/configuration evidence. Report unavailable records as missing. Inspect dependency health only after existence is verified.",
+          "supplement_status": "Reviewer suggestion only; not generated by the model and not executed.",
+          "item_index_zero_based": 0,
+          "original_text": "Verify whether the payment service has any external database or third-party dependencies defined in the deployed environment before checking their health."
+        }
+      ],
+      "question": "Which evidence supports inspecting payment next, and why does that evidence not prove payment is the root cause? Separate current observations, source-supported system knowledge, candidate explanations, and missing evidence. Suggest the next read-only check without assuming undocumented dependencies.",
+      "status": "hypotheses",
+      "packet_id": "82d81f82968e125a8da3278e8d9fcea98f77c8e14bbb40cae7fbbd7982752a73",
+      "model_request_id": "1827e12e506ca4ab00e96e80336fb250eab7d23e4ce9bd6e5fa2ec2a91f38b13",
+      "file_byte_sha256": {
+        "answer.json": "5d7b69ecb7ee7f71115f02a5a89f0bf67f8c173753b8bac2cfc65b0d4bd44d47",
+        "context.json": "4da0f72d8a366e0872712db803367276ef4144207ab82bd01e661c87a7b44272",
+        "raw_model_response.json": "ca050a5e90e63eb03e5740473eaf34dd7a4fb711eb4b20d6c6158364e63251e1",
+        "retrieval_checks.json": "321818b51122407906ed1b3281994e730675bf1bf10da3fe60665ed521fc582b",
+        "retrieval_queries.json": "e1a7d12e91590e1d38ee826b48eebe00ec13f8491854413f8949b9e3a5f2467c"
+      },
+      "packet_integrity_recomputed": true,
+      "source_text_integrity": {
+        "matched_text_hashes": 10,
+        "passage_denominator": 10,
+        "matched_retrieval_query_texts": 10,
+        "limit": "Matches stored packet paraphrases and query rows; no independent upstream source-line or live-URL verification."
+      },
+      "raw_claims_preserved_after_reference_map": true,
+      "claim_counts": {
+        "denominator": 4,
+        "pass": 2,
+        "partial": 2,
+        "unsupported": 0,
+        "contradicted": 0
+      },
+      "citation_integrity": {
+        "resolved_occurrences": 7,
+        "occurrence_denominator": 7,
+        "meaning": "Identifier existence only, not claim support."
+      },
+      "retrieval_required_evidence": {
+        "knowledge": {
+          "found": [
+            "shop-checkout-charge",
+            "shop-payment-handler"
+          ],
+          "missing": [],
+          "required_count": 2
+        },
+        "observations": {
+          "found": [
+            "span-00006",
+            "span-00007",
+            "span-00008"
+          ],
+          "missing": [],
+          "required_count": 3
+        }
+      },
+      "retrieval_counts": {
+        "knowledge": 10,
+        "observations": 48,
+        "relations": 3
+      }
+    }
+  },
+  "previous_database_issue": {
+    "original_answer": "results/cloud-rag-20261013/ui_answer.json",
+    "original_review": "results/cloud-rag-20261013/ui_answer_review.json",
+    "old_text": "Verify payment service resource metrics and database connection health.",
+    "assessment": "repaired for this observed next_check",
+    "reason": "Current wording first verifies existence, then conditionally checks health. Neither presence nor absence of a database is established. One favorable output is not a controlled improvement result.",
+    "new_text": "Verify whether the payment service has any external database or third-party dependencies defined in the deployed environment before checking their health."
+  },
+  "retrieval_repair": {
+    "v1_multihop_required_knowledge": {
+      "found": 1,
+      "denominator": 3,
+      "missing": [
+        "rule-span-direction",
+        "rule-trace-identity"
+      ]
+    },
+    "v2_multihop_required_knowledge": {
+      "found": 3,
+      "denominator": 3,
+      "missing": []
+    },
+    "observations": {
+      "v1_found": 5,
+      "v2_found": 5,
+      "denominator_each": 5
+    },
+    "interpretation": "Inspected development failure followed by bounded field/glossary repair; not held-out superiority, diagnosis improvement, or user benefit. Required evidence presence does not ensure model use.",
+    "visible_extra_context": [
+      "basic includes frontend entry/error mapping beyond payment interface facts",
+      "multihop includes log-correlation guidance although the packet has no logs",
+      "research checkout configuration does not establish a payment database or external provider"
+    ],
+    "precision_score": "not measured"
+  },
+  "delivery_gate": {
+    "must_do_before_presenting_results": "Keep originals intact. Expose partial support, absent generated parent linkage, source conditions and runtime boundary, and reviewer-added corrections. Do not call all claims fully grounded or the generated multi-hop explanation complete.",
+    "remaining_human_step": "Student evidence evaluation pending/deferred. The accepted existence-first design decision is not approval of these three new answers.",
+    "outside_scope": [
+      "final slide rendering and assignment-page-limit coverage",
+      "GitHub publication and link accessibility",
+      "independent upstream source-line revalidation",
+      "live runtime equality or root cause"
+    ]
+  },
+  "limitations": [
+    "Three development questions reuse one inspected archived incident, not three independent incidents or held-out tests.",
+    "Same-family simulated AI scrutiny is not expert certification or student judgment.",
+    "No logs or exception stack traces are in the packet; deployed-source equality remains unverified.",
+    "Stored receipt and packet integrity only; no new graph or upstream URL requests.",
+    "No direct-prompt/document-only comparator, diagnosis improvement, optimal-action benefit, or user study was measured.",
+    "Generated claims, application summaries, separate graph outputs, and reviewer reconstructions must stay distinguishable."
+  ],
+  "multihop_path_audit": {
+    "required_emitter_operation_mappings": {
+      "verified": 5,
+      "denominator": 5,
+      "rows": [
+        {
+          "record": "span-00003",
+          "emitting_service": "frontend",
+          "operation": "executing api route (pages) /api/checkout",
+          "span_kind": "internal",
+          "assessment": "pass",
+          "role_explicit_in_model": false
+        },
+        {
+          "record": "span-00004",
+          "emitting_service": "frontend",
+          "operation": "oteldemo.CheckoutService/PlaceOrder",
+          "span_kind": "client",
+          "assessment": "pass",
+          "role_explicit_in_model": true
+        },
+        {
+          "record": "span-00005",
+          "emitting_service": "checkout",
+          "operation": "oteldemo.CheckoutService/PlaceOrder",
+          "span_kind": "server",
+          "assessment": "pass",
+          "role_explicit_in_model": true
+        },
+        {
+          "record": "span-00006",
+          "emitting_service": "checkout",
+          "operation": "oteldemo.PaymentService/Charge",
+          "span_kind": "client",
+          "assessment": "pass",
+          "role_explicit_in_model": true
+        },
+        {
+          "record": "span-00007",
+          "emitting_service": "payment",
+          "operation": "oteldemo.PaymentService/Charge",
+          "span_kind": "server",
+          "assessment": "pass",
+          "role_explicit_in_model": true
+        }
+      ]
+    },
+    "explicit_generated_span_roles": {
+      "present": 4,
+      "denominator": 5,
+      "missing": "span-00003 internal role"
+    },
+    "required_parent_links": {
+      "packet_verified": 4,
+      "generated_explanation_present": 0,
+      "denominator": 4,
+      "rows": [
+        {
+          "parent_record": "span-00003",
+          "child_record": "span-00004",
+          "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+          "parent_span_id": "e932062fd2e5ea84",
+          "child_parent_span_id": "e932062fd2e5ea84",
+          "same_trace": true,
+          "parent_id_matches": true,
+          "assessment": "pass",
+          "explained_in_generated_claims": false
+        },
+        {
+          "parent_record": "span-00004",
+          "child_record": "span-00005",
+          "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+          "parent_span_id": "efb3cba869076aa8",
+          "child_parent_span_id": "efb3cba869076aa8",
+          "same_trace": true,
+          "parent_id_matches": true,
+          "assessment": "pass",
+          "explained_in_generated_claims": false
+        },
+        {
+          "parent_record": "span-00005",
+          "child_record": "span-00006",
+          "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+          "parent_span_id": "69d1ec2d192dd847",
+          "child_parent_span_id": "69d1ec2d192dd847",
+          "same_trace": true,
+          "parent_id_matches": true,
+          "assessment": "pass",
+          "explained_in_generated_claims": false
+        },
+        {
+          "parent_record": "span-00006",
+          "child_record": "span-00007",
+          "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+          "parent_span_id": "e583cbbc1d5f75f8",
+          "child_parent_span_id": "e583cbbc1d5f75f8",
+          "same_trace": true,
+          "parent_id_matches": true,
+          "assessment": "pass",
+          "explained_in_generated_claims": false
+        }
+      ]
+    },
+    "static_conditions": {
+      "packet_present": 2,
+      "generated_explicit": 0,
+      "denominator": 2,
+      "conditions": [
+        "POST order request",
+        "Order preparation completed; charging step reached"
+      ]
+    },
+    "runtime_endpoint_limit": "span-00003 lacks HTTP method; joining to static POST /api/checkout is a candidate mapping.",
+    "extra_packet_observation": "span-00008 is a packet record, not one of the five imported Observation nodes in the separate query.",
+    "separate_graph_receipt": {
+      "path": "v2/multihop/explicit_two_hop.json",
+      "verified_row_count": 5,
+      "path_pattern": "Incident -HAS_OBSERVATION-> Observation -EMITTED_BY-> Service",
+      "llm_input": false,
+      "limit": "Additional executed graph demonstration, not a persisted PARENT_OF traversal or model reasoning proof."
+    }
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P2",
+      "issue": "Incomplete multi-hop explanation",
+      "evidence": "4/4 parent links in packet, 0/4 explained; both static conditions omitted",
+      "required_repair": "Label original partial and reviewer chain/conditions separately",
+      "verification_condition": "Separate generated answer, reviewer reconstruction, and extra graph receipt; no causal-chain claim",
+      "status": "open as raw-output limitation; must be addressed visibly in presentation"
+    },
+    {
+      "id": "F2",
+      "severity": "P2",
+      "issue": "Multiple traces has only one cited trace",
+      "evidence": "research claim 1 cites span-00007 only",
+      "required_repair": "Narrow reviewer wording or explicitly add reviewer citations; preserve raw",
+      "verification_condition": "Original single-citation sentence is not labeled fully supported",
+      "status": "open as raw-output limitation; must be addressed visibly in presentation"
+    },
+    {
+      "id": "F3",
+      "severity": "P2",
+      "issue": "Metric-only directional hypotheses",
+      "evidence": "metric-00022/23/24 have aggregate rates but no response direction or dependency identity",
+      "required_repair": "Keep hypotheses untested and dependency existence unknown",
+      "verification_condition": "No mechanism, percentage, RPC-code, or optimal-action claim introduced",
+      "status": "open as raw-output limitation; must be addressed visibly in presentation"
+    },
+    {
+      "id": "F4",
+      "severity": "P2",
+      "issue": "Short answers omit material structured content",
+      "evidence": "multihop source claim 4 and research limitation claim 4 absent from answer strings",
+      "required_repair": "Display source/runtime and deployment/causality caveats",
+      "verification_condition": "Deck retains caveats and labels reviewer additions",
+      "status": "open as raw-output limitation; must be addressed visibly in presentation"
+    },
+    {
+      "id": "F5",
+      "severity": "P3",
+      "issue": "Existence-first check has limited discriminating value",
+      "evidence": "Sole next check verifies inventory before health",
+      "required_repair": "Record observed gate compliance only; usefulness unmeasured",
+      "verification_condition": "Any error-detail supplement is reviewer-authored and not called executed",
+      "status": "open as raw-output limitation; must be addressed visibly in presentation"
+    }
+  ]
+}
+```
+
+
+No held-out accuracy, comparative benefit, investigation-time savings, or user benefit is established by this report.
