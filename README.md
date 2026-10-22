@@ -6,6 +6,27 @@ incident window and components, compares observations, and asks questions about
 the supporting evidence. A suggested component is an investigation priority,
 not proof of root cause. Intervention labels remain outside model inputs.
 
+## Challenge 3: GNN retrieval experiment, October 22, 2026
+
+A CPU mean-GraphSAGE experiment now uses AutoTriager's existing knowledge graph
+and source passages. V1 tests graph embeddings; V2 fuses graph and lexical ranks.
+Three development questions share identical candidate pools. Coverage and
+first-relevant rank trade off, and cutoff ties overlap the apparent V2 gain.
+**No robust GNN benefit is established; the application baseline is retained.**
+
+- [Submission guide and coverage](docs/CHALLENGE3_GNN_DELIVERY_20261022.md)
+- [Ten-slide PowerPoint](output/slides/AutoTriager_Challenge3_GNN_Dahe_Chen_20261022.pptx)
+- [Methods, limitations and CPU reproduction](docs/CHALLENGE3_GNN_METHOD_20261022.md)
+- [Actual human prompt and AI work](docs/CHALLENGE3_GNN_CODESIGN_20261022.md)
+- [Results and tie sensitivity](results/gnn-coursework-20261022/TIE_SENSITIVITY.md)
+- [Independent simulated review](docs/CHALLENGE3_GNN_REVIEW_20261022.md)
+
+Two versions were evaluated, within the human limit of three. Fourteen software
+tests pass, and nine offline evidence packets pass provenance/integrity checks.
+The October 22 Aura read did not connect; no new LLM answer or live end-to-end
+improvement is claimed. This is an independent project exercise, not a record
+of unavailable October 20 classroom materials.
+
 ## Challenge 3: GraphRAG co-design, October 15, 2026
 
 The current coursework prototype connects the existing Neo4j Aura graph to

@@ -1,0 +1,102 @@
+{
+  "codePath": "autotriager_shop/gnn_retrieval.py",
+  "reportPath": "docs/CHALLENGE3_GNN_METHOD_20261022.md",
+  "messagePath": "results/gnn-coursework-20261022/v1/message_passing_trace.json",
+  "integrationPath": "results/gnn-coursework-20261022/evidence_bridge/checks.json",
+  "rankingPath": "results/gnn-coursework-20261022/v2/results.json",
+  "metricsPath": "docs/CHALLENGE3_GNN_METHOD_20261022.md",
+  "codesignPath": "docs/CHALLENGE3_GNN_METHOD_20261022.md",
+  "architecture": {
+    "formula": "hᵥ′ = ReLU(Wₛ hᵥ + Wₙ mᵥ + b)",
+    "bullets": [
+      "One layer maps 364 TF-IDF text features to 32 learned dimensions.",
+      "Training reconstructs existing graph links. It uses no question relevance labels.",
+      "L2 normalization follows the update. Cosine similarity ranks candidate passages."
+    ]
+  },
+  "message": {
+    "subtitle": "PlaceOrder receives messages from 11 neighbors in the static knowledge projection.",
+    "selfLabel": "PlaceOrder\n364 text features",
+    "neighborLabel": "11 graph neighbors\nOperations, service\nand source passages",
+    "values": "Coordinate 0 before normalization:\n-0.063994 + 0.127332 + 0.081373\nSelf          Neighbors      Bias\nReLU output = 0.144711",
+    "check": "Reconstruction error: 2.98 × 10⁻⁸. A message does not prove a causal dependency."
+  },
+  "implementation": {
+    "bullets": [
+      "35 nodes: 5 services, 7 operations and 23 source passages.",
+      "30 source/topic links. Both directions contribute to the mean.",
+      "PyTorch on CPU, 120 epochs, seed 42.",
+      "Training uses source links. Incident labels stay outside the model."
+    ],
+    "result": "V1 loss: 1.355 to 0.377\nTraining: 1.988 seconds"
+  },
+  "screens": {
+    "implementation": "screenshots/v1-experiment.jpg"
+  },
+  "integration": "Offline bridge: 9/9 evidence packets pass integrity checks. Original records remain intact.\nAura connection failed. The cloud query and LLM answer stages were not rerun today.",
+  "ranking": {
+    "question": "Development question, shortened: Which evidence supports inspecting payment next?",
+    "table": [
+      [
+        "Required source passage",
+        "Lexical rank",
+        "V2 fusion rank"
+      ],
+      [
+        "Payment error handler",
+        "3",
+        "3"
+      ],
+      [
+        "Checkout calls payment",
+        "6",
+        "5"
+      ]
+    ],
+    "observation": "V2 places both required passages in the first five.",
+    "limit": "V2: equal-weight reciprocal rank fusion, k = 60.\nThe lexical cutoff contains tied scores, so this comparison is tie-sensitive."
+  },
+  "comparison": {
+    "subtitle": "Three existing development questions, identical ten-candidate pools, Top-5 evidence budget.",
+    "table": [
+      [
+        "Method",
+        "Mean Recall@5",
+        "Mean reciprocal rank"
+      ],
+      [
+        "Original GraphRAG order",
+        "0.778",
+        "0.556"
+      ],
+      [
+        "Global lexical score",
+        "0.722",
+        "0.778"
+      ],
+      [
+        "V1 GraphSAGE",
+        "0.778",
+        "0.567"
+      ],
+      [
+        "V2 lexical + GraphSAGE",
+        "0.889",
+        "0.556"
+      ]
+    ],
+    "result": "Keep lexical retrieval as default. V2 remains experimental.",
+    "limit": "Lexical cutoff ties permit mean Recall@5 from 0.722 to 0.889. V2 reaches 0.889.\nV1 and its no-neighbor control tie. No robust GNN gain is established.\nThree known questions, one incident. No new answer-quality test."
+  },
+  "codesign": {
+    "engineering": "Train GraphSAGE, preserve baselines and diagnose missing evidence before revising.",
+    "change": "V2 adds rank fusion. The tie audit prevents claiming a robust gain. Stop after two versions.",
+    "lesson": "My input set the goal and iteration limit. AI implemented and tested alternatives.\nNext human review: interpret the trade-off and define unseen test questions."
+  },
+  "lessons": [
+    "Neighbor messages update a real project embedding, with every term preserved.",
+    "A lower training loss does not guarantee better retrieval.",
+    "The evidence supports a working experiment, with no robust benefit established."
+  ],
+  "nextSteps": "Explain the trade-off, test unseen questions,\nand check answer quality before replacing the current retriever."
+}

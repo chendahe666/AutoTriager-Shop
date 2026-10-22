@@ -1,0 +1,7 @@
+{
+  "command": "python -m pytest tests/test_gnn_retrieval.py tests/test_gnn_evidence_bridge.py -q",
+  "working_copy_observed_result": "14 passed in 2.42s",
+  "publication_checkout_observed_result": "14 passed in 3.01s",
+  "tests_passed": 14,
+  "scope": "Software checks; not semantic accuracy, user benefit, or GNN superiority"
+}

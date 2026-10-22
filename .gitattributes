@@ -18,3 +18,8 @@ scripts/score_paired_experiment.py -text
 kg/*.json -text whitespace=cr-at-eol
 kg/**/*.json -text whitespace=cr-at-eol
 results/cloud-rag-20261013/*.json -text whitespace=cr-at-eol
+
+# Preserve exact GNN experiment and referenced plan bytes for frozen SHA-256 checks.
+results/gnn-coursework-20261022/**/*.json -text whitespace=cr-at-eol
+results/gnn-coursework-20261022/*.json -text whitespace=cr-at-eol
+results/graphrag-coursework-20261015/execution_plan.json -text whitespace=cr-at-eol

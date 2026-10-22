@@ -1,0 +1,27 @@
+{
+  "record_type": "execution verification receipt",
+  "command": ".venv-gnn/Scripts/python.exe -m pytest tests/test_gnn_retrieval.py -q",
+  "observed_result": "9 passed in 2.44s",
+  "tests_passed": 9,
+  "scope": [
+    "projection excludes unknown and runtime relations",
+    "zero-neighbor handling",
+    "numeric message update",
+    "query vocabulary isolation",
+    "ranking metrics",
+    "candidate and gold preservation",
+    "frozen source snapshot hashes",
+    "V2 weight reuse and RRF arithmetic",
+    "cutoff tie bounds"
+  ],
+  "versions_executed": 2,
+  "version_ceiling": 3,
+  "llm_calls_by_experiment_runner": 0,
+  "neo4j_writes_by_experiment_runner": 0,
+  "device": "CPU",
+  "python": "3.13.12",
+  "torch": "2.14.1+cpu",
+  "numpy": "2.5.2",
+  "test_source_sha256": "2daa8f70f89961f9b48ca59250eb55e160bb7984b5137b2b297331635ff1c19e",
+  "full_claim": "Passing these software checks does not validate causal accuracy or user benefit."
+}

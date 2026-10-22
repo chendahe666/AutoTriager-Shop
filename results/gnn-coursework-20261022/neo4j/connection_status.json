@@ -1,0 +1,8 @@
+{
+  "checked_at_utc": "2026-10-22T06:06:53.875724+00:00",
+  "live_read_succeeded": false,
+  "error_class": "ConnectionError",
+  "diagnostic": "DNS resolved; HTTPS connection raised ProtocolError; credentials not exposed.",
+  "writes_attempted": 0,
+  "fallback": "Existing versioned graph/corpus exports and preserved October 15 Neo4j query receipts; not a fresh cloud snapshot."
+}

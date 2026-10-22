@@ -1,0 +1,1090 @@
+{
+  "packet_version": "1.0",
+  "question": "Using shop-pilot-002-b, link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source? Cite exact records; do not claim causation.",
+  "scope": {
+    "case_id": "shop-pilot-002-b",
+    "start_time": "2026-10-01T18:09:26.219334Z",
+    "end_time": "2026-10-01T18:12:38.547257Z",
+    "selected_services": [
+      "checkout",
+      "frontend",
+      "payment"
+    ],
+    "retrieved_context_services": [
+      "checkout",
+      "frontend",
+      "payment"
+    ],
+    "source_version": "source pin 3.1.0 (dedc0178918e260823323b8d95005a8cb924b007); runtime image unverified by capture",
+    "deployment_version_match": "unverified",
+    "graph_id": "autotriager-rag-v1",
+    "snapshot_id": "5bf8558c15b86024499eb2a6c90eafd8f813c1ec8b72ff5ef6beb77c2c0dd934"
+  },
+  "observations": [
+    {
+      "id": "metric-00004",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "checkout: span_error_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666666666666667,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00005",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "checkout: span_error_rate = 0.1 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.1,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00006",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "checkout: span_error_rate = 0.1333 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.13333111114814752,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00010",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "frontend: span_error_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666666666666667,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00011",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "frontend: span_error_rate = 0.1 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.1,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00012",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "frontend: span_error_rate = 0.1333 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.13333111114814752,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00022",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "payment: span_error_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666666666666667,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00023",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "payment: span_error_rate = 0.1 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.1,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00024",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "payment: span_error_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%7Bstatus_code%3D%22STATUS_CODE_ERROR%22%7D%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666555557407376,
+        "baseline": 0.0,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00034",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "checkout: span_call_rate = 0.3 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.3,
+        "baseline": 0.5055555555555555,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00035",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "checkout: span_call_rate = 0.5 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.5,
+        "baseline": 0.5055555555555555,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00036",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "checkout: span_call_rate = 0.7667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.7666538891018483,
+        "baseline": 0.5055555555555555,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00049",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "frontend: span_call_rate = 27.35 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 27.35,
+        "baseline": 27.96666666666667,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00050",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "frontend: span_call_rate = 24.47 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 24.46666666666667,
+        "baseline": 27.96666666666667,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00051",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "frontend: span_call_rate = 25.38 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 25.382910284828583,
+        "baseline": 27.96666666666667,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00064",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "payment: span_call_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666666666666667,
+        "baseline": 0.08888888888888889,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00065",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "payment: span_call_rate = 0.1 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.1,
+        "baseline": 0.08888888888888889,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00066",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:12:26.219000Z",
+      "summary": "payment: span_call_rate = 0.06667 calls/s",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=sum+by+%28service_name%29+%28rate%28traces_span_metrics_calls_total%5B2m%5D%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 0.06666555557407376,
+        "baseline": 0.08888888888888889,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00088",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "checkout: span_p95_duration_ms = 620 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 619.9999999999998,
+        "baseline": 190.8333333333333,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00089",
+      "kind": "metric",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "checkout: span_p95_duration_ms = 175 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 174.99999999999997,
+        "baseline": 190.8333333333333,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00100",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "frontend: span_p95_duration_ms = 43.1 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 43.09655172413795,
+        "baseline": 42.60654118445972,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00101",
+      "kind": "metric",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "frontend: span_p95_duration_ms = 43.68 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 43.67901234567901,
+        "baseline": 42.60654118445972,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00112",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:26.219000Z",
+      "summary": "payment: span_p95_duration_ms = 1.9 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 1.8999999999999997,
+        "baseline": 13.933333333333328,
+        "tags": {}
+      }
+    },
+    {
+      "id": "metric-00113",
+      "kind": "metric",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:11:26.219000Z",
+      "summary": "payment: span_p95_duration_ms = 1.9 ms",
+      "source_url": "http://localhost:9090/api/v1/query_range?query=histogram_quantile%280.95%2C+sum+by+%28service_name%2C+le%29+%28rate%28traces_span_metrics_duration_milliseconds_bucket%5B2m%5D%29%29%29&start=2026-10-01T18%3A09%3A26.219334Z&end=2026-10-01T18%3A12%3A38.547257Z&step=60s",
+      "raw": {
+        "value": 1.9,
+        "baseline": 13.933333333333328,
+        "tags": {}
+      }
+    },
+    {
+      "id": "span-00003",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:09:37.780000Z",
+      "summary": "frontend: executing api route (pages) /api/checkout — ERROR (100.3 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "e932062fd2e5ea84",
+      "raw": {
+        "operation": "executing api route (pages) /api/checkout",
+        "parent_span_id": "872a471779dc5d50",
+        "status": "ERROR",
+        "duration_ms": 100.334,
+        "tags": {
+          "http.status_code": 422,
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00004",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:09:37.780000Z",
+      "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (99.7 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "efb3cba869076aa8",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "e932062fd2e5ea84",
+        "status": "ERROR",
+        "duration_ms": 99.684,
+        "tags": {
+          "rpc.grpc.status_code": 13,
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00005",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:09:37.781002Z",
+      "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (98.5 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "69d1ec2d192dd847",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "efb3cba869076aa8",
+        "status": "ERROR",
+        "duration_ms": 98.533,
+        "tags": {
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00006",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:09:37.876284Z",
+      "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (3.2 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "e583cbbc1d5f75f8",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "69d1ec2d192dd847",
+        "status": "ERROR",
+        "duration_ms": 3.197,
+        "tags": {
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00007",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:09:37.877000Z",
+      "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "263b28468ee221d5",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "e583cbbc1d5f75f8",
+        "status": "ERROR",
+        "duration_ms": 1.372,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00008",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:09:37.878000Z",
+      "summary": "payment: charge — ERROR (0.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/48e394999ac2d2f1ffe1357c7c95f0bf",
+      "trace_id": "48e394999ac2d2f1ffe1357c7c95f0bf",
+      "span_id": "8894d240e945b3de",
+      "raw": {
+        "operation": "charge",
+        "parent_span_id": "263b28468ee221d5",
+        "status": "ERROR",
+        "duration_ms": 0.373,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00011",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:09:53.203000Z",
+      "summary": "frontend: executing api route (pages) /api/checkout — ERROR (125.9 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "da78cd6c12a78536",
+      "raw": {
+        "operation": "executing api route (pages) /api/checkout",
+        "parent_span_id": "3f95584253af9999",
+        "status": "ERROR",
+        "duration_ms": 125.92,
+        "tags": {
+          "http.status_code": 422,
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00012",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:09:53.204000Z",
+      "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (124.9 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "7829ff61f89eb524",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "da78cd6c12a78536",
+        "status": "ERROR",
+        "duration_ms": 124.925,
+        "tags": {
+          "rpc.grpc.status_code": 13,
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00013",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:09:53.205621Z",
+      "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (122.9 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "8f462c80b53ed1bc",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "7829ff61f89eb524",
+        "status": "ERROR",
+        "duration_ms": 122.906,
+        "tags": {
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00014",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:09:53.325440Z",
+      "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (3.0 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "d54f0cc2960f3a18",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "8f462c80b53ed1bc",
+        "status": "ERROR",
+        "duration_ms": 3.047,
+        "tags": {
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00015",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:09:53.326000Z",
+      "summary": "payment: charge — ERROR (0.6 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "4a4f410df91ba9fb",
+      "raw": {
+        "operation": "charge",
+        "parent_span_id": "82518ced4eef69a2",
+        "status": "ERROR",
+        "duration_ms": 0.619,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00016",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:09:53.326000Z",
+      "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.9 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/a8bd97d8a9a8f79af0c53f554a552e3e",
+      "trace_id": "a8bd97d8a9a8f79af0c53f554a552e3e",
+      "span_id": "82518ced4eef69a2",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "d54f0cc2960f3a18",
+        "status": "ERROR",
+        "duration_ms": 1.908,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00019",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:10.004000Z",
+      "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (35.8 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "76cc44e025ed9a8f",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "12418da214db19f6",
+        "status": "ERROR",
+        "duration_ms": 35.794,
+        "tags": {
+          "rpc.grpc.status_code": 13,
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00020",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:10.004000Z",
+      "summary": "frontend: executing api route (pages) /api/checkout — ERROR (36.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "12418da214db19f6",
+      "raw": {
+        "operation": "executing api route (pages) /api/checkout",
+        "parent_span_id": "3ed2785dfd9f8e78",
+        "status": "ERROR",
+        "duration_ms": 36.405,
+        "tags": {
+          "http.status_code": 422,
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00021",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:10.005384Z",
+      "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (34.1 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "d19732e4158d8156",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "76cc44e025ed9a8f",
+        "status": "ERROR",
+        "duration_ms": 34.122,
+        "tags": {
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00022",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:10.037000Z",
+      "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.1 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "6caa79aa9b7e1d6e",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "d39bb045d63394bc",
+        "status": "ERROR",
+        "duration_ms": 1.076,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00023",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:10.037044Z",
+      "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (2.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "d39bb045d63394bc",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "d19732e4158d8156",
+        "status": "ERROR",
+        "duration_ms": 2.358,
+        "tags": {
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00024",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:10.038000Z",
+      "summary": "payment: charge — ERROR (0.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/d63e99dbd3dc3535c3d42e4080aabaef",
+      "trace_id": "d63e99dbd3dc3535c3d42e4080aabaef",
+      "span_id": "8528a0e518b8960d",
+      "raw": {
+        "operation": "charge",
+        "parent_span_id": "6caa79aa9b7e1d6e",
+        "status": "ERROR",
+        "duration_ms": 0.354,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00027",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:18.896000Z",
+      "summary": "frontend: oteldemo.CheckoutService/PlaceOrder — ERROR (142.7 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "4aa93802bb543e6a",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "8f5dbd3cc4bab7f4",
+        "status": "ERROR",
+        "duration_ms": 142.672,
+        "tags": {
+          "rpc.grpc.status_code": 13,
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00028",
+      "kind": "span",
+      "service": "frontend",
+      "timestamp": "2026-10-01T18:10:18.896000Z",
+      "summary": "frontend: executing api route (pages) /api/checkout — ERROR (143.4 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "8f5dbd3cc4bab7f4",
+      "raw": {
+        "operation": "executing api route (pages) /api/checkout",
+        "parent_span_id": "a0fca350b1e5684d",
+        "status": "ERROR",
+        "duration_ms": 143.362,
+        "tags": {
+          "http.status_code": 422,
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00029",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:18.896678Z",
+      "summary": "checkout: oteldemo.CheckoutService/PlaceOrder — ERROR (141.5 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "076575fdd1113f70",
+      "raw": {
+        "operation": "oteldemo.CheckoutService/PlaceOrder",
+        "parent_span_id": "4aa93802bb543e6a",
+        "status": "ERROR",
+        "duration_ms": 141.521,
+        "tags": {
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00030",
+      "kind": "span",
+      "service": "checkout",
+      "timestamp": "2026-10-01T18:10:19.035895Z",
+      "summary": "checkout: oteldemo.PaymentService/Charge — ERROR (2.3 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "53bb453032954dbd",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "076575fdd1113f70",
+        "status": "ERROR",
+        "duration_ms": 2.266,
+        "tags": {
+          "span.kind": "client",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00031",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:19.036000Z",
+      "summary": "payment: charge — ERROR (0.8 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "2855da734371590c",
+      "raw": {
+        "operation": "charge",
+        "parent_span_id": "fcff9ef8ed2b3713",
+        "status": "ERROR",
+        "duration_ms": 0.771,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "internal",
+          "otel.status_code": "ERROR"
+        }
+      }
+    },
+    {
+      "id": "span-00032",
+      "kind": "span",
+      "service": "payment",
+      "timestamp": "2026-10-01T18:10:19.036000Z",
+      "summary": "payment: oteldemo.PaymentService/Charge — ERROR (1.3 ms)",
+      "source_url": "http://localhost:8080/jaeger/ui/trace/b206eb5694f25b9f7e8a6551d0ef4625",
+      "trace_id": "b206eb5694f25b9f7e8a6551d0ef4625",
+      "span_id": "fcff9ef8ed2b3713",
+      "raw": {
+        "operation": "oteldemo.PaymentService/Charge",
+        "parent_span_id": "53bb453032954dbd",
+        "status": "ERROR",
+        "duration_ms": 1.256,
+        "tags": {
+          "error.type": "Error",
+          "span.kind": "server",
+          "otel.status_code": "ERROR"
+        }
+      }
+    }
+  ],
+  "knowledge": [
+    {
+      "id": "rule-log-correlation",
+      "title": "Log timestamps and optional trace fields",
+      "text": "Timestamp records when an event occurred; ObservedTimestamp records when collection observed it. TraceId and SpanId are optional correlation fields. Resource identifies the source entity; Body and Attributes carry event content.",
+      "source_url": "https://opentelemetry.io/docs/specs/otel/logs/data-model/",
+      "source_section": "Log and Event Record Definition; Trace Context Fields",
+      "source_version": "OpenTelemetry specification 1.61.0; reviewed 2026-10-13",
+      "kind": "general_rule",
+      "services": [],
+      "operations": [],
+      "entity_ids": [],
+      "scope": "Telemetry interpretation across authorized services; apply the producer's actual convention version",
+      "rule_status": "documented",
+      "text_kind": "paraphrase",
+      "application_limit": "Keep event time distinct from collection time. Similar wording or nearby timestamps alone do not establish a shared request.",
+      "reviewed_on": "2026-10-13",
+      "text_sha256": "9ee8acbdd542734c933cd08d109da6e7b23f754bba28097c123e2e7248558531"
+    },
+    {
+      "id": "shop-payment-handler",
+      "title": "Payment handler records and returns failures",
+      "text": "The PaymentService handler calls the charge implementation. If it throws, the handler logs the error, marks its active span ERROR, sets error.type, and returns the error through the RPC callback.",
+      "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/payment/index.js#L12-L31",
+      "source_path": "src/payment/index.js",
+      "line_start": 12,
+      "line_end": 31,
+      "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+      "kind": "platform_context",
+      "services": [
+        "payment"
+      ],
+      "operations": [
+        "oteldemo.PaymentService/Charge"
+      ],
+      "entity_ids": [
+        "op-charge"
+      ],
+      "scope": "Official Shop source at the pinned commit; deployed-version equality and execution require incident evidence",
+      "rule_status": "source_supported",
+      "text_kind": "paraphrase",
+      "application_limit": "Static source context is not proof that this path executed or caused a particular incident.",
+      "reviewed_on": "2026-10-13",
+      "source_sha256": "b3ed7f8319f2af6b5a115d0d88b59101b78cee35acc7ae9531fc2bda80e55dda",
+      "source_slice_sha256": "d938bc909356028418a06c0e836175a2b712ab589a08d5dea3a407a28b28a757",
+      "hash_encoding": "UTF-8; CRLF normalized to LF; slice has no trailing newline",
+      "text_sha256": "d4730ac69c2cf743d69eb0b943a4924fe7c1063249ad8f9b73eacdb4d6812346"
+    },
+    {
+      "id": "rule-span-direction",
+      "title": "Client, server, and internal spans",
+      "text": "CLIENT spans describe outgoing requests; SERVER spans describe incoming request handling. INTERNAL spans describe work inside an application. Context propagation commonly makes a remote SERVER span a child of a CLIENT span; nested CLIENT spans are also possible.",
+      "source_url": "https://opentelemetry.io/docs/specs/otel/trace/api/",
+      "source_section": "SpanKind",
+      "source_version": "OpenTelemetry specification 1.61.0; reviewed 2026-10-13",
+      "kind": "general_rule",
+      "services": [],
+      "operations": [],
+      "entity_ids": [],
+      "scope": "Telemetry interpretation across authorized services; apply the producer's actual convention version",
+      "rule_status": "documented",
+      "text_kind": "paraphrase",
+      "application_limit": "Separate the emitting service from the service being called. Span kinds describe execution roles, not fault responsibility.",
+      "reviewed_on": "2026-10-13",
+      "text_sha256": "8d94a0c62899d9509a3d9f5384bed69865787d5612caf18306d191bc1f877494"
+    },
+    {
+      "id": "rule-trace-identity",
+      "title": "Trace context and parent linkage",
+      "text": "A span has its own SpanContext, a possible parent, timing, attributes, links, and status. SpanContext carries TraceId and SpanId. Links can connect spans across traces, separately from the parent relationship.",
+      "source_url": "https://opentelemetry.io/docs/specs/otel/trace/api/",
+      "source_section": "SpanContext, Span, Link",
+      "source_version": "OpenTelemetry specification 1.61.0; reviewed 2026-10-13",
+      "kind": "general_rule",
+      "services": [],
+      "operations": [],
+      "entity_ids": [],
+      "scope": "Telemetry interpretation across authorized services; apply the producer's actual convention version",
+      "rule_status": "documented",
+      "text_kind": "paraphrase",
+      "application_limit": "Build parent edges from preserved IDs within a trace; a call chain is not a causal attribution chain.",
+      "reviewed_on": "2026-10-13",
+      "text_sha256": "2c7ce67bb2b5622aa55e28512bc3a69fec76f5951761461dd372b69a3cdc71a6"
+    },
+    {
+      "id": "rule-span-status",
+      "title": "Error and unset span status",
+      "text": "Unset is the default span status. Error records an error in the operation; Ok records validated successful completion. Non-recording spans discard added data, and recording alone does not guarantee export to the backend.",
+      "source_url": "https://opentelemetry.io/docs/specs/otel/trace/api/",
+      "source_section": "Set Status; IsRecording",
+      "source_version": "OpenTelemetry specification 1.61.0; reviewed 2026-10-13",
+      "kind": "general_rule",
+      "services": [],
+      "operations": [],
+      "entity_ids": [],
+      "scope": "Telemetry interpretation across authorized services; apply the producer's actual convention version",
+      "rule_status": "documented",
+      "text_kind": "paraphrase",
+      "application_limit": "An ERROR span does not identify an initiating cause. Missing spans or attributes do not prove that the operation did not happen.",
+      "reviewed_on": "2026-10-13",
+      "text_sha256": "69f88e81334e670875507dcc252dbb8f92c62b1d2362331b26bfbd037999168e"
+    }
+  ],
+  "relations": [
+    {
+      "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+      "kind": "CALLS",
+      "from": "POST /api/checkout",
+      "to": "PlaceOrder",
+      "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+      "workflow_id": "wf-checkout",
+      "condition": "POST order request",
+      "scope": "possible static call path",
+      "evidence_status": "source_supported",
+      "evidence_ids": [
+        "ev-front-checkout"
+      ],
+      "graph_id": "autotriager-rag-v1"
+    },
+    {
+      "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+      "kind": "CALLS",
+      "from": "PlaceOrder",
+      "to": "Charge",
+      "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+      "workflow_id": "wf-checkout",
+      "condition": "Order preparation completed; charging step reached",
+      "scope": "possible static call path",
+      "evidence_status": "source_supported",
+      "evidence_ids": [
+        "ev-checkout-go"
+      ],
+      "graph_id": "autotriager-rag-v1"
+    },
+    {
+      "id": "autotriager-c3-v1:op-place:DEPENDS_ON:op-charge",
+      "kind": "DEPENDS_ON",
+      "from": "PlaceOrder",
+      "to": "Charge",
+      "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+      "workflow_id": "wf-checkout",
+      "condition": "Order preparation completed; charging step reached",
+      "interpretation": "Candidate business dependency; CALLS does not imply CAUSES",
+      "evidence_status": "source_supported",
+      "criticality": "unknown",
+      "evidence_ids": [
+        "ev-checkout-go"
+      ],
+      "graph_id": "autotriager-rag-v1",
+      "verification_status": "pending"
+    }
+  ],
+  "gaps": [
+    "Static dependency paths are possible execution paths, not incident causation.",
+    "Retrieved source context has not been confirmed as the deployed image version.",
+    "This graph and curated corpus cover a bounded subset of platform knowledge.",
+    "The selected packet has no log records."
+  ],
+  "stages": [
+    {
+      "stage": "scope",
+      "output": "48 archived observations preserved"
+    },
+    {
+      "stage": "graph",
+      "output": "Archived relations preserved; no new traversal"
+    },
+    {
+      "stage": "knowledge",
+      "output": "5 ranked original source passages"
+    },
+    {
+      "stage": "generation",
+      "output": "Not called in this experiment"
+    }
+  ],
+  "retrieval": {
+    "method": "rrf_lexical_graphsage",
+    "mode": "offline ranking followed by versioned corpus lookup",
+    "knowledge_limit": 5,
+    "observation_limit": 48,
+    "parent_candidate_limit": 10,
+    "embedding_model": "mean_graphsage_v1",
+    "runtime_graph_traversal_rerun": false
+  },
+  "ranking_experiment": {
+    "mode": "offline_archived_context",
+    "method": "rrf_lexical_graphsage",
+    "parent_packet_id": "1f2ea8d2c6edf59ceb25a730d9918ae60613f2f5c7c8b3636bfbb15587b6fe72",
+    "source_corpus_id": "autotriager-incident-rag-v1",
+    "source_pin": "dedc0178918e260823323b8d95005a8cb924b007",
+    "retrieved_on": "2026-10-22",
+    "neo4j_fetch_executed_now": false,
+    "llm_executed_now": false,
+    "ranked_ids": [
+      "rule-log-correlation",
+      "shop-payment-handler",
+      "rule-span-direction",
+      "rule-trace-identity",
+      "rule-span-status"
+    ],
+    "boundary": "Ranking scores are not evidence of incident causation.",
+    "parent_retrieval": {
+      "method": "entity-scoped graph traversal and lexical ranking",
+      "language_support": "English tokens plus explicit Chinese domain glossary",
+      "max_hops": 2,
+      "query_expansion": {
+        "method": "relationship-span-field-glossary-v1",
+        "relationship_question": true,
+        "observed_fields": [
+          "trace_id",
+          "span_id",
+          "raw.parent_span_id",
+          "raw.tags.span.kind"
+        ],
+        "added_terms": [
+          "client",
+          "context",
+          "internal",
+          "linkage",
+          "parent",
+          "server",
+          "span",
+          "spans",
+          "trace"
+        ],
+        "applies_to": "general_rule"
+      },
+      "knowledge_limit": 10,
+      "observation_limit": 48,
+      "embedding_model": null,
+      "seed_operation_ids": [
+        "op-api-checkout",
+        "op-charge",
+        "op-place"
+      ]
+    },
+    "parent_stages": [
+      {
+        "stage": "scope",
+        "output": "48 current observations"
+      },
+      {
+        "stage": "graph",
+        "output": "3 operation seeds; 3 unique static links"
+      },
+      {
+        "stage": "knowledge",
+        "output": "10 sourced text chunks"
+      },
+      {
+        "stage": "generation",
+        "output": "Not called during retrieval"
+      }
+    ]
+  },
+  "packet_id": "2a18f73af23de2c9e0214f9b61d04590f43c862e7fe164dbe887e3849f53b809"
+}

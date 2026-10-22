@@ -1,0 +1,1132 @@
+{
+  "config": {
+    "version": "v1",
+    "seed": 42,
+    "hidden_dim": 32,
+    "epochs": 120,
+    "learning_rate": 0.01,
+    "decoder_scale": 5.0,
+    "decoder_offset": 2.5,
+    "top_k": 5,
+    "candidate_limit": 10,
+    "objective": "class-weighted BCE over every unordered node pair; reconstruct source/topic edges",
+    "projection": "Service+Operation+Chunk; source EXPOSES/CALLS and document ABOUT; bidirectional aggregation",
+    "query_encoder": "TF-IDF query through trained self branch, ReLU, L2 normalize; zero query neighbors",
+    "no_neighbor_ablation": "same trained weights, neighbor aggregate zeroed at inference; not a retrained baseline",
+    "training_scope": "transductive development; no gold question relevance or incident observations in training",
+    "frozen_at_utc": "2026-10-22T06:08:18.263963+00:00",
+    "input_sha256": {
+      "kg/data/graph.json": "976574cdd53d01c77b753590000d63896d039d9a54934ebef1742e15b7795479",
+      "kg/rag_corpus.json": "f2d32871924b85e4f209174f4ae5b582753c08a0de1bb7f382f0681fefd17628",
+      "results/graphrag-coursework-20261015/execution_plan.json": "6c444ab7dd20b62ad79b81e1cddedb313d0232721f538eb5190e175bf9125c5f"
+    },
+    "source_sha256": {
+      "scripts/run_gnn_coursework.py": "d4a1b766361c63e762579f2cbcf64e4b5cfaa38938b2d4d0e79732bffb2ff9b4",
+      "autotriager_shop/gnn_retrieval.py": "995515b13ebe8f5affc88cacc99b59d005b8892fb62bb80bbad248cf96341a80"
+    }
+  },
+  "projection": {
+    "aggregation_policy": "Undirected mean aggregation; provenance edges retain original direction and conditions.",
+    "node_count": 35,
+    "directed_source_edge_count": 30,
+    "aggregation_edge_count": 60,
+    "isolated_node_ids": [
+      "rule-error-context",
+      "rule-log-correlation",
+      "rule-provenance",
+      "rule-rpc-context",
+      "rule-service-identity",
+      "rule-service-version",
+      "rule-span-direction",
+      "rule-span-status",
+      "rule-trace-identity",
+      "shop-shipping-quote-contract"
+    ]
+  },
+  "feature_dim": 364,
+  "training_seconds": 1.9883643999928609,
+  "loss_initial": 1.3549184799194336,
+  "loss_final": 0.37678349018096924,
+  "environment": {
+    "python": "3.13.12",
+    "torch": "2.14.1+cpu",
+    "numpy": "2.5.2",
+    "device": "CPU"
+  },
+  "questions": {
+    "basic": {
+      "question": "What RPC does PaymentService expose, what information goes into its request, and what does its response provide? Explain whether this interface alone proves that a payment succeeded.",
+      "candidate_ids": [
+        "shop-payment-interface",
+        "shop-checkout-charge",
+        "shop-payment-handler",
+        "shop-frontend-checkout-address",
+        "shop-frontend-checkout-entry",
+        "shop-frontend-error-mapping",
+        "rule-rpc-context",
+        "rule-service-version",
+        "rule-service-identity",
+        "rule-span-direction"
+      ],
+      "required_knowledge": [
+        "shop-payment-interface"
+      ],
+      "context_sha256": "b7e9379c3f9db4b9388e6c9caa729aa20ce596f82d0dcff1ddb822cf1c0a74fd",
+      "context_source": "results/graphrag-coursework-20261015/v2/basic/context.json",
+      "rankings": {
+        "original_grouped_order": [
+          {
+            "id": "shop-payment-interface",
+            "score": 32
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 15
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 15
+          },
+          {
+            "id": "shop-frontend-checkout-address",
+            "score": 9
+          },
+          {
+            "id": "shop-frontend-checkout-entry",
+            "score": 9
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 8
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 7
+          },
+          {
+            "id": "rule-service-version",
+            "score": 4
+          },
+          {
+            "id": "rule-service-identity",
+            "score": 2
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 2
+          }
+        ],
+        "lexical_score_sorted": [
+          {
+            "id": "shop-payment-interface",
+            "score": 32.0
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 15.0
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 15.0
+          },
+          {
+            "id": "shop-frontend-checkout-address",
+            "score": 9.0
+          },
+          {
+            "id": "shop-frontend-checkout-entry",
+            "score": 9.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 8.0
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 7.0
+          },
+          {
+            "id": "rule-service-version",
+            "score": 4.0
+          },
+          {
+            "id": "rule-service-identity",
+            "score": 2.0
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 2.0
+          }
+        ],
+        "tfidf_same_pool": [
+          {
+            "id": "shop-payment-interface",
+            "score": 0.505983829498291
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.2373092919588089
+          },
+          {
+            "id": "rule-service-version",
+            "score": 0.21648722887039185
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.16491901874542236
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.10992231965065002
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.10732658207416534
+          },
+          {
+            "id": "rule-service-identity",
+            "score": 0.09954319894313812
+          },
+          {
+            "id": "shop-frontend-checkout-address",
+            "score": 0.056099530309438705
+          },
+          {
+            "id": "shop-frontend-checkout-entry",
+            "score": 0.05579594522714615
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.04135086014866829
+          }
+        ],
+        "graphsage": [
+          {
+            "id": "shop-payment-interface",
+            "score": 0.9320564866065979
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.5389091968536377
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.4852163791656494
+          },
+          {
+            "id": "rule-service-version",
+            "score": 0.24009916186332703
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.054306644946336746
+          },
+          {
+            "id": "shop-frontend-checkout-address",
+            "score": 0.052647992968559265
+          },
+          {
+            "id": "shop-frontend-checkout-entry",
+            "score": 0.05170432850718498
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.00856021698564291
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-service-identity",
+            "score": 0.0
+          }
+        ],
+        "graphsage_no_neighbors": [
+          {
+            "id": "shop-payment-interface",
+            "score": 0.9170427918434143
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.48858287930488586
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.34672465920448303
+          },
+          {
+            "id": "rule-service-version",
+            "score": 0.24009916186332703
+          },
+          {
+            "id": "shop-frontend-checkout-address",
+            "score": 0.058645159006118774
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.053060680627822876
+          },
+          {
+            "id": "shop-frontend-checkout-entry",
+            "score": 0.04928755760192871
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.00856021698564291
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-service-identity",
+            "score": 0.0
+          }
+        ]
+      },
+      "metrics": {
+        "original_grouped_order": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 1,
+          "required_count": 1,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "shop-payment-interface"
+          ],
+          "missing_at_5": []
+        },
+        "lexical_score_sorted": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 1,
+          "required_count": 1,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "shop-payment-interface"
+          ],
+          "missing_at_5": []
+        },
+        "tfidf_same_pool": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 1,
+          "required_count": 1,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "shop-payment-interface"
+          ],
+          "missing_at_5": []
+        },
+        "graphsage": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 1,
+          "required_count": 1,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "shop-payment-interface"
+          ],
+          "missing_at_5": []
+        },
+        "graphsage_no_neighbors": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 1,
+          "required_count": 1,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "shop-payment-interface"
+          ],
+          "missing_at_5": []
+        }
+      },
+      "timing_seconds": {
+        "existing_candidate_selection": 0.0009947000071406364,
+        "gnn_rerank_only": 0.0005766999674960971
+      },
+      "query_embedding": [
+        0.5109242796897888,
+        0.20818392932415009,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7971839308738708,
+        0.0,
+        0.07913083583116531,
+        0.0,
+        0.0,
+        0.0,
+        0.022539032623171806,
+        0.0,
+        0.0,
+        0.0,
+        0.13333381712436676,
+        0.0,
+        0.0,
+        0.0,
+        0.18858908116817474,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidate_degrees": {
+        "shop-payment-interface": 1,
+        "shop-checkout-charge": 2,
+        "shop-payment-handler": 1,
+        "shop-frontend-checkout-address": 1,
+        "shop-frontend-checkout-entry": 2,
+        "shop-frontend-error-mapping": 2,
+        "rule-rpc-context": 0,
+        "rule-service-version": 0,
+        "rule-service-identity": 0,
+        "rule-span-direction": 0
+      },
+      "full_candidate_required_coverage": 1.0,
+      "grounded_evidence_ids": [
+        "shop-payment-interface",
+        "shop-payment-handler",
+        "shop-checkout-charge",
+        "rule-service-version",
+        "shop-frontend-error-mapping"
+      ]
+    },
+    "multihop": {
+      "question": "Using shop-pilot-002-b, link the incident to its observations, their emitting services, and the invoked or observed operations along the frontend-checkout-payment pathway. Which links are recorded runtime relationships, and which come only from pinned source? Cite exact records; do not claim causation.",
+      "candidate_ids": [
+        "shop-payment-handler",
+        "shop-frontend-error-mapping",
+        "shop-checkout-charge",
+        "shop-checkout-order-sequence",
+        "shop-payment-interface",
+        "shop-checkout-addresses",
+        "rule-trace-identity",
+        "rule-span-direction",
+        "rule-log-correlation",
+        "rule-span-status"
+      ],
+      "required_knowledge": [
+        "rule-span-direction",
+        "rule-trace-identity",
+        "shop-checkout-charge"
+      ],
+      "context_sha256": "444c63b5693ca72624aa1a64478cf6c8181bcdf4b84669cf4f4085eceac9fa8f",
+      "context_source": "results/graphrag-coursework-20261015/v2/multihop/context.json",
+      "rankings": {
+        "original_grouped_order": [
+          {
+            "id": "shop-payment-handler",
+            "score": 11
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 8
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 6
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 6
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 6
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 4
+          },
+          {
+            "id": "rule-trace-identity",
+            "score": 28
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 24
+          },
+          {
+            "id": "rule-log-correlation",
+            "score": 11
+          },
+          {
+            "id": "rule-span-status",
+            "score": 11
+          }
+        ],
+        "lexical_score_sorted": [
+          {
+            "id": "rule-trace-identity",
+            "score": 28.0
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 24.0
+          },
+          {
+            "id": "rule-log-correlation",
+            "score": 11.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 11.0
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 11.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 8.0
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 6.0
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 6.0
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 6.0
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 4.0
+          }
+        ],
+        "tfidf_same_pool": [
+          {
+            "id": "rule-log-correlation",
+            "score": 0.2742321789264679
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.2089289426803589
+          },
+          {
+            "id": "rule-trace-identity",
+            "score": 0.19916404783725739
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.18932214379310608
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.18396973609924316
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.17938999831676483
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.1420811265707016
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.12824922800064087
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.055876560509204865
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.04983269050717354
+          }
+        ],
+        "graphsage": [
+          {
+            "id": "rule-log-correlation",
+            "score": 0.8772200345993042
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.45773938298225403
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.2776850163936615
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.19982494413852692
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.19731226563453674
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.0
+          },
+          {
+            "id": "rule-trace-identity",
+            "score": 0.0
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.0
+          }
+        ],
+        "graphsage_no_neighbors": [
+          {
+            "id": "rule-log-correlation",
+            "score": 0.8772200345993042
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.4508810043334961
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.4439246356487274
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.2209300845861435
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.1240263357758522
+          },
+          {
+            "id": "rule-span-direction",
+            "score": 0.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.0
+          },
+          {
+            "id": "rule-trace-identity",
+            "score": 0.0
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.0
+          }
+        ]
+      },
+      "metrics": {
+        "original_grouped_order": {
+          "recall_at_5": 0.3333333333333333,
+          "hits_at_5": 1,
+          "required_count": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "found_at_5": [
+            "shop-checkout-charge"
+          ],
+          "missing_at_5": [
+            "rule-span-direction",
+            "rule-trace-identity"
+          ]
+        },
+        "lexical_score_sorted": {
+          "recall_at_5": 0.6666666666666666,
+          "hits_at_5": 2,
+          "required_count": 3,
+          "reciprocal_rank": 1.0,
+          "found_at_5": [
+            "rule-span-direction",
+            "rule-trace-identity"
+          ],
+          "missing_at_5": [
+            "shop-checkout-charge"
+          ]
+        },
+        "tfidf_same_pool": {
+          "recall_at_5": 0.6666666666666666,
+          "hits_at_5": 2,
+          "required_count": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "found_at_5": [
+            "rule-trace-identity",
+            "shop-checkout-charge"
+          ],
+          "missing_at_5": [
+            "rule-span-direction"
+          ]
+        },
+        "graphsage": {
+          "recall_at_5": 0.3333333333333333,
+          "hits_at_5": 1,
+          "required_count": 3,
+          "reciprocal_rank": 0.2,
+          "found_at_5": [
+            "shop-checkout-charge"
+          ],
+          "missing_at_5": [
+            "rule-span-direction",
+            "rule-trace-identity"
+          ]
+        },
+        "graphsage_no_neighbors": {
+          "recall_at_5": 0.3333333333333333,
+          "hits_at_5": 1,
+          "required_count": 3,
+          "reciprocal_rank": 0.2,
+          "found_at_5": [
+            "shop-checkout-charge"
+          ],
+          "missing_at_5": [
+            "rule-span-direction",
+            "rule-trace-identity"
+          ]
+        }
+      },
+      "timing_seconds": {
+        "existing_candidate_selection": 0.0009508999064564705,
+        "gnn_rerank_only": 0.00028639996889978647
+      },
+      "query_embedding": [
+        0.48008444905281067,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.8772222995758057,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidate_degrees": {
+        "shop-payment-handler": 1,
+        "shop-frontend-error-mapping": 2,
+        "shop-checkout-charge": 2,
+        "shop-checkout-order-sequence": 2,
+        "shop-payment-interface": 1,
+        "shop-checkout-addresses": 1,
+        "rule-trace-identity": 0,
+        "rule-span-direction": 0,
+        "rule-log-correlation": 0,
+        "rule-span-status": 0
+      },
+      "full_candidate_required_coverage": 1.0,
+      "grounded_evidence_ids": [
+        "rule-log-correlation",
+        "shop-payment-handler",
+        "shop-payment-interface",
+        "shop-checkout-order-sequence",
+        "shop-checkout-charge"
+      ]
+    },
+    "research": {
+      "question": "Which evidence supports inspecting payment next, and why does that evidence not prove payment is the root cause? Separate current observations, source-supported system knowledge, candidate explanations, and missing evidence. Suggest the next read-only check without assuming undocumented dependencies.",
+      "candidate_ids": [
+        "shop-payment-interface",
+        "shop-frontend-error-mapping",
+        "shop-payment-handler",
+        "shop-checkout-addresses",
+        "shop-checkout-charge",
+        "shop-checkout-order-sequence",
+        "rule-service-version",
+        "rule-error-context",
+        "rule-rpc-context",
+        "rule-span-status"
+      ],
+      "required_knowledge": [
+        "shop-checkout-charge",
+        "shop-payment-handler"
+      ],
+      "context_sha256": "4da0f72d8a366e0872712db803367276ef4144207ab82bd01e661c87a7b44272",
+      "context_source": "results/graphrag-coursework-20261015/v2/research/context.json",
+      "rankings": {
+        "original_grouped_order": [
+          {
+            "id": "shop-payment-interface",
+            "score": 11
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 10
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 9
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 6
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 6
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 6
+          },
+          {
+            "id": "rule-service-version",
+            "score": 7
+          },
+          {
+            "id": "rule-error-context",
+            "score": 4
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 2
+          },
+          {
+            "id": "rule-span-status",
+            "score": 2
+          }
+        ],
+        "lexical_score_sorted": [
+          {
+            "id": "shop-payment-interface",
+            "score": 11.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 10.0
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 9.0
+          },
+          {
+            "id": "rule-service-version",
+            "score": 7.0
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 6.0
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 6.0
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 6.0
+          },
+          {
+            "id": "rule-error-context",
+            "score": 4.0
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 2.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 2.0
+          }
+        ],
+        "tfidf_same_pool": [
+          {
+            "id": "rule-service-version",
+            "score": 0.2855389416217804
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.16817685961723328
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.16501466929912567
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.1553831845521927
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.14961862564086914
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.11745334416627884
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.10394853353500366
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.08746610581874847
+          },
+          {
+            "id": "rule-error-context",
+            "score": 0.08565216511487961
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.03839842602610588
+          }
+        ],
+        "graphsage": [
+          {
+            "id": "rule-service-version",
+            "score": 0.790369987487793
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.15160617232322693
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.0919710248708725
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.06618328392505646
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.06535106897354126
+          },
+          {
+            "id": "rule-error-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.0
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.0
+          }
+        ],
+        "graphsage_no_neighbors": [
+          {
+            "id": "rule-service-version",
+            "score": 0.790369987487793
+          },
+          {
+            "id": "shop-payment-handler",
+            "score": 0.14890439808368683
+          },
+          {
+            "id": "shop-checkout-order-sequence",
+            "score": 0.07829338312149048
+          },
+          {
+            "id": "shop-payment-interface",
+            "score": 0.07317344099283218
+          },
+          {
+            "id": "shop-checkout-charge",
+            "score": 0.04107830300927162
+          },
+          {
+            "id": "shop-checkout-addresses",
+            "score": 0.012665831483900547
+          },
+          {
+            "id": "rule-error-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-rpc-context",
+            "score": 0.0
+          },
+          {
+            "id": "rule-span-status",
+            "score": 0.0
+          },
+          {
+            "id": "shop-frontend-error-mapping",
+            "score": 0.0
+          }
+        ]
+      },
+      "metrics": {
+        "original_grouped_order": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 2,
+          "required_count": 2,
+          "reciprocal_rank": 0.3333333333333333,
+          "found_at_5": [
+            "shop-checkout-charge",
+            "shop-payment-handler"
+          ],
+          "missing_at_5": []
+        },
+        "lexical_score_sorted": {
+          "recall_at_5": 0.5,
+          "hits_at_5": 1,
+          "required_count": 2,
+          "reciprocal_rank": 0.3333333333333333,
+          "found_at_5": [
+            "shop-payment-handler"
+          ],
+          "missing_at_5": [
+            "shop-checkout-charge"
+          ]
+        },
+        "tfidf_same_pool": {
+          "recall_at_5": 0.5,
+          "hits_at_5": 1,
+          "required_count": 2,
+          "reciprocal_rank": 0.25,
+          "found_at_5": [
+            "shop-payment-handler"
+          ],
+          "missing_at_5": [
+            "shop-checkout-charge"
+          ]
+        },
+        "graphsage": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 2,
+          "required_count": 2,
+          "reciprocal_rank": 0.5,
+          "found_at_5": [
+            "shop-checkout-charge",
+            "shop-payment-handler"
+          ],
+          "missing_at_5": []
+        },
+        "graphsage_no_neighbors": {
+          "recall_at_5": 1.0,
+          "hits_at_5": 2,
+          "required_count": 2,
+          "reciprocal_rank": 0.5,
+          "found_at_5": [
+            "shop-checkout-charge",
+            "shop-payment-handler"
+          ],
+          "missing_at_5": []
+        }
+      },
+      "timing_seconds": {
+        "existing_candidate_selection": 0.0009327000007033348,
+        "gnn_rerank_only": 0.0002679000608623028
+      },
+      "query_embedding": [
+        0.1590069979429245,
+        0.9734297394752502,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.16477644443511963,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "candidate_degrees": {
+        "shop-payment-interface": 1,
+        "shop-frontend-error-mapping": 2,
+        "shop-payment-handler": 1,
+        "shop-checkout-addresses": 1,
+        "shop-checkout-charge": 2,
+        "shop-checkout-order-sequence": 2,
+        "rule-service-version": 0,
+        "rule-error-context": 0,
+        "rule-rpc-context": 0,
+        "rule-span-status": 0
+      },
+      "full_candidate_required_coverage": 1.0,
+      "grounded_evidence_ids": [
+        "rule-service-version",
+        "shop-payment-handler",
+        "shop-payment-interface",
+        "shop-checkout-order-sequence",
+        "shop-checkout-charge"
+      ]
+    }
+  },
+  "macro_metrics": {
+    "original_grouped_order": {
+      "recall_at_5": 0.7777777777777777,
+      "reciprocal_rank": 0.5555555555555555
+    },
+    "lexical_score_sorted": {
+      "recall_at_5": 0.7222222222222222,
+      "reciprocal_rank": 0.7777777777777778
+    },
+    "tfidf_same_pool": {
+      "recall_at_5": 0.7222222222222222,
+      "reciprocal_rank": 0.5277777777777778
+    },
+    "graphsage": {
+      "recall_at_5": 0.7777777777777777,
+      "reciprocal_rank": 0.5666666666666667
+    },
+    "graphsage_no_neighbors": {
+      "recall_at_5": 0.7777777777777777,
+      "reciprocal_rank": 0.5666666666666667
+    }
+  },
+  "interpretation_boundary": "Three development questions on one archived incident; unchanged required-evidence labels; no held-out claim, causal accuracy, human benefit, or regenerated LLM answer."
+}

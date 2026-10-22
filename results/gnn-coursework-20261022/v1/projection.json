@@ -1,0 +1,561 @@
+{
+  "nodes": [
+    {
+      "id": "op-api-checkout",
+      "label": "Operation",
+      "text": "POST /api/checkout HTTP POST "
+    },
+    {
+      "id": "op-api-rec",
+      "label": "Operation",
+      "text": "GET /api/recommendations HTTP GET "
+    },
+    {
+      "id": "op-charge",
+      "label": "Operation",
+      "text": "Charge gRPC Charge oteldemo.PaymentService"
+    },
+    {
+      "id": "op-get-prod",
+      "label": "Operation",
+      "text": "GetProduct gRPC GetProduct oteldemo.ProductCatalogService"
+    },
+    {
+      "id": "op-list-prod",
+      "label": "Operation",
+      "text": "ListProducts gRPC ListProducts oteldemo.ProductCatalogService"
+    },
+    {
+      "id": "op-list-rec",
+      "label": "Operation",
+      "text": "ListRecommendations gRPC ListRecommendations oteldemo.RecommendationService"
+    },
+    {
+      "id": "op-place",
+      "label": "Operation",
+      "text": "PlaceOrder gRPC PlaceOrder oteldemo.CheckoutService"
+    },
+    {
+      "id": "rule-error-context",
+      "label": "Chunk",
+      "text": "Error classification depends on the operation An error code needs operation context: even HTTP 404 may be expected when checking existence. Current guidance says handled or retried errors should not mark an overall operation as failed when it completes gracefully."
+    },
+    {
+      "id": "rule-log-correlation",
+      "label": "Chunk",
+      "text": "Log timestamps and optional trace fields Timestamp records when an event occurred; ObservedTimestamp records when collection observed it. TraceId and SpanId are optional correlation fields. Resource identifies the source entity; Body and Attributes carry event content."
+    },
+    {
+      "id": "rule-provenance",
+      "label": "Chunk",
+      "text": "A derived claim needs a source trail PROV-O distinguishes entities, activities, and agents. Derivation connects an entity to material used to construct it; qualified derivation can describe the producing activity in more detail."
+    },
+    {
+      "id": "rule-rpc-context",
+      "label": "Chunk",
+      "text": "RPC method, outcome, and convention version RPC spans describe remote calls with method and outcome information. Client-side duration can include retries. The current conventions distinguish errors occurring before a response from returned error status codes and document migration behavior for older instrumentation."
+    },
+    {
+      "id": "rule-service-identity",
+      "label": "Chunk",
+      "text": "Logical service and instance identity service.name identifies a logical service; service.namespace disambiguates groups. service.instance.id distinguishes its running instances. Several replicas may share one service.name."
+    },
+    {
+      "id": "rule-service-version",
+      "label": "Chunk",
+      "text": "Service version is a separate attribute service.version describes the component version, and its format is not standardized. The logical service name alone does not identify the version."
+    },
+    {
+      "id": "rule-span-direction",
+      "label": "Chunk",
+      "text": "Client, server, and internal spans CLIENT spans describe outgoing requests; SERVER spans describe incoming request handling. INTERNAL spans describe work inside an application. Context propagation commonly makes a remote SERVER span a child of a CLIENT span; nested CLIENT spans are also possible."
+    },
+    {
+      "id": "rule-span-status",
+      "label": "Chunk",
+      "text": "Error and unset span status Unset is the default span status. Error records an error in the operation; Ok records validated successful completion. Non-recording spans discard added data, and recording alone does not guarantee export to the backend."
+    },
+    {
+      "id": "rule-trace-identity",
+      "label": "Chunk",
+      "text": "Trace context and parent linkage A span has its own SpanContext, a possible parent, timing, attributes, links, and status. SpanContext carries TraceId and SpanId. Links can connect spans across traces, separately from the parent relationship."
+    },
+    {
+      "id": "shop-checkout-addresses",
+      "label": "Chunk",
+      "text": "Checkout downstream address configuration Checkout initializes shipping, catalog, cart, currency, email, and payment clients from environment addresses. Kafka setup is conditional on a nonempty KAFKA_ADDR."
+    },
+    {
+      "id": "shop-checkout-charge",
+      "label": "Chunk",
+      "text": "Checkout invokes the charge RPC The charge call sends amount and credit-card information to PaymentService.Charge. RPC errors return to the caller; successful replies expose a transaction identifier."
+    },
+    {
+      "id": "shop-checkout-email-handling",
+      "label": "Chunk",
+      "text": "Confirmation failure has different handling A confirmation-email error produces a warning rather than an immediate failed order response. Postprocessing is conditional on a configured Kafka address."
+    },
+    {
+      "id": "shop-checkout-order-sequence",
+      "label": "Chunk",
+      "text": "Charge precedes shipment PlaceOrder prepares the order, charges the card, then ships it. Charge errors return Internal; shipment errors return Unavailable."
+    },
+    {
+      "id": "shop-checkout-prepare",
+      "label": "Chunk",
+      "text": "Preparation dependencies before charging Preparation gets the cart, prepares item prices, obtains a shipping quote, and converts shipping cost. An error at any stage returns early."
+    },
+    {
+      "id": "shop-frontend-checkout-address",
+      "label": "Chunk",
+      "text": "Frontend checkout RPC destination CheckoutGateway constructs a CheckoutServiceClient from CHECKOUT_ADDR. It resolves the PlaceOrder promise on a successful callback and rejects it on an RPC error. The effective deployment address must be obtained separately."
+    },
+    {
+      "id": "shop-frontend-checkout-entry",
+      "label": "Chunk",
+      "text": "Checkout HTTP entry and order request The frontend accepts POST /api/checkout and delegates order placement to CheckoutGateway.placeOrder. Other HTTP methods receive 405. On success it enriches returned order items with product details before replying."
+    },
+    {
+      "id": "shop-frontend-error-mapping",
+      "label": "Chunk",
+      "text": "Frontend classification of checkout errors A failed PlaceOrder marks the frontend span ERROR. Its response mapping treats a charge-failure prefix without Unavailable or Internal as HTTP 422; other caught order-placement failures become HTTP 500. This is message-based classification, not independent cause verification."
+    },
+    {
+      "id": "shop-item-price-currency",
+      "label": "Chunk",
+      "text": "Item lookup and currency conversion For each cart item, checkout retrieves the product and converts its USD price to the requested currency. Lookup or conversion errors abort preparation."
+    },
+    {
+      "id": "shop-money-contract",
+      "label": "Chunk",
+      "text": "Money representation and cross-field constraints Money carries a currency code, integer units, and nanos in billionths of a unit. Nanos is bounded from -999999999 to 999999999. Positive units require nonnegative nanos; negative units require nonpositive nanos; zero units allow either sign."
+    },
+    {
+      "id": "shop-payment-handler",
+      "label": "Chunk",
+      "text": "Payment handler records and returns failures The PaymentService handler calls the charge implementation. If it throws, the handler logs the error, marks its active span ERROR, sets error.type, and returns the error through the RPC callback."
+    },
+    {
+      "id": "shop-payment-interface",
+      "label": "Chunk",
+      "text": "Payment RPC request and response The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. This interface describes message shape, without proving any request succeeded."
+    },
+    {
+      "id": "shop-platform-interface-catalog",
+      "label": "Chunk",
+      "text": "Additional declared RPC interfaces The protocol file declares CartService AddItem/GetCart/EmptyCart, ProductCatalogService ListProducts/GetProduct/SearchProducts, and CurrencyService GetSupportedCurrencies/Convert. These signatures support interface lookup; a declaration alone does not establish a deployed or exercised dependency."
+    },
+    {
+      "id": "shop-shipping-quote-contract",
+      "label": "Chunk",
+      "text": "Shipping quote response contract Checkout posts JSON to /get-quote, expects HTTP 200, parses JSON, and rejects a missing cost_usd value."
+    },
+    {
+      "id": "svc-catalog",
+      "label": "Service",
+      "text": "product-catalog   "
+    },
+    {
+      "id": "svc-checkout",
+      "label": "Service",
+      "text": "checkout   "
+    },
+    {
+      "id": "svc-front",
+      "label": "Service",
+      "text": "frontend   "
+    },
+    {
+      "id": "svc-payment",
+      "label": "Service",
+      "text": "payment   "
+    },
+    {
+      "id": "svc-rec",
+      "label": "Service",
+      "text": "recommendation   "
+    }
+  ],
+  "source_edges": [
+    {
+      "start": "svc-front",
+      "type": "EXPOSES",
+      "end": "op-api-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-front:EXPOSES:op-api-rec",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-rec",
+      "type": "EXPOSES",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-rec:EXPOSES:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-catalog",
+      "type": "EXPOSES",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-catalog:EXPOSES:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-catalog",
+      "type": "EXPOSES",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-catalog:EXPOSES:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-front",
+      "type": "EXPOSES",
+      "end": "op-api-checkout",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-front:EXPOSES:op-api-checkout",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-checkout",
+      "type": "EXPOSES",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-checkout:EXPOSES:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-pay"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "svc-payment",
+      "type": "EXPOSES",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:svc-payment:EXPOSES:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "evidence_ids": [
+          "ev-proto-pay"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported"
+      }
+    },
+    {
+      "start": "op-api-rec",
+      "type": "CALLS",
+      "end": "op-list-rec",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-rec:CALLS:op-list-rec",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Recommendation API executes",
+        "evidence_ids": [
+          "ev-front-rec"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-list-rec",
+      "type": "CALLS",
+      "end": "op-list-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:op-list-rec:CALLS:op-list-prod",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Cache flag off OR flag-on cache miss",
+        "evidence_ids": [
+          "ev-rec-server"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-api-rec",
+      "type": "CALLS",
+      "end": "op-get-prod",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-rec:CALLS:op-get-prod",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-rec",
+        "condition": "Nonempty recommended IDs; at most four",
+        "evidence_ids": [
+          "ev-front-rec",
+          "ev-front-product"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-api-checkout",
+      "type": "CALLS",
+      "end": "op-place",
+      "properties": {
+        "id": "autotriager-c3-v1:op-api-checkout:CALLS:op-place",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-checkout",
+        "condition": "POST order request",
+        "evidence_ids": [
+          "ev-front-checkout"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "op-place",
+      "type": "CALLS",
+      "end": "op-charge",
+      "properties": {
+        "id": "autotriager-c3-v1:op-place:CALLS:op-charge",
+        "graph_id": "autotriager-c3-v1",
+        "workflow_id": "wf-checkout",
+        "condition": "Order preparation completed; charging step reached",
+        "evidence_ids": [
+          "ev-checkout-go"
+        ],
+        "source_version": "dedc0178918e260823323b8d95005a8cb924b007",
+        "evidence_status": "source_supported",
+        "scope": "possible static call path"
+      }
+    },
+    {
+      "start": "shop-frontend-checkout-entry",
+      "type": "ABOUT",
+      "end": "op-api-checkout",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L20-L74",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-frontend-checkout-entry",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L20-L74",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-frontend-error-mapping",
+      "type": "ABOUT",
+      "end": "op-api-checkout",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-frontend-error-mapping",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/pages/api/checkout.ts#L14-L47",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-frontend-checkout-address",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/frontend/gateways/rpc/Checkout.gateway.ts#L7-L16",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-addresses",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L218-L255",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-prepare",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L433-L457",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-charge",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-charge",
+      "type": "ABOUT",
+      "end": "op-charge",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L581-L588",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-order-sequence",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L344-L377",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-order-sequence",
+      "type": "ABOUT",
+      "end": "op-charge",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L344-L377",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-checkout-email-handling",
+      "type": "ABOUT",
+      "end": "op-place",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L411-L424",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-item-price-currency",
+      "type": "ABOUT",
+      "end": "op-get-prod",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/checkout/main.go#L542-L570",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-payment-handler",
+      "type": "ABOUT",
+      "end": "op-charge",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/src/payment/index.js#L12-L31",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-money-contract",
+      "type": "ABOUT",
+      "end": "op-charge",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L145-L160",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-payment-interface",
+      "type": "ABOUT",
+      "end": "op-charge",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L175-L195",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-platform-interface-catalog",
+      "type": "ABOUT",
+      "end": "op-list-prod",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L21-L143",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    },
+    {
+      "start": "shop-platform-interface-catalog",
+      "type": "ABOUT",
+      "end": "op-get-prod",
+      "properties": {
+        "source_url": "https://github.com/open-telemetry/opentelemetry-demo/blob/dedc0178918e260823323b8d95005a8cb924b007/pb/demo.proto#L21-L143",
+        "evidence_status": "source_supported",
+        "interpretation": "Document topic association; not incident causality"
+      }
+    }
+  ],
+  "aggregation_policy": "Undirected mean aggregation; provenance edges retain original direction and conditions.",
+  "node_count": 35,
+  "directed_source_edge_count": 30,
+  "aggregation_edge_count": 60,
+  "isolated_node_ids": [
+    "rule-error-context",
+    "rule-log-correlation",
+    "rule-provenance",
+    "rule-rpc-context",
+    "rule-service-identity",
+    "rule-service-version",
+    "rule-span-direction",
+    "rule-span-status",
+    "rule-trace-identity",
+    "shop-shipping-quote-contract"
+  ]
+}

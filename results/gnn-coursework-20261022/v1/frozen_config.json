@@ -1,0 +1,26 @@
+{
+  "version": "v1",
+  "seed": 42,
+  "hidden_dim": 32,
+  "epochs": 120,
+  "learning_rate": 0.01,
+  "decoder_scale": 5.0,
+  "decoder_offset": 2.5,
+  "top_k": 5,
+  "candidate_limit": 10,
+  "objective": "class-weighted BCE over every unordered node pair; reconstruct source/topic edges",
+  "projection": "Service+Operation+Chunk; source EXPOSES/CALLS and document ABOUT; bidirectional aggregation",
+  "query_encoder": "TF-IDF query through trained self branch, ReLU, L2 normalize; zero query neighbors",
+  "no_neighbor_ablation": "same trained weights, neighbor aggregate zeroed at inference; not a retrained baseline",
+  "training_scope": "transductive development; no gold question relevance or incident observations in training",
+  "frozen_at_utc": "2026-10-22T06:08:18.263963+00:00",
+  "input_sha256": {
+    "kg/data/graph.json": "976574cdd53d01c77b753590000d63896d039d9a54934ebef1742e15b7795479",
+    "kg/rag_corpus.json": "f2d32871924b85e4f209174f4ae5b582753c08a0de1bb7f382f0681fefd17628",
+    "results/graphrag-coursework-20261015/execution_plan.json": "6c444ab7dd20b62ad79b81e1cddedb313d0232721f538eb5190e175bf9125c5f"
+  },
+  "source_sha256": {
+    "scripts/run_gnn_coursework.py": "d4a1b766361c63e762579f2cbcf64e4b5cfaa38938b2d4d0e79732bffb2ff9b4",
+    "autotriager_shop/gnn_retrieval.py": "995515b13ebe8f5affc88cacc99b59d005b8892fb62bb80bbad248cf96341a80"
+  }
+}

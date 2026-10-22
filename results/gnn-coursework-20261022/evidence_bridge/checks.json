@@ -1,0 +1,108 @@
+{
+  "executed_on": "2026-10-22",
+  "mode": "offline archived context",
+  "neo4j_fetch_executed_now": false,
+  "llm_executed_now": false,
+  "packet_count": 9,
+  "checks": [
+    {
+      "question_id": "basic",
+      "method": "lexical_score_sorted",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "470ec8906cd9c694fb8a98996f03164bba988593f239be412a3045f9ecbe6927"
+    },
+    {
+      "question_id": "basic",
+      "method": "graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "dd8351aeb7a2a1ceed09586c5972c81c8c791ef1afe5edd98fb67e0d385008fc"
+    },
+    {
+      "question_id": "basic",
+      "method": "rrf_lexical_graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "a7a09a65d8db25728107abbcbb7ca3260186a13b3f29ce8b4640af447962aaf5"
+    },
+    {
+      "question_id": "multihop",
+      "method": "lexical_score_sorted",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "624be20bf0289fb09c66d3732d4e17885c0c92f0caca8da6e2bcf73bbd190e3e"
+    },
+    {
+      "question_id": "multihop",
+      "method": "graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "4d030df35723c7e39174a9b28389f1b34d4f84eecfdd1ac1e3634dc25dbbd9a1"
+    },
+    {
+      "question_id": "multihop",
+      "method": "rrf_lexical_graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "2a18f73af23de2c9e0214f9b61d04590f43c862e7fe164dbe887e3849f53b809"
+    },
+    {
+      "question_id": "research",
+      "method": "lexical_score_sorted",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "025e524554d513ee09aa99b5a917fe55b92c648ac17eb303a68df4f1d274bcac"
+    },
+    {
+      "question_id": "research",
+      "method": "graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "3fd67d7fefa9e5a3a0c1aaaec4c9ed8d004a6c648976a06fe78789b37a2526a0"
+    },
+    {
+      "question_id": "research",
+      "method": "rrf_lexical_graphsage",
+      "knowledge_count": 5,
+      "observations_preserved": true,
+      "relations_preserved": true,
+      "scope_preserved": true,
+      "source_content_preserved": true,
+      "packet_integrity_passed": true,
+      "packet_id": "43462cd365073a3df654d15a33237e46f73bac64d855b571aaa6cafaa2bc918a"
+    }
+  ]
+}

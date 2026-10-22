@@ -1,0 +1,409 @@
+{
+  "analysis": "Post-hoc tie sensitivity on three inspected development questions; no new candidate, training, reranking, or label change.",
+  "policy": "Absolute score difference <=1e-12 at the Top-5 cutoff; vary only ordering inside that tied group. Original grouped order additionally preserves kind-group priority.",
+  "original_tie_break": "ID ascending within equal scores",
+  "source_results_sha256": "e287536d48d7b9dd1b9d34417b1490a503c96e1b2b96eceb13a7daa47f2e3804",
+  "versions_executed": 2,
+  "version_ceiling": 3,
+  "decision": "Stop after V2. Keep lexical retrieval as default; V2 is an experimental offline candidate. No demonstrated robust GNN improvement.",
+  "questions": {
+    "basic": {
+      "original_grouped_order": {
+        "cutoff_score": 9,
+        "tie_ids": [
+          "shop-frontend-checkout-address",
+          "shop-frontend-checkout-entry"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-checkout-address": 9,
+          "shop-frontend-checkout-entry": 9
+        },
+        "slots_for_tied_items": 2,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "lexical_score_sorted": {
+        "cutoff_score": 9.0,
+        "tie_ids": [
+          "shop-frontend-checkout-address",
+          "shop-frontend-checkout-entry"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-checkout-address": 9.0,
+          "shop-frontend-checkout-entry": 9.0
+        },
+        "slots_for_tied_items": 2,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "tfidf_same_pool": {
+        "cutoff_score": 0.10992231965065002,
+        "tie_ids": [
+          "rule-rpc-context"
+        ],
+        "tie_exact_scores": {
+          "rule-rpc-context": 0.10992231965065002
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "graphsage": {
+        "cutoff_score": 0.054306644946336746,
+        "tie_ids": [
+          "shop-frontend-error-mapping"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-error-mapping": 0.054306644946336746
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "graphsage_no_neighbors": {
+        "cutoff_score": 0.058645159006118774,
+        "tie_ids": [
+          "shop-frontend-checkout-address"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-checkout-address": 0.058645159006118774
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "rrf_lexical_graphsage": {
+        "cutoff_score": 0.030536130536130537,
+        "tie_ids": [
+          "shop-frontend-error-mapping"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-error-mapping": 0.030536130536130537
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "rrf_lexical_no_neighbors": {
+        "cutoff_score": 0.030330882352941176,
+        "tie_ids": [
+          "rule-service-version"
+        ],
+        "tie_exact_scores": {
+          "rule-service-version": 0.030330882352941176
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "rrf_lexical_tfidf": {
+        "cutoff_score": 0.030330882352941176,
+        "tie_ids": [
+          "shop-frontend-checkout-address"
+        ],
+        "tie_exact_scores": {
+          "shop-frontend-checkout-address": 0.030330882352941176
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      }
+    },
+    "multihop": {
+      "original_grouped_order": {
+        "cutoff_score": 6,
+        "tie_ids": [
+          "shop-checkout-charge",
+          "shop-checkout-order-sequence",
+          "shop-payment-interface"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 6,
+          "shop-checkout-order-sequence": 6,
+          "shop-payment-interface": 6
+        },
+        "slots_for_tied_items": 3,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.3333333333333333,
+        "max_recall_at_5": 0.3333333333333333,
+        "deterministic_recall_at_5": 0.3333333333333333
+      },
+      "lexical_score_sorted": {
+        "cutoff_score": 11.0,
+        "tie_ids": [
+          "rule-log-correlation",
+          "rule-span-status",
+          "shop-payment-handler"
+        ],
+        "tie_exact_scores": {
+          "rule-log-correlation": 11.0,
+          "rule-span-status": 11.0,
+          "shop-payment-handler": 11.0
+        },
+        "slots_for_tied_items": 3,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.6666666666666666,
+        "max_recall_at_5": 0.6666666666666666,
+        "deterministic_recall_at_5": 0.6666666666666666
+      },
+      "tfidf_same_pool": {
+        "cutoff_score": 0.18396973609924316,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.18396973609924316
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.6666666666666666,
+        "max_recall_at_5": 0.6666666666666666,
+        "deterministic_recall_at_5": 0.6666666666666666
+      },
+      "graphsage": {
+        "cutoff_score": 0.19731226563453674,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.19731226563453674
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.3333333333333333,
+        "max_recall_at_5": 0.3333333333333333,
+        "deterministic_recall_at_5": 0.3333333333333333
+      },
+      "graphsage_no_neighbors": {
+        "cutoff_score": 0.1240263357758522,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.1240263357758522
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.3333333333333333,
+        "max_recall_at_5": 0.3333333333333333,
+        "deterministic_recall_at_5": 0.3333333333333333
+      },
+      "rrf_lexical_graphsage": {
+        "cutoff_score": 0.03055037313432836,
+        "tie_ids": [
+          "rule-span-status"
+        ],
+        "tie_exact_scores": {
+          "rule-span-status": 0.03055037313432836
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.6666666666666666,
+        "max_recall_at_5": 0.6666666666666666,
+        "deterministic_recall_at_5": 0.6666666666666666
+      },
+      "rrf_lexical_no_neighbors": {
+        "cutoff_score": 0.030834914611005692,
+        "tie_ids": [
+          "shop-checkout-order-sequence"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-order-sequence": 0.030834914611005692
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.6666666666666666,
+        "max_recall_at_5": 0.6666666666666666,
+        "deterministic_recall_at_5": 0.6666666666666666
+      },
+      "rrf_lexical_tfidf": {
+        "cutoff_score": 0.030621785881252923,
+        "tie_ids": [
+          "rule-span-direction"
+        ],
+        "tie_exact_scores": {
+          "rule-span-direction": 0.030621785881252923
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.6666666666666666,
+        "max_recall_at_5": 0.6666666666666666,
+        "deterministic_recall_at_5": 0.6666666666666666
+      }
+    },
+    "research": {
+      "original_grouped_order": {
+        "cutoff_score": 6,
+        "tie_ids": [
+          "shop-checkout-addresses",
+          "shop-checkout-charge",
+          "shop-checkout-order-sequence"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-addresses": 6,
+          "shop-checkout-charge": 6,
+          "shop-checkout-order-sequence": 6
+        },
+        "slots_for_tied_items": 2,
+        "tie_crosses_cutoff": true,
+        "min_recall_at_5": 0.5,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "lexical_score_sorted": {
+        "cutoff_score": 6.0,
+        "tie_ids": [
+          "shop-checkout-addresses",
+          "shop-checkout-charge",
+          "shop-checkout-order-sequence"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-addresses": 6.0,
+          "shop-checkout-charge": 6.0,
+          "shop-checkout-order-sequence": 6.0
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": true,
+        "min_recall_at_5": 0.5,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 0.5
+      },
+      "tfidf_same_pool": {
+        "cutoff_score": 0.14961862564086914,
+        "tie_ids": [
+          "rule-span-status"
+        ],
+        "tie_exact_scores": {
+          "rule-span-status": 0.14961862564086914
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.5,
+        "max_recall_at_5": 0.5,
+        "deterministic_recall_at_5": 0.5
+      },
+      "graphsage": {
+        "cutoff_score": 0.06535106897354126,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.06535106897354126
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "graphsage_no_neighbors": {
+        "cutoff_score": 0.04107830300927162,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.04107830300927162
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "rrf_lexical_graphsage": {
+        "cutoff_score": 0.030536130536130537,
+        "tie_ids": [
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-charge": 0.030536130536130537
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 1.0,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 1.0
+      },
+      "rrf_lexical_no_neighbors": {
+        "cutoff_score": 0.030536130536130537,
+        "tie_ids": [
+          "shop-checkout-addresses",
+          "shop-checkout-charge"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-addresses": 0.030536130536130537,
+          "shop-checkout-charge": 0.030536130536130537
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": true,
+        "min_recall_at_5": 0.5,
+        "max_recall_at_5": 1.0,
+        "deterministic_recall_at_5": 0.5
+      },
+      "rrf_lexical_tfidf": {
+        "cutoff_score": 0.030309988518943745,
+        "tie_ids": [
+          "shop-checkout-addresses"
+        ],
+        "tie_exact_scores": {
+          "shop-checkout-addresses": 0.030309988518943745
+        },
+        "slots_for_tied_items": 1,
+        "tie_crosses_cutoff": false,
+        "min_recall_at_5": 0.5,
+        "max_recall_at_5": 0.5,
+        "deterministic_recall_at_5": 0.5
+      }
+    }
+  },
+  "macro_bounds": {
+    "original_grouped_order": {
+      "minimum": 0.611111111111111,
+      "maximum": 0.7777777777777777
+    },
+    "lexical_score_sorted": {
+      "minimum": 0.7222222222222222,
+      "maximum": 0.8888888888888888
+    },
+    "tfidf_same_pool": {
+      "minimum": 0.7222222222222222,
+      "maximum": 0.7222222222222222
+    },
+    "graphsage": {
+      "minimum": 0.7777777777777777,
+      "maximum": 0.7777777777777777
+    },
+    "graphsage_no_neighbors": {
+      "minimum": 0.7777777777777777,
+      "maximum": 0.7777777777777777
+    },
+    "rrf_lexical_graphsage": {
+      "minimum": 0.8888888888888888,
+      "maximum": 0.8888888888888888
+    },
+    "rrf_lexical_no_neighbors": {
+      "minimum": 0.7222222222222222,
+      "maximum": 0.8888888888888888
+    },
+    "rrf_lexical_tfidf": {
+      "minimum": 0.7222222222222222,
+      "maximum": 0.7222222222222222
+    }
+  }
+}
