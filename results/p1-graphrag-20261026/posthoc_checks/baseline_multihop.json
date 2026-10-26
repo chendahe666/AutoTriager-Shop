@@ -1,0 +1,56 @@
+{
+  "mode": "Post-hoc development replay; not a new generation or held-out detector evaluation",
+  "original_answer_preserved": true,
+  "checks": {
+    "version": "targeted-grounding-checks-v2",
+    "status": "needs_review",
+    "findings": [
+      {
+        "code": "incomplete_representative_path",
+        "message": "5 representative recorded links have no structurally linked explanation.",
+        "severity": "review",
+        "claim_index": null
+      },
+      {
+        "code": "static_condition_requires_review",
+        "message": "A source call condition is not literally present in the model explanation: POST order request. Compare possible paraphrases with the separate source-condition display.",
+        "severity": "review",
+        "claim_index": null
+      },
+      {
+        "code": "static_condition_requires_review",
+        "message": "A source call condition is not literally present in the model explanation: Order preparation completed; charging step reached. Compare possible paraphrases with the separate source-condition display.",
+        "severity": "review",
+        "claim_index": null
+      }
+    ],
+    "structurally_linked_paths": [],
+    "expected_representative_links": 5,
+    "missing_representative_link_ids": [
+      "48e394999ac2d2f1ffe1357c7c95f0bf:e932062fd2e5ea84>efb3cba869076aa8",
+      "48e394999ac2d2f1ffe1357c7c95f0bf:efb3cba869076aa8>69d1ec2d192dd847",
+      "48e394999ac2d2f1ffe1357c7c95f0bf:69d1ec2d192dd847>e583cbbc1d5f75f8",
+      "48e394999ac2d2f1ffe1357c7c95f0bf:e583cbbc1d5f75f8>263b28468ee221d5",
+      "48e394999ac2d2f1ffe1357c7c95f0bf:263b28468ee221d5>8894d240e945b3de"
+    ],
+    "static_condition_inventory": [
+      {
+        "from": "POST /api/checkout",
+        "to": "PlaceOrder",
+        "condition": "POST order request",
+        "verbatim_present": false,
+        "semantic_retention": "requires review; paraphrases may differ"
+      },
+      {
+        "from": "PlaceOrder",
+        "to": "Charge",
+        "condition": "Order preparation completed; charging step reached",
+        "verbatim_present": false,
+        "semantic_retention": "requires review; paraphrases may differ"
+      }
+    ],
+    "semantic_support": "not automatically verified",
+    "causal_confirmation": false,
+    "limit": "Targeted patterns and endpoint checks can flag specific errors; passing is not proof of semantic support."
+  }
+}

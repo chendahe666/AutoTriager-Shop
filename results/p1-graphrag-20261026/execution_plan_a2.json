@@ -1,0 +1,118 @@
+{
+  "base_commit": "1d9623e5c66a002b35be7300466ab8fe34539790",
+  "model": "gemini-3.5-flash-lite",
+  "temperature": 0,
+  "max_output_tokens": 2400,
+  "fresh_attempt_ceiling": 6,
+  "automatic_retries": 0,
+  "paid_fallback": false,
+  "task_authorization": "User requested online P1 restoration and before/after experiment on October 26.",
+  "scope": "Three previously inspected development questions, one archived incident; no held-out claim.",
+  "primary_runtime_edges": [
+    [
+      "span-00003",
+      "span-00004"
+    ],
+    [
+      "span-00004",
+      "span-00005"
+    ],
+    [
+      "span-00005",
+      "span-00006"
+    ],
+    [
+      "span-00006",
+      "span-00007"
+    ]
+  ],
+  "static_conditions": [
+    "POST order request",
+    "order preparation completes and charging step reached"
+  ],
+  "metrics": [
+    "primary runtime path explanation / 4",
+    "programmatic links / all identifiable links",
+    "static condition retention / 2",
+    "deployed-version gap retained",
+    "whole-claim and atomic-proposition support",
+    "question coverage",
+    "abstention and rejection",
+    "citation resolution",
+    "latency and provider token usage"
+  ],
+  "call_order": [
+    [
+      "baseline",
+      "basic"
+    ],
+    [
+      "candidate",
+      "basic"
+    ],
+    [
+      "baseline",
+      "multihop"
+    ],
+    [
+      "candidate",
+      "multihop"
+    ],
+    [
+      "baseline",
+      "research"
+    ],
+    [
+      "candidate",
+      "research"
+    ]
+  ],
+  "same_underlying_evidence": {
+    "basic": {
+      "question": true,
+      "scope": true,
+      "observations": true,
+      "knowledge": true,
+      "relations": true,
+      "gaps": true
+    },
+    "multihop": {
+      "question": true,
+      "scope": true,
+      "observations": true,
+      "knowledge": true,
+      "relations": true,
+      "gaps": true
+    },
+    "research": {
+      "question": true,
+      "scope": true,
+      "observations": true,
+      "knowledge": true,
+      "relations": true,
+      "gaps": true
+    }
+  },
+  "packet_ids": {
+    "basic": {
+      "baseline": "ab61f864d0daa85e20215ba8a19aa83e6f24137197ddc86840f611d0ff997958",
+      "candidate": "d1142367df24b678370670b2abca05564c6881fa2f78cd1fad22531c3462ae70"
+    },
+    "multihop": {
+      "baseline": "1f2ea8d2c6edf59ceb25a730d9918ae60613f2f5c7c8b3636bfbb15587b6fe72",
+      "candidate": "55d72ba0c4d89656d02e69bf7563bde854511936702189d66f968f616deb55de"
+    },
+    "research": {
+      "baseline": "82d81f82968e125a8da3278e8d9fcea98f77c8e14bbb40cae7fbbd7982752a73",
+      "candidate": "7eabd58091635f7bf7a16cc76e5c984b3dcb86bca42d3aa216d4d56f14f2cc9e"
+    }
+  },
+  "interpretation": "Candidate changes derived context, prompt and checks, not underlying observations/corpus/model. Input token counts may differ.",
+  "source_sha256": {
+    "autotriager_shop/graph_rag.py": "db281968700243229765572b19e46007f7844d7cc3cf2331a51ed9bcce50955c",
+    "autotriager_shop/evidence_chain.py": "fe11a61e126fefe21aed69ca5a882c9af8704583c9ca9ec0838bb9a153610e37",
+    "autotriager_shop/answer_grounding.py": "ecb890f194d5b766b9f122d7d17c0195e3a2c13dac751f3ff3fb4c4ea4e18629",
+    "scripts/run_p1_graphrag.py": "b49233af86cd14fab862cc1fb3bbd2e6787efa7fbcd89dfaad9b7c84e476f7c4"
+  },
+  "pre_call_amendment": "A2 retains A1 path order and source/packet drift checks, and aligns the prompt with displaying all claims. Original and A1 preflight plans remain archived; no generation preceded A2."
+}

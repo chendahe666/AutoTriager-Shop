@@ -1,0 +1,52 @@
+{
+  "status": "answered",
+  "claims": [
+    {
+      "kind": "system_knowledge",
+      "text": "The declared PaymentService interface exposes Charge, whose request combines Money and CreditCardInfo, and whose response supplies a transaction_id.",
+      "citation_ids": [
+        "shop-payment-interface"
+      ]
+    },
+    {
+      "kind": "system_knowledge",
+      "text": "This interface describes message shape, but it alone does not prove that any request succeeded.",
+      "citation_ids": [
+        "shop-payment-interface"
+      ]
+    },
+    {
+      "kind": "system_knowledge",
+      "text": "The charge call sends amount and credit-card information to PaymentService.Charge, where RPC errors return to the caller and successful replies expose a transaction identifier.",
+      "citation_ids": [
+        "shop-checkout-charge"
+      ]
+    }
+  ],
+  "uncertainties": [],
+  "next_checks": [],
+  "answer": "The declared PaymentService interface exposes Charge, whose request combines Money and CreditCardInfo, and whose response supplies a transaction_id. [shop-payment-interface] This interface describes message shape, but it alone does not prove that any request succeeded. [shop-payment-interface] The charge call sends amount and credit-card information to PaymentService.Charge, where RPC errors return to the caller and successful replies expose a transaction identifier. [shop-checkout-charge]",
+  "validation": {
+    "citation_ids_valid": true,
+    "claim_roles_checked": true,
+    "claim_support": "requires human review",
+    "causal_confirmation": false
+  },
+  "packet_id": "ab61f864d0daa85e20215ba8a19aa83e6f24137197ddc86840f611d0ff997958",
+  "model": "gemini-3.5-flash-lite",
+  "source": "fresh_gemini",
+  "latency_ms": 1733,
+  "usage": {
+    "promptTokenCount": 19588,
+    "candidatesTokenCount": 211,
+    "totalTokenCount": 19799,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 19588
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "model_request_id": "8397459667fabf62531df9610c9712aad48831f6fd8aadf3f42b73a613598c18"
+}

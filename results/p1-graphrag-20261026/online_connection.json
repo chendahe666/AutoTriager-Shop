@@ -1,0 +1,12 @@
+{
+  "connected": true,
+  "backend": "Neo4j Aura",
+  "graph_id": "autotriager-rag-v1",
+  "total_database_nodes": 85,
+  "project_nodes": 73,
+  "project_relationships": 124,
+  "transport": "HTTPS Query API v2 with certificate verification",
+  "credentials_disclosed": false,
+  "checked_at_utc": "2026-10-26T22:32:00.056624+00:00",
+  "writes_attempted": 0
+}

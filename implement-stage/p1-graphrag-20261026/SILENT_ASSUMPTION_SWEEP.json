@@ -1,0 +1,54 @@
+{
+  "review_date": "2026-10-26",
+  "reviewer_role": "separate AI agent, not implementation author",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "phase": "Final author-artifact pass complete; A2 evidence and disclosed post-experiment replay remain distinct",
+  "scope": "semantic and interface choices in P1 source, packet, prompt, runner and UI",
+  "declared_choices_checked": [
+    {"assumption_id": "A-001", "finding": "Three inspected development questions and matched underlying evidence are declared; not a held-out benchmark.", "status": "declared"},
+    {"assumption_id": "A-002", "finding": "Same-trace unambiguous parent joins, ambiguity withholding, partial capture and no causal interpretation are represented in implementation and UI.", "status": "declared"},
+    {"assumption_id": "A-003", "finding": "Structural checks are not arbitrary semantic entailment checks. Independent raw-output review is still required.", "status": "declared"},
+    {"assumption_id": "A-004", "finding": "Six-attempt shared grant, no retries or model fallback, and unverified account billing are declared.", "status": "declared"},
+    {"assumption_id": "A-005", "finding": "Existing private configuration and loopback preview are declared; no credentials inspected in this review.", "status": "declared"},
+    {"assumption_id": "A-006", "finding": "Engineering retention is separate from semantic improvement; raw responses and coverage must prevent all-abstention gaming.", "status": "declared"},
+    {"assumption_id": "A-007", "finding": "All-link software display and one representative model path are distinct; four primary links remain fixed. R1 ordering defect repaired and independently verified before calls under A2.", "status": "declared_and_verified"},
+    {"assumption_id": "A-008", "finding": "Bounded path field, endpoint validation, visible omission findings and display of all claims are declared. R3 prompt mismatch repaired and verified before calls under A2.", "status": "declared_and_verified"},
+    {"assumption_id": "A-009", "finding": "All six raw answers remain unchanged; post-hoc warnings and path-aware binding are declared separately. Six public sidecars match exact answers and findings. UI uses nonempty findings rather than a fixed status spelling, matching issues_identified sidecars.", "status": "declared_and_verified"}
+  ],
+  "additional_decisions": [
+    {"decision": "Generation stops after the first exception, including validation failures, rather than consuming the remaining ceiling.", "classification": "interface", "impact": "Could leave later pairs unattempted; incompleteness must be retained and reported.", "disposition": "Permissible conservative stopping behavior; ceiling is not a promise to consume all attempts."},
+    {"decision": "Original runner recorded source identities without enforcing them before calls.", "classification": "interface", "impact": "A future edit could have violated the frozen-source promise.", "disposition": "R2 repaired and verified under A2: existing source hashes and packet IDs are checked; no new hashing scheme requested."},
+    {"decision": "One representative path is chosen by the earliest captured segment root, independent of evaluator labels.", "classification": "semantic", "impact": "This representative is a display and explanation selection, not proof of the complete incident pathway.", "disposition": "Covered by A-007; preserve the observed-segment and causal limitations."}
+  ],
+  "forbidden_upgrades_checked": [
+    "citation validity is not semantic support",
+    "deterministic path presentation is not raw LLM reasoning",
+    "observed partial segments are not complete real traces",
+    "same-family simulated review is not expert certification",
+    "development examples are not held-out evidence",
+    "successful cloud reads do not prove measured diagnosis benefit"
+  ],
+  "new_frameworks_or_mechanisms_requested": false,
+  "model_calls_by_reviewer": 0,
+  "cloud_queries_by_reviewer": 0,
+  "result_review": {
+    "artifact": "results/p1-graphrag-20261026/independent_support_review.json",
+    "fresh_calls": 6,
+    "new_calls_after_review": 0,
+    "primary_raw_path_links": {"baseline": "0/4", "candidate": "4/4"},
+    "raw_static_conditions": {"baseline": "0/2", "candidate": "0/2"},
+    "whole_claims": {"baseline": "8 supported, 3 partial, 11 total", "candidate": "7 supported, 1 partial, 8 total"},
+    "retention": "Provisional engineering retention and bounded path-completeness improvement; no general grounding, diagnosis or user-benefit claim.",
+    "post_experiment_changes": "Path-aware review binding, cached-answer revalidation, and warnings for already observed failures were inspected and replayed separately from the frozen A2 comparison."
+  },
+  "final_artifact_review": {
+    "report_and_readme_claims": "Consistent with the reviewed evidence and limitations; no substantive overclaim found.",
+    "review_sidecars": "6/6 independently checked for current answer identity, packet identity, and exact findings.",
+    "online_workflow_receipt": "3/3 recorded successful online retrieval and reviewed cached-answer workflows; inspected by reviewer without another cloud/model call.",
+    "display_contract": "Nonempty independent finding lists are displayed regardless of status spelling; consistent with A-009.",
+    "publication_blocker": "None substantive found within review scope; actual remote publication confirmation remains required.",
+    "bookkeeping_note": "Author asked to refresh stale preflight rung statuses in BUILD_NOTE.md and preserve missing visual acceptance."
+  },
+  "unresolved": ["Both raw multihop answers omit both fixed source conditions.", "Candidate research includes an uncited route clause and only implicit inspection-priority rationale.", "Human answer-level judgment remains pending.", "Browser automation was unavailable; manual visual acceptance remains pending.", "Actual GitHub publication confirmation remains an author responsibility."]
+}

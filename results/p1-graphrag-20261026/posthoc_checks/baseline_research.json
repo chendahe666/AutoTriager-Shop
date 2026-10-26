@@ -1,0 +1,23 @@
+{
+  "mode": "Post-hoc development replay; not a new generation or held-out detector evaluation",
+  "original_answer_preserved": true,
+  "checks": {
+    "version": "targeted-grounding-checks-v2",
+    "status": "needs_review",
+    "findings": [
+      {
+        "code": "span_response_confusion",
+        "message": "A recorded span is telemetry, not a response object returned to a caller. Check whether the text confuses these evidence types.",
+        "severity": "review",
+        "claim_index": 0
+      }
+    ],
+    "structurally_linked_paths": [],
+    "expected_representative_links": 0,
+    "missing_representative_link_ids": [],
+    "static_condition_inventory": [],
+    "semantic_support": "not automatically verified",
+    "causal_confirmation": false,
+    "limit": "Targeted patterns and endpoint checks can flag specific errors; passing is not proof of semantic support."
+  }
+}

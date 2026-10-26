@@ -1,0 +1,17 @@
+{
+  "http_status": 200,
+  "model_version": "gemini-3.5-flash-lite",
+  "usage": {
+    "promptTokenCount": 20897,
+    "candidatesTokenCount": 629,
+    "totalTokenCount": 21526,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20897
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "finish_reason": "STOP"
+}

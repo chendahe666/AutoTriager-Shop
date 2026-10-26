@@ -18,6 +18,8 @@ from .cloud_graph import CloudGraph, CONFIG, GRAPH_ID, ROOT
 from .gemini import select_evidence, _sanitize_response
 from .model_attempts import ModelAttemptLedger, CachedAttempt
 from .schema import load_incident, _reject_private_keys
+from .evidence_chain import build_evidence_chain
+from .answer_grounding import grounding_checks
 
 MODEL = 'gemini-3.5-flash-lite'
 PACKET_VERSION = '1.0'
@@ -125,6 +127,27 @@ def check_packet(packet):
         raise GraphRAGError('Packet citation identifiers must be unique.')
 
 
+def prepare_evidence_packet(packet):
+    """Add a derived, auditable view without changing underlying evidence."""
+    check_packet(packet)
+    result = copy.deepcopy(packet)
+    result.pop('packet_id')
+    chain = build_evidence_chain(packet)
+    chain['relationship_question'] = relationship_query_expansion(packet['question'], packet['observations'])['relationship_question']
+    nodes = {n['node_id']: n for n in chain['nodes']}
+    paths = [p for t in chain['trace_summaries'] for p in t['paths'] if p['link_ids']]
+    # Use the earliest captured path, independent of question-answer labels.
+    paths.sort(key=lambda p: (nodes[p['node_ids'][0]]['timestamp'], p['node_ids']))
+    chain['representative_link_ids'] = paths[0]['link_ids'] if paths else []
+    result['evidence_chain'] = chain
+    result['stages'] = [r for r in result['stages'] if r.get('stage') != 'recorded_parent_chain']
+    result['stages'].append({'stage': 'recorded_parent_chain',
+                             'output': f"{len(chain['runtime_links'])} recorded links across {len(chain['trace_summaries'])} traces; causal status unverified"})
+    result['packet_id'] = identity(result)
+    check_packet(result)
+    return result
+
+
 def validate_answer(answer, packet):
     check_packet(packet)
     if not isinstance(answer, dict) or answer.get('status') not in {'answered','hypotheses','insufficient_evidence'}:
@@ -160,6 +183,20 @@ def validate_answer(answer, packet):
     for group in summary_ids:
         if any(part.strip() not in obs|docs for part in group.split(',')):
             raise GraphRAGError('The answer summary cites evidence outside the packet.')
+    paths = answer.get('path_explanations', [])
+    if not isinstance(paths, list) or len(paths) > 8:
+        raise GraphRAGError('Path explanations must be a bounded list.')
+    links = {r['link_id']:r for r in packet.get('evidence_chain', {}).get('runtime_links', [])}
+    for path in paths:
+        if not isinstance(path, dict) or path.get('link_id') not in links:
+            raise GraphRAGError('A path explanation names an unrecorded link.')
+        link = links[path['link_id']]
+        cites = path.get('citation_ids')
+        if (not isinstance(cites, list) or not all(isinstance(c,str) and c in obs for c in cites)
+                or not set(link['parent_observation_ids']).intersection(cites)
+                or not set(link['child_observation_ids']).intersection(cites)
+                or not isinstance(path.get('text'),str) or not path['text'].strip()):
+            raise GraphRAGError('A path explanation must cite both recorded endpoints and supply text.')
     if not isinstance(answer.get('uncertainties'), list) or any(not isinstance(v,str) for v in answer['uncertainties']):
         raise GraphRAGError('Model answer must state its uncertainties.')
     next_checks=answer.get('next_checks')
@@ -167,13 +204,14 @@ def validate_answer(answer, packet):
     if not isinstance(next_checks,list) or not minimum_checks <= len(next_checks) <= 6 or any(not isinstance(v,str) or not 1 <= len(v) <= 1500 for v in next_checks):
         raise GraphRAGError('Model answer needs bounded verification suggestions (one to six unless factual answered).')
     return {**answer, 'validation': {'citation_ids_valid': True, 'claim_roles_checked': True,
-                                    'claim_support': 'requires human review', 'causal_confirmation': False}}
+                                    'claim_support': 'requires human review', 'causal_confirmation': False,
+                                    'grounding_checks': grounding_checks(answer, packet)}}
 
 
 def answer_schema(packet):
     """Constrain reference names, while leaving semantic support to later review."""
     ids = [r['id'] for r in packet['observations'] + packet['knowledge']]
-    return {'type':'OBJECT','properties':{
+    schema = {'type':'OBJECT','properties':{
         'status':{'type':'STRING','enum':['answered','hypotheses','insufficient_evidence']},
         'claims':{'type':'ARRAY','minItems':1,'maxItems':8,'items':{
             'type':'OBJECT','properties':{
@@ -185,6 +223,16 @@ def answer_schema(packet):
         'uncertainties':{'type':'ARRAY','items':{'type':'STRING'}},
         'next_checks':{'type':'ARRAY','minItems':0,'maxItems':6,'items':{'type':'STRING'}}},
         'required':['status','claims','uncertainties','next_checks']}
+    if packet.get('evidence_chain'):
+        link_ids = packet['evidence_chain'].get('representative_link_ids', [])
+        schema['properties']['path_explanations'] = {'type':'ARRAY', 'maxItems':8, 'items':{
+            'type':'OBJECT', 'properties':{
+                'link_id':{'type':'STRING', **({'enum':link_ids} if link_ids else {})},
+                'text':{'type':'STRING'},
+                'citation_ids':{'type':'ARRAY','minItems':2,'maxItems':4,'items':{'type':'STRING','enum':ids}}},
+            'required':['link_id','text','citation_ids']}}
+        schema['required'].append('path_explanations')
+    return schema
 
 
 def model_packet(packet):
@@ -196,6 +244,29 @@ def model_packet(packet):
             alias=f'{prefix}{i:02d}'
             reference_map[alias]=row['id']
             row['id']=alias
+    if mapped.get('evidence_chain'):
+        chain = mapped['evidence_chain']
+        reverse = {value:key for key,value in reference_map.items()}
+        nodes = {n['node_id']:n for n in chain['nodes']}
+        selected = chain.get('representative_link_ids', [])
+        link_by_id = {r['link_id']:r for r in chain['runtime_links']}
+        rows = []
+        for link_id in selected:
+            link = link_by_id[link_id]
+            parent, child = nodes[link['parent_node_id']], nodes[link['child_node_id']]
+            link_alias = f'R{len(rows)+1:02d}'
+            reference_map[link_alias] = link['link_id']
+            rows.append({'link_id':link_alias, 'parent_service':parent['service'],
+                         'parent_operation':parent['operation'], 'child_service':child['service'],
+                         'child_operation':child['operation'],
+                         'parent_observation_ids':[reverse[i] for i in link['parent_observation_ids']],
+                         'child_observation_ids':[reverse[i] for i in link['child_observation_ids']],
+                         'basis':link['basis']})
+        mapped['evidence_chain'] = {'relationship_question':chain['relationship_question'],
+             'representative_link_ids':[r['link_id'] for r in rows],
+             'representative_runtime_links':rows, 'available_recorded_link_count':len(chain['runtime_links']),
+             'trace_count':len(chain['trace_summaries']), 'quality_flags':chain['quality_flags'],
+             'interpretation':chain['interpretation']}
     return mapped,reference_map
 
 
@@ -203,6 +274,10 @@ def restore_references(answer,reference_map):
     restored=copy.deepcopy(answer)
     for claim in restored.get('claims',[]):
         claim['citation_ids']=[reference_map.get(ref,ref) for ref in claim.get('citation_ids',[])]
+    for path in restored.get('path_explanations', []):
+        if isinstance(path, dict):
+            path['link_id']=reference_map.get(path.get('link_id'),path.get('link_id'))
+            path['citation_ids']=[reference_map.get(ref,ref) for ref in path.get('citation_ids', [])]
     restored['answer']=re.sub(r'\[([^\[\]]+)\]',lambda m:'['+', '.join(reference_map.get(p.strip(),p.strip()) for p in m[1].split(','))+']',restored.get('answer',''))
     return restored
 
@@ -211,12 +286,16 @@ def compose_cited_summary(answer):
     """The display summary reuses cited claims instead of a second free-text answer."""
     value=copy.deepcopy(answer)
     value['answer']=' '.join(f"{claim.get('text','')} [{', '.join(claim.get('citation_ids',[]))}]"
-                             for claim in value.get('claims',[])[:3])
+                             for claim in value.get('claims',[]))
     return value
 
 
 def answer_content_id(answer):
-    return identity({k:answer.get(k) for k in ('status','claims','uncertainties','next_checks','answer','packet_id')})
+    fields = ('status','claims','uncertainties','next_checks','answer','packet_id')
+    value = {k:answer.get(k) for k in fields}
+    if 'path_explanations' in answer:
+        value['path_explanations'] = answer['path_explanations']
+    return identity(value)
 
 
 class GraphRAGService:
@@ -225,6 +304,7 @@ class GraphRAGService:
         self.review_dir=Path(review_dir) if review_dir else ROOT/'reviews'/'graph-rag'
         self.ledger = ModelAttemptLedger(ledger_dir or ROOT / '.local-demo' / 'cloud-rag-attempts',
             ceiling=model_ceiling, sensitive_values=(os.environ.get('GEMINI_API_KEY',''),))
+        self._graph_connection = {'state':'unchecked','checked_at':None,'message':'No live read has been checked by this server yet.'}
 
     def _with_review(self,result):
         request_id=result.get('model_request_id','')
@@ -245,10 +325,27 @@ class GraphRAGService:
 
     def status(self):
         account = self.ledger.status()
-        configured = CONFIG.is_file() or not isinstance(self.graph, CloudGraph)
+        configured = self.graph.config_path.is_file() if isinstance(self.graph, CloudGraph) else True
+        checked = self._graph_connection.get('checked_at')
+        if configured and (not checked or (datetime.now(timezone.utc)-datetime.fromisoformat(checked)).total_seconds() >= 30):
+            self.check_connection()
         return {'enabled':configured, 'model_enabled':bool(os.environ.get('GEMINI_API_KEY')) and account['network_enabled'],
+                'cached_answers_available':bool(os.environ.get('GEMINI_API_KEY')) and account['successes'] > 0,
                 'remaining_attempts': account['remaining'], 'backend':'Neo4j Aura', 'model':MODEL,
+                'graph_connection':copy.deepcopy(self._graph_connection),
                 'reason':'Graph retrieval is read-only. Generation uses a separate bounded attempt ledger.'}
+
+    def check_connection(self):
+        try:
+            rows = self.graph.execute('RETURN 1 AS connected')
+            if rows != [{'connected':1}]:
+                raise GraphRAGError('Live graph read did not return the expected result.')
+            self._graph_connection = {'state':'connected','checked_at':datetime.now(timezone.utc).isoformat(),
+                                      'message':'Live read-only Neo4j query succeeded.'}
+        except Exception:
+            self._graph_connection = {'state':'unavailable','checked_at':datetime.now(timezone.utc).isoformat(),
+                                      'message':'Live Neo4j read failed; check the instance state, network and configured credentials.'}
+        return copy.deepcopy(self._graph_connection)
 
     def retrieve(self, case, question, components=None):
         _reject_private_keys(case, 'incident')
@@ -337,7 +434,9 @@ class GraphRAGService:
                                'seed_operation_ids':sorted(set(seeds))}}
         packet['packet_id'] = identity(packet)
         check_packet(packet)
-        return packet
+        self._graph_connection = {'state':'connected','checked_at':datetime.now(timezone.utc).isoformat(),
+                                  'message':'This evidence packet was retrieved from Neo4j.'}
+        return prepare_evidence_packet(packet)
 
     def answer(self, packet):
         check_packet(packet)
@@ -346,12 +445,13 @@ class GraphRAGService:
             raise GraphRAGError('GEMINI_API_KEY is not configured locally.')
         if not packet['knowledge']:
             raise GraphRAGError('No knowledge was retrieved; import or repair the corpus first.')
-        config = {'model':MODEL,'temperature':0,'max_output_tokens':2400,'prompt_version':'incident-rag-v5-human-dependency-gate', 'packet_version':PACKET_VERSION}
+        config = {'model':MODEL,'temperature':0,'max_output_tokens':2400,'prompt_version':'incident-rag-v6-explicit-parent-chain', 'packet_version':PACKET_VERSION}
         ticket = self.ledger.reserve(case=packet,snapshot_id=packet['packet_id'],task='incident_graphrag',config=config)
         if isinstance(ticket,CachedAttempt):
             if ticket.receipt['outcome'] != 'success':
                 raise GraphRAGError('This exact model request previously failed; no automatic retry is made.')
-            return self._with_review({**ticket.decision,'source':'cached_exact_request'})
+            checked = validate_answer(ticket.decision,packet)
+            return self._with_review({**checked,'source':'cached_exact_request'})
         supplied_packet,reference_map=model_packet(packet)
         prompt = '''You are AutoTriager, an evidence-grounded incident investigation assistant.
 Answer the engineer's question using ONLY the supplied current observations and retrieved knowledge.
@@ -371,7 +471,7 @@ use an empty list for a factual answer that needs no further investigation. Answ
 directly in the first claims. A basic contract question does not require an incident hypothesis.
 Each incident observation and hypothesis must cite current observation IDs. Each system knowledge
 claim must cite a knowledge chunk. Cite exact IDs, never fabricate them. The application will
-build the display summary from your first three cited claims. Do not produce a separate answer.
+build the display summary from your cited claims. Do not produce a separate answer.
 Use provisional language for hypotheses: may, could, consistent with; explicitly distinguish an
 upstream error response from its still unknown internal cause. Do not equate an error span with
 fault ownership or assume all dependencies shown actually failed. Match the question's language.
@@ -383,6 +483,21 @@ as an existing component. Keep source conditions and exceptions; do not drop the
 Only observations[].id and knowledge[].id are citation identifiers. Do not cite relation IDs,
 trace IDs, span IDs, packet IDs or invented shortened IDs. Copy IDs without abbreviation.
 The output assists human investigation; it does not authorize an action.
+Additional evidence contract:
+Make each claim atomic and limit it to what its own citations support. If claiming patterns
+across multiple traces, cite records from at least two distinct traces. Aggregate metrics
+show correlated rates, not a directional propagation mechanism. A possible explanation
+must identify the additional observation needed to distinguish it.
+Return path_explanations as a list of {link_id,text,citation_ids}. For a relationship
+question, explain every representative_runtime_link supplied in evidence_chain, in order.
+Name the parent and child operations and their services, describe only the recorded
+parent-child direction, and cite both endpoint observation IDs. This is trace ancestry,
+not proof of an RPC, error propagation or cause. For other questions return an empty list.
+Preserve the conditional scope of static calls: HTTP route/method and preparation or
+branch conditions, where present in relations and cited source. Do not assert deployed
+execution from source. Keep main claims focused on answering the question; the path
+explanations are a separate evidence section. The complete programmatic graph is shown
+independently and does not count as model reasoning. No check marks certify root cause.
 PACKET:\n'''+json.dumps(supplied_packet,ensure_ascii=False,separators=(',',':'))
         import requests
         begun=time.perf_counter()
@@ -408,6 +523,7 @@ PACKET:\n'''+json.dumps(supplied_packet,ensure_ascii=False,separators=(',',':'))
                         'response_text':_sanitize_response(raw_text,key),
                         'finish_reason':envelope['candidates'][0].get('finishReason'),
                         'usage':_sanitize_response(envelope.get('usageMetadata',{}),key)}
+            diagnostic['provider_model_version'] = envelope.get('modelVersion')
             diagnostic_path=self.ledger.directory / f'attempt-{ticket.attempt_number:06d}.response.json'
             with diagnostic_path.open('x',encoding='utf-8') as handle:
                 json.dump(diagnostic,handle,ensure_ascii=False,indent=2)
@@ -416,6 +532,7 @@ PACKET:\n'''+json.dumps(supplied_packet,ensure_ascii=False,separators=(',',':'))
             result={**validated,'packet_id':packet['packet_id'],'model':MODEL,'source':'fresh_gemini',
                     'latency_ms':round((time.perf_counter()-begun)*1000),
                     'usage':_sanitize_response(envelope.get('usageMetadata',{}),key),
+                    'provider_model_version':envelope.get('modelVersion'),
                     'model_request_id':ticket.request_id}
             self.ledger.finish_success(ticket,decision=result,latency_ms=result['latency_ms'],usage=result['usage'])
             return self._with_review(result)

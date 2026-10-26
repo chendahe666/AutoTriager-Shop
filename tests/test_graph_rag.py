@@ -98,8 +98,9 @@ def test_factual_answer_accepts_one_cited_claim_without_forced_checks(packet,kin
     answer['claims'][0].update(kind=kind,citation_ids=[packet[source][0]['id']])
     checked=validate_answer(answer,packet)
     assert checked['status']=='answered' and checked['next_checks']==[]
-    assert checked['validation']=={'citation_ids_valid':True,'claim_roles_checked':True,
+    assert {k:v for k,v in checked['validation'].items() if k!='grounding_checks'}=={'citation_ids_valid':True,'claim_roles_checked':True,
                                   'claim_support':'requires human review','causal_confirmation':False}
+    assert checked['validation']['grounding_checks']['semantic_support']=='not automatically verified'
 
 
 @pytest.mark.parametrize('kind',['hypothesis','limitation'])

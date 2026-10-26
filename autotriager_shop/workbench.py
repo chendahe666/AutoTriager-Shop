@@ -58,7 +58,7 @@ class Workbench:
         try:
             status = self.graph_rag.status()
             return {key: status[key] for key in (
-                "enabled", "model_enabled", "remaining_attempts", "backend", "reason"
+                "enabled", "model_enabled", "cached_answers_available", "remaining_attempts", "backend", "reason", "graph_connection"
             ) if key in status}
         except Exception:
             # Driver failures can include hostnames or authentication material.

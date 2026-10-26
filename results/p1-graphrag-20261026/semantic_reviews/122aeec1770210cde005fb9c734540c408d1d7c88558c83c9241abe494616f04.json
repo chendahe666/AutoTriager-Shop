@@ -1,0 +1,15 @@
+{
+  "status": "issues_identified",
+  "reviewer": "Independent simulated AI review; same-family, provisional",
+  "packet_id": "1f2ea8d2c6edf59ceb25a730d9918ae60613f2f5c7c8b3636bfbb15587b6fe72",
+  "answer_content_sha256": "07eb327d3b1aee59e87afee4f8017c76d0809cba819ae012e57315cd91186bec",
+  "findings": [
+    {
+      "claim_index": null,
+      "section": "coverage",
+      "severity": "incomplete",
+      "text": "Both required static conditions are missing: POST order request; order preparation completed and charging step reached. The deployed-version caveat is retained. Programmatic display preserves these conditions separately; that is not raw model coverage."
+    }
+  ],
+  "limitations": "Three inspected development questions, one incident. This review is not domain-expert certification or a student judgment."
+}

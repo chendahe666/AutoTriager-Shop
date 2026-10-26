@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-26",
+  "tests": {
+    "command": "python -m pytest tests/test_graph_rag.py tests/test_evidence_chain.py tests/test_answer_grounding.py tests/test_workbench_graph_rag.py tests/test_gnn_evidence_bridge.py -q",
+    "publication_checkout": "85 passed in 7.26s",
+    "main_checkout": "85 passed in 7.87s"
+  },
+  "frontend": {
+    "typecheck": "passed",
+    "standalone_build": "passed",
+    "grafana_build": "passed",
+    "source_and_api_boundary_checks": "passed",
+    "served_html_status": 200,
+    "served_javascript_status": 200
+  },
+  "online_workflows": {
+    "questions": 3,
+    "retrieval": "actual Neo4j reads",
+    "generation_during_verification": "exact-request cache only",
+    "semantic_reviews_attached": 3,
+    "new_model_calls": 0
+  },
+  "fresh_experiment_calls": 6,
+  "remaining_fresh_grant": 0,
+  "browser_visual_verification": "not performed: browser automation kernel could not initialize",
+  "human_semantic_review": "pending",
+  "no_diagnosis_accuracy_claim": true
+}

@@ -1,0 +1,21 @@
+{
+  "status": "issues_identified",
+  "reviewer": "Independent simulated AI review; same-family, provisional",
+  "packet_id": "7eabd58091635f7bf7a16cc76e5c984b3dcb86bca42d3aa216d4d56f14f2cc9e",
+  "answer_content_sha256": "e11987339e006679cf0ddd37decc49fba9c64b7433f7b220b94026dd1310112c",
+  "findings": [
+    {
+      "claim_index": 0,
+      "section": "claims",
+      "severity": "partial",
+      "text": "span-00004/00012 and span-00006/00014 support PlaceOrder/Charge and two trace identities, but not the route clause. Add span-00003 and span-00011 or remove \"frontend checkout routes\". Preserve the original model answer and expose this review finding."
+    },
+    {
+      "claim_index": null,
+      "section": "coverage",
+      "severity": "partial",
+      "text": "The answer suggests checking payment logs but does not explicitly state why payment should be inspected next. Investigation-priority coverage is partial."
+    }
+  ],
+  "limitations": "Three inspected development questions, one incident. This review is not domain-expert certification or a student judgment."
+}

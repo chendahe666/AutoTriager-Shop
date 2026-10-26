@@ -1,0 +1,36 @@
+{
+  "checks": [
+    {
+      "case": "baseline_basic",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    },
+    {
+      "case": "baseline_multihop",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    },
+    {
+      "case": "baseline_research",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    },
+    {
+      "case": "candidate_basic",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    },
+    {
+      "case": "candidate_multihop",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    },
+    {
+      "case": "candidate_research",
+      "review_identity_matches": true,
+      "original_answer_preserved": true
+    }
+  ],
+  "count": 6,
+  "fresh_model_calls": 0
+}

@@ -1,0 +1,46 @@
+{
+  "checked_at_utc": "2026-10-26T22:43:47.060022+00:00",
+  "base_url": "http://127.0.0.1:8792",
+  "online_aura_read": true,
+  "fresh_model_calls": 0,
+  "checks": [
+    {
+      "question_type": "basic",
+      "retrieval_http": 200,
+      "answer_http": 200,
+      "answer_source": "cached_exact_request",
+      "packet_id": "d1142367df24b678370670b2abca05564c6881fa2f78cd1fad22531c3462ae70",
+      "runtime_parent_links": 20,
+      "path_explanation_count": 0,
+      "grounding_status": "no_structural_issue_detected",
+      "semantic_review_present": true,
+      "checks_version": "targeted-grounding-checks-v2"
+    },
+    {
+      "question_type": "multihop",
+      "retrieval_http": 200,
+      "answer_http": 200,
+      "answer_source": "cached_exact_request",
+      "packet_id": "55d72ba0c4d89656d02e69bf7563bde854511936702189d66f968f616deb55de",
+      "runtime_parent_links": 20,
+      "path_explanation_count": 5,
+      "grounding_status": "needs_review",
+      "semantic_review_present": true,
+      "checks_version": "targeted-grounding-checks-v2"
+    },
+    {
+      "question_type": "research",
+      "retrieval_http": 200,
+      "answer_http": 200,
+      "answer_source": "cached_exact_request",
+      "packet_id": "7eabd58091635f7bf7a16cc76e5c984b3dcb86bca42d3aa216d4d56f14f2cc9e",
+      "runtime_parent_links": 20,
+      "path_explanation_count": 0,
+      "grounding_status": "needs_review",
+      "semantic_review_present": true,
+      "checks_version": "targeted-grounding-checks-v2"
+    }
+  ],
+  "generation_budget_remains_exhausted": true,
+  "ui_validation": "Frontend typecheck/build and HTTP routes verified; browser automation unavailable in this run."
+}

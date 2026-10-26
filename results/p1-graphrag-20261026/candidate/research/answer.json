@@ -1,0 +1,85 @@
+{
+  "status": "hypotheses",
+  "claims": [
+    {
+      "kind": "observation",
+      "text": "Traces record frontend checkout routes, PlaceOrder, and PaymentService/Charge calls ending in error status across multiple traces such as 48e394999ac2d2f1ffe1357c7c95f0bf and a8bd97d8a9a8f79af0c53f554a552e3e.",
+      "citation_ids": [
+        "span-00004",
+        "span-00006",
+        "span-00012",
+        "span-00014"
+      ]
+    },
+    {
+      "kind": "system_knowledge",
+      "text": "Checkout source code invokes PaymentService/Charge during order processing, and payment handlers log and return errors when charges fail.",
+      "citation_ids": [
+        "shop-payment-handler",
+        "shop-checkout-charge"
+      ]
+    },
+    {
+      "kind": "hypothesis",
+      "text": "Payment errors may be contributing to checkout failures, but span error rates and trace errors alone do not prove payment is the root cause.",
+      "citation_ids": [
+        "metric-00004",
+        "metric-00022",
+        "span-00006",
+        "span-00007"
+      ]
+    },
+    {
+      "kind": "limitation",
+      "text": "Static dependency paths and error spans represent recorded outcomes or potential code paths rather than confirmed fault ownership or deployed version equivalence.",
+      "citation_ids": [
+        "shop-payment-interface",
+        "shop-payment-handler"
+      ]
+    }
+  ],
+  "uncertainties": [
+    "Whether the payment service internal error was triggered by invalid request input, downstream database failure, or payment gateway rejection.",
+    "Whether the deployed runtime image matches the pinned source commit."
+  ],
+  "next_checks": [
+    "Verify whether any database or external payment gateway dependencies exist in the deployed system before inspecting their health.",
+    "Inspect payment service logs or detailed error payloads for error.type and exception stack traces associated with charge operations."
+  ],
+  "path_explanations": [],
+  "answer": "Traces record frontend checkout routes, PlaceOrder, and PaymentService/Charge calls ending in error status across multiple traces such as 48e394999ac2d2f1ffe1357c7c95f0bf and a8bd97d8a9a8f79af0c53f554a552e3e. [span-00004, span-00006, span-00012, span-00014] Checkout source code invokes PaymentService/Charge during order processing, and payment handlers log and return errors when charges fail. [shop-payment-handler, shop-checkout-charge] Payment errors may be contributing to checkout failures, but span error rates and trace errors alone do not prove payment is the root cause. [metric-00004, metric-00022, span-00006, span-00007] Static dependency paths and error spans represent recorded outcomes or potential code paths rather than confirmed fault ownership or deployed version equivalence. [shop-payment-interface, shop-payment-handler]",
+  "validation": {
+    "citation_ids_valid": true,
+    "claim_roles_checked": true,
+    "claim_support": "requires human review",
+    "causal_confirmation": false,
+    "grounding_checks": {
+      "status": "no_structural_issue_detected",
+      "findings": [],
+      "structurally_linked_paths": [],
+      "expected_representative_links": 0,
+      "missing_representative_link_ids": [],
+      "semantic_support": "not automatically verified",
+      "causal_confirmation": false,
+      "limit": "Targeted patterns and endpoint checks can flag specific errors; passing is not proof of semantic support."
+    }
+  },
+  "packet_id": "7eabd58091635f7bf7a16cc76e5c984b3dcb86bca42d3aa216d4d56f14f2cc9e",
+  "model": "gemini-3.5-flash-lite",
+  "source": "fresh_gemini",
+  "latency_ms": 2567,
+  "usage": {
+    "promptTokenCount": 20860,
+    "candidatesTokenCount": 467,
+    "totalTokenCount": 21327,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20860
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "provider_model_version": "gemini-3.5-flash-lite",
+  "model_request_id": "cbcc71dbb09dd0bd8d67ab98f5e99250bb9eb0af1b991f014572c78db99ec4ab"
+}

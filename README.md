@@ -6,6 +6,26 @@ incident window and components, compares observations, and asks questions about
 the supporting evidence. A suggested component is an investigation priority,
 not proof of root cause. Intervention labels remain outside model inputs.
 
+## Online GraphRAG P1 repair, October 26, 2026
+
+Online Aura reads are restored. The workbench now displays recorded parent
+connections, separate static call conditions, explicit model link explanations,
+and review findings bound to exact answers. A six-call paired development test
+on three questions found primary-path explanations improved from 0/4 to 4/4.
+Static-condition retention stayed at 0/2, and one candidate citation-scope error
+remains. No general diagnosis-accuracy gain is claimed.
+
+- [Results, limitations and setup](docs/P1_GRAPHRAG_RESULTS_20261026.md)
+- [Exact questions, original answers and reviews](results/p1-graphrag-20261026/review.html)
+- [Independent simulated review](docs/P1_INDEPENDENT_REVIEW_20261026.md)
+- [Frozen paired plan](results/p1-graphrag-20261026/execution_plan_a2.json)
+
+The local preview runs at http://127.0.0.1:8792/ on the development machine.
+Its six-attempt grant is exhausted: retrieval is online, and exact saved
+questions can load cached answers without extra calls. Manual visual and
+answer-level human evaluation remain pending. Frontend build, 85 focused tests,
+and all three real online-retrieval/cache HTTP workflows pass.
+
 ## Challenge 3: GNN retrieval experiment, October 22, 2026
 
 A CPU mean-GraphSAGE experiment now uses AutoTriager's existing knowledge graph

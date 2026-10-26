@@ -1,0 +1,57 @@
+{
+  "status": "answered",
+  "claims": [
+    {
+      "kind": "system_knowledge",
+      "text": "The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id.",
+      "citation_ids": [
+        "shop-payment-interface"
+      ]
+    },
+    {
+      "kind": "system_knowledge",
+      "text": "This interface describes message shape, without proving any request succeeded.",
+      "citation_ids": [
+        "shop-payment-interface"
+      ]
+    }
+  ],
+  "uncertainties": [],
+  "next_checks": [],
+  "path_explanations": [],
+  "answer": "The declared PaymentService interface exposes Charge. Its request combines Money and CreditCardInfo; its response supplies a transaction_id. [shop-payment-interface] This interface describes message shape, without proving any request succeeded. [shop-payment-interface]",
+  "validation": {
+    "citation_ids_valid": true,
+    "claim_roles_checked": true,
+    "claim_support": "requires human review",
+    "causal_confirmation": false,
+    "grounding_checks": {
+      "status": "no_structural_issue_detected",
+      "findings": [],
+      "structurally_linked_paths": [],
+      "expected_representative_links": 0,
+      "missing_representative_link_ids": [],
+      "semantic_support": "not automatically verified",
+      "causal_confirmation": false,
+      "limit": "Targeted patterns and endpoint checks can flag specific errors; passing is not proof of semantic support."
+    }
+  },
+  "packet_id": "d1142367df24b678370670b2abca05564c6881fa2f78cd1fad22531c3462ae70",
+  "model": "gemini-3.5-flash-lite",
+  "source": "fresh_gemini",
+  "latency_ms": 1857,
+  "usage": {
+    "promptTokenCount": 20872,
+    "candidatesTokenCount": 150,
+    "totalTokenCount": 21022,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 20872
+      }
+    ],
+    "serviceTier": "standard"
+  },
+  "provider_model_version": "gemini-3.5-flash-lite",
+  "model_request_id": "b63f135973b6a14941cabc3e42e8b3569c04dd2f331ab2de4d3c0d61e2a6dca5"
+}

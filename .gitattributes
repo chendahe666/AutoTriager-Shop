@@ -23,3 +23,7 @@ results/cloud-rag-20261013/*.json -text whitespace=cr-at-eol
 results/gnn-coursework-20261022/**/*.json -text whitespace=cr-at-eol
 results/gnn-coursework-20261022/*.json -text whitespace=cr-at-eol
 results/graphrag-coursework-20261015/execution_plan.json -text whitespace=cr-at-eol
+# P1 frozen packet and source snapshots must retain their recorded byte hashes.
+results/p1-graphrag-20261026/**/*.json -text whitespace=cr-at-eol
+results/p1-graphrag-20261026/*.json -text whitespace=cr-at-eol
+results/p1-graphrag-20261026/*source*/*.py -text whitespace=cr-at-eol
