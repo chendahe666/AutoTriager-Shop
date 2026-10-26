@@ -8,7 +8,7 @@ Author: Dahe Chen. October 26, 2026.
 | F1 | Deterministic runtime chain and ambiguity handling | `pytest tests/test_evidence_chain.py` | MUST | Verified: nine focused tests; 20 recorded links |
 | F2 | Evidence-aware answer contracts and conservative checks | Focused GraphRAG regressions | MUST | Verified: 85 accumulated focused tests |
 | F3 | Frozen paired model experiment and review | Six-attempt runner plus independent support assessment | MUST | Verified: six accepted calls; mixed semantic results retained |
-| F4 | Working preview, documentation and GitHub publication | Browser inspection, accumulated tests, remote commit | MUST | HTTP/build verified; browser automation unavailable; publication pending |
+| F4 | Working preview, documentation and GitHub publication | Browser inspection, accumulated tests, remote commit | MUST | HTTP/build verified; code and evidence published in 541c81f; visual acceptance pending |
 
 ## Run record
 
@@ -36,6 +36,9 @@ Author: Dahe Chen. October 26, 2026.
 - Main-workspace sync preserved its separate incident-memory work. The consumed
   private ledger was copied without overwriting a different grant, preventing
   the main checkout from accidentally starting a duplicate task allowance.
+- Code, raw responses, independent review and evidence were pushed successfully
+  to `chendahe666/AutoTriager-Shop` in commit `541c81f`. The final release receipt
+  separately records that publication; manual visual acceptance remains pending.
 
 ## Deferred
 
